@@ -40,7 +40,6 @@
     "@types/node": "^22.14.1",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
-    "cross-env": "^7.0.3",
     "esbuild": "^0.25.0",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
@@ -63,18 +62,14 @@
     "serverless-better-credentials": "^2.0.1",
     "serverless-esbuild": "^1.54.6",
     "serverless-offline": "^14.4.0",
-    "ts-jest": "^29.3.2",
-    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.29.1",
-    "velocityjs": "^2.1.1"
+    "typescript": "^5.8.3"
   },
   "lint-staged": {
     "*.ts": [
       "eslint --fix",
       "prettier --write",
-      "cross-env  jest --bail --findRelatedTests"
+      "jest --bail --findRelatedTests"
     ],
     "*.json": [
       "prettier --write"
