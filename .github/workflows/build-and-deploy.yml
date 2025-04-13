@@ -96,6 +96,9 @@ jobs:
     name: Deploy to Production
     needs: build  # Only run if build succeeds
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for OIDC
+      contents: read   # Required for checkout
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'  # Only deploy on main branch pushes
     steps:
       # Step 1: Get the code from the repository
@@ -120,13 +123,12 @@ jobs:
           name: serverless-package
           path: .serverless
 
-      # Step 5: Set up AWS credentials for deployment
-      # Note: These secrets must be added to the GitHub repository
+      # Step 5: Set up AWS credentials for deployment using OIDC
+      # Note: AWS_ACCOUNT_ID secret must be added to the GitHub repository
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/TrmnlSalahTimesDeployRole
           aws-region: eu-west-2  # AWS region for deployment
 
       # Step 6: Deploy the application to AWS using the script from package.json
