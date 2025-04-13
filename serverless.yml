@@ -26,6 +26,7 @@ provider:
 functions:
   prayerTimesHandler:
     handler: src/handlers/prayer-times-handler/index.handler
+    description: Handler for prayer times API endpoint
     events:
       - http:
           path: prayer-times
