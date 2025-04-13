@@ -33,13 +33,36 @@ The solution uses:
 ```
 trmnl-salah-times/
 ├── docs/                        # Documentation
-│   ├── PRD.md                   # Product Requirements Document
-│   └── design-mockup.md         # Visual design mockups
+│   ├── prayer-times-plugin/      # Prayer Times Plugin documentation
+│   │   ├── requirements/         # Requirements documentation
+│   │   ├── design/               # Design documentation
+│   │   └── technical/            # Technical documentation
+│   └── README.md                 # Documentation overview
 ├── src/                         # TypeScript source files
+│   ├── clients/                 # API clients
 │   ├── handlers/                # Lambda handlers
+│   │   ├── prayer-times-handler/  # Prayer times handler module
+│   │   │   ├── index.ts          # Handler implementation
+│   │   │   ├── schema.ts         # Validation schema
+│   │   │   └── README.md         # Handler documentation
+│   │   └── index.ts             # Re-export for backward compatibility
 │   ├── services/                # Business logic
-│   ├── tests/                   # Test files
-│   └── types/                   # TypeScript interfaces
+│   │   └── prayer-times/        # Prayer times service
+│   └── utils/                   # Utility functions
+│       ├── calculateTimeUntilNextPrayer.ts  # Time calculation utility
+│       ├── convertTo24Hour.ts              # Time format utility
+│       ├── logger.ts                       # Logging utility
+│       └── middify.ts                      # Lambda middleware utility
+├── tests/                       # Test files
+│   ├── e2e/                     # End-to-end tests
+│   │   └── handlers/             # Handler E2E tests
+│   └── unit/                    # Unit tests
+│       ├── handlers/             # Handler unit tests
+│       │   └── prayer-times-handler/  # Prayer times handler tests
+│       │       ├── handler.test.ts  # Handler tests
+│       │       └── schema.test.ts   # Schema tests
+│       ├── services/             # Service unit tests
+│       └── utils/                # Utility unit tests
 ├── trmnl-plugin/                # TRMNL plugin templates
 │   ├── markup.html              # Full-screen plugin template
 │   ├── half-view-markup.html    # Half-screen plugin template
@@ -49,6 +72,24 @@ trmnl-salah-times/
 ├── serverless.yml               # Serverless configuration
 └── README.md                    # Project overview
 ```
+
+### Folder Structure Philosophy
+
+The project follows a modular structure where each handler is organized as a self-contained module:
+
+- **Handler Modules**: Each handler has its own directory containing:
+  - Implementation file (e.g., `index.ts`)
+  - Validation schema (e.g., `schema.ts`)
+  - Documentation (e.g., `README.md`)
+
+- **Services**: Shared business logic that can be used by multiple handlers
+
+This structure provides several benefits:
+
+1. **Cohesion**: All files related to a specific feature are grouped together
+2. **Discoverability**: Easy to find all components of a feature
+3. **Modularity**: Each handler is a self-contained unit
+4. **Maintainability**: Changes to a feature only require modifying files in one location
 
 ## Getting Started
 
@@ -97,7 +138,7 @@ The plugin templates follow TRMNL's design system guidelines for optimal e-ink d
 
 ## Documentation
 
-See the [PRD](./docs/PRD.md) for detailed project requirements and specifications.
+See the [Product Requirements Document](./docs/prayer-times-plugin/requirements/product-requirements.md) for detailed project requirements and specifications.
 
 ## License
 

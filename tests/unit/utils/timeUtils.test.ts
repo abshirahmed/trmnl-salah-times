@@ -1,7 +1,7 @@
-import { calculateTimeUntilNextPrayer } from '@/services/prayer-times/calculateTimeUntilNextPrayer';
-import { convertTo24Hour } from '@/services/prayer-times/convertTo24Hour';
+import { calculateTimeUntilNextPrayer } from '@/utils/calculateTimeUntilNextPrayer';
+import { convertTo24Hour } from '@/utils/convertTo24Hour';
 
-describe('Prayer Times Service', () => {
+describe('Time Utility Functions', () => {
   describe('convertTo24Hour', () => {
     it('should convert AM time correctly', () => {
       expect(convertTo24Hour('05:30')).toBe(530);

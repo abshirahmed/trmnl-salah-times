@@ -1,29 +1,39 @@
-import {
-  calculateTimeUntilNextPrayer,
-  convertTo24Hour,
-  getPrayerTimes,
-} from '@/services/prayer-times';
+import { prayerTimesQuerySchema } from '@/handlers/prayer-times-handler/schema';
+import { getPrayerTimesByCity } from '@/services/prayer-times';
+import { calculateTimeUntilNextPrayer } from '@/utils/calculateTimeUntilNextPrayer';
+import { convertTo24Hour } from '@/utils/convertTo24Hour';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
+import { HttpStatusCode } from 'axios';
 
+/**
+ * Handler for the prayer times API endpoint
+ * Validates query parameters, fetches prayer times, and calculates next prayer information
+ */
 const prayerTimesHandler = async (event: APIGatewayProxyEvent) => {
-  const { city, country, method } = event.queryStringParameters || {};
+  // Validate query parameters using Zod schema
+  const { data: queryParams, error } = prayerTimesQuerySchema.safeParse(
+    event.queryStringParameters,
+  );
 
-  // Validate required parameters
-  if (!city || !country) {
+  if (error) {
+    logger.warn('Invalid prayer times query parameters', {
+      errors: error.flatten(),
+    });
+
     return {
-      statusCode: 400,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-      message: 'City and country are required parameters.',
+      statusCode: HttpStatusCode.BadRequest,
+      message: 'Invalid query parameters',
+      errors: error.flatten(),
     };
   }
 
+  // Extract validated parameters
+  const { city, country, method } = queryParams;
+
   // Get prayer times from service
-  const { data } = await getPrayerTimes({
+  const { data } = await getPrayerTimesByCity({
     city,
     country,
     method,
@@ -108,12 +118,7 @@ const prayerTimesHandler = async (event: APIGatewayProxyEvent) => {
   };
 
   return {
-    statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
-      'Cache-Control': 'max-age=300', // Cache for 5 minutes
-    },
+    statusCode: HttpStatusCode.Ok,
     body: enhancedResponse,
   };
 };

@@ -1,10 +1,10 @@
-export interface PrayerTimesRequest {
+export interface GetPrayerTimesByCityRequest {
   city: string;
   country: string;
-  method?: string;
+  method?: number;
 }
 
-export interface PrayerTimesResponse {
+export interface GetPrayerTimesByCityResponse {
   code: number;
   status: string;
   data: {

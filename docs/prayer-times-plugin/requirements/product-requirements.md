@@ -318,4 +318,3 @@ https://api.aladhan.com/v1/timingsByCity?city={city}&country={country}&method={m
   </div>
 </div>
 ```
-
