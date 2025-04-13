@@ -32,6 +32,9 @@ The solution uses:
 
 ```
 trmnl-salah-times/
+├── .github/                     # GitHub configuration
+│   └── workflows/               # GitHub Actions workflows
+│       └── build-and-deploy.yml  # Build and Deploy workflow configuration
 ├── docs/                        # Documentation
 │   ├── prayer-times-plugin/      # Prayer Times Plugin documentation
 │   │   ├── requirements/         # Requirements documentation
@@ -112,6 +115,18 @@ This structure provides several benefits:
    ```
 
    After deployment, you'll receive an API Gateway URL with the endpoint `/prayer-times` that you'll use in the TRMNL plugin setup.
+
+### CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration and deployment via the "Build and Deploy" workflow:
+
+- **Continuous Integration**: All branch pushes and PRs to main are automatically tested, linted, and type-checked
+- **Continuous Deployment**: Successful builds on the main branch are automatically deployed to AWS (production stage)
+
+To set up the CI/CD pipeline, you need to add the following secrets to your GitHub repository:
+
+- `AWS_ACCESS_KEY_ID`: Your AWS access key ID
+- `AWS_SECRET_ACCESS_KEY`: Your AWS secret access key
 
 ### TRMNL Plugin Setup
 
