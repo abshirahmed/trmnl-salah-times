@@ -2,7 +2,7 @@
 #
 # This workflow handles the continuous integration and deployment process for the TRMNL Salah Times project.
 # It follows a trunk-based development approach where:
-# - All branch pushes are tested and built to provide early feedback
+# - All branch pushes are tested to provide early feedback
 # - All PRs to main are validated before merging
 # - Only changes to the main branch are deployed to production
 
@@ -25,123 +25,56 @@ jobs:
     name: Test & Validate
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Get the code from the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment with caching for faster builds
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'yarn'
 
-      # Step 3: Install project dependencies
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      # Step 4: Check TypeScript types
       - name: Check types
         run: yarn check-types
 
-      # Step 5: Run ESLint to check code quality
       - name: Lint code
         run: yarn lint
 
-      # Step 6: Run Jest tests
       - name: Run tests
         run: yarn test
 
-  # Job: Build
-  # Purpose: Package the application using Serverless Framework
-  # Runs on: All branch pushes and PRs to main, but only if tests pass
-  # Outputs: Uploads the build artifacts for use in the deployment job
-  build:
-    name: Build
-    needs: test-and-validate  # Only run if tests pass
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write  # Required for OIDC
-      contents: read   # Required for checkout
-    steps:
-      # Step 1: Get the code from the repository
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Step 2: Set up Node.js environment with caching for faster builds
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'yarn'
-
-      # Step 3: Install project dependencies
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      # Step 4: Configure AWS credentials for packaging
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/TrmnlSalahTimesDeployRole
-          aws-region: eu-west-2
-
-      # Step 5: Package the application using the script from package.json
-      - name: Build project
-        run: yarn serverless:package
-
-      # Step 5: Save the build artifacts for the deployment job
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: serverless-package
-          path: .serverless
-          retention-days: 1  # Keep artifacts for 1 day
-
   # Job: Deploy to Production
   # Purpose: Deploy the application to AWS using Serverless Framework with stage=prod
-  # Runs on: Only pushes to the main branch (including merged PRs), and only if build succeeds
-  # Condition: This job will NOT run on feature branches or PRs, only on the main branch
+  # Runs on: Only pushes to the main branch
   deploy:
     name: Deploy to Production
-    needs: build  # Only run if build succeeds
+    needs: test-and-validate  # Only run if tests pass
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # Required for OIDC
       contents: read   # Required for checkout
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'  # Only deploy on main branch pushes
     steps:
-      # Step 1: Get the code from the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment with caching for faster builds
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'yarn'
 
-      # Step 3: Install project dependencies
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      # Step 4: Retrieve the build artifacts from the build job
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: serverless-package
-          path: .serverless
-
-      # Step 5: Set up AWS credentials for deployment using OIDC
-      # Note: AWS_ACCOUNT_ID secret must be added to the GitHub repository
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/TrmnlSalahTimesDeployRole
           aws-region: eu-west-2  # AWS region for deployment
-
-      # Step 6: Deploy the application to AWS using the script from package.json
-      # Explicitly setting the stage to 'prod' for production deployment
+          
       - name: Deploy to AWS (Production)
         run: yarn serverless:deploy --stage prod
