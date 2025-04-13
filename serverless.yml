@@ -1,0 +1,32 @@
+service: trmnl-salah-times
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-esbuild
+  - serverless-better-credentials
+  - serverless-offline
+
+custom:
+  esbuild:
+    packager: yarn
+    sourcemap: false
+    minify: true
+  serverless-offline:
+    noPrependStageInUrl: true
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-west-2
+  stage: ${opt:stage, 'dev'}
+  memorySize: 512
+  timeout: 30
+
+functions:
+  prayerTimesHandler:
+    handler: src/handlers/prayerTimesHandler.handler
+    events:
+      - http:
+          path: prayer-times
+          method: get

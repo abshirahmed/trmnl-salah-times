@@ -1,0 +1,79 @@
+<!-- TRMNL Salah Prayer Times Plugin Markup - Optimized for TRMNL framework -->
+<div class="screen">
+  <div class="view view--full">
+    <div class="layout layout--col">
+      
+      <!-- Header Section -->
+      <div class="title title--large">Salah Times</div>
+      
+      <!-- Prayer Times Section - Using proper Item components -->
+      <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Fajr' or IDX_0.enhancedData.nextPrayer == 'Fajr (Tomorrow)' %}item--highlight{% endif %}">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="label">Fajr</span>
+          <span class="value value--large value--tnums">{{ IDX_0.data.timings.Fajr | slice: 0, 5 }}</span>
+        </div>
+      </div>
+      
+      <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Sunrise' %}item--highlight{% endif %}">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="label">Sunrise</span>
+          <span class="value value--large value--tnums">{{ IDX_0.data.timings.Sunrise | slice: 0, 5 }}</span>
+        </div>
+      </div>
+      
+      <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Dhuhr' %}item--highlight{% endif %}">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="label">Dhuhr</span>
+          <span class="value value--large value--tnums">{{ IDX_0.data.timings.Dhuhr | slice: 0, 5 }}</span>
+        </div>
+      </div>
+      
+      <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Asr' %}item--highlight{% endif %}">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="label">Asr</span>
+          <span class="value value--large value--tnums">{{ IDX_0.data.timings.Asr | slice: 0, 5 }}</span>
+        </div>
+      </div>
+      
+      <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Maghrib' %}item--highlight{% endif %}">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="label">Maghrib</span>
+          <span class="value value--large value--tnums">{{ IDX_0.data.timings.Maghrib | slice: 0, 5 }}</span>
+        </div>
+      </div>
+      
+      <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Isha' %}item--highlight{% endif %}">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="label">Isha</span>
+          <span class="value value--large value--tnums">{{ IDX_0.data.timings.Isha | slice: 0, 5 }}</span>
+        </div>
+      </div>
+      
+      <!-- Next Prayer Information -->
+      <div class="layout layout--center">
+        <div class="flex flex--col gap--small item--center">
+          <span class="label label--highlight">Next: {{ IDX_0.enhancedData.nextPrayer }}</span>
+          <span class="label">In {{ IDX_0.enhancedData.timeUntilNextPrayer.hours }}h {{ IDX_0.enhancedData.timeUntilNextPrayer.minutes }}m</span>
+        </div>
+      </div>
+      
+      <!-- Hijri Date Section -->
+      <div class="layout layout--center">
+        <span class="label label--underline">{{ IDX_0.enhancedData.hijriDateFormatted }}</span>
+      </div>
+    </div>
+    
+    <!-- Title Bar -->
+    <div class="title_bar">
+      <img class="image" src="https://usetrmnl.com/images/plugins/private_plugin.svg" />
+      <span class="title">Salah Times</span>
+      <span class="instance">{{ IDX_0.data.meta.timezone }}</span>
+    </div>
+  </div>
+</div>
