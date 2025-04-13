@@ -33,7 +33,7 @@ export const middify = (handler: Handler) =>
             serializer: ({ body }) => JSON.stringify(body),
           },
           {
-            regex: /^text\/plain$/,
+            regex: /^text\/.+$/,
             serializer: ({ body }) => body,
           },
         ],

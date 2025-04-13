@@ -37,3 +37,42 @@ functions:
                 city: true
                 country: true
                 method: false
+
+  installationHandler:
+    handler: src/handlers/installation-handler/index.handler
+    description: Handler for TRMNL plugin installation
+    environment:
+      TRMNL_CLIENT_ID: ${env:TRMNL_CLIENT_ID, ''}
+      TRMNL_CLIENT_SECRET: ${env:TRMNL_CLIENT_SECRET, ''}
+    events:
+      - http:
+          path: install
+          method: get
+          cors: true
+
+  installationSuccessHandler:
+    handler: src/handlers/installation-success-handler/index.handler
+    description: Handler for TRMNL plugin installation success webhook
+    events:
+      - http:
+          path: installation-success
+          method: post
+          cors: true
+
+  pluginMarkupHandler:
+    handler: src/handlers/plugin-markup-handler/index.handler
+    description: Handler for serving TRMNL plugin markup templates
+    events:
+      - http:
+          path: plugin-markup
+          method: get
+          cors: true
+
+  pluginManagementHandler:
+    handler: src/handlers/plugin-management-handler/index.handler
+    description: Handler for TRMNL plugin management interface
+    events:
+      - http:
+          path: manage
+          method: get
+          cors: true

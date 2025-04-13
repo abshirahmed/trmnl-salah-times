@@ -18,6 +18,8 @@ Built with AWS Serverless architecture using TypeScript, the plugin connects to 
 - 🧮 Multiple prayer calculation methods
 - 🔌 Easy setup via TRMNL interface
 - 📱 Responsive templates for full-screen, half-screen, and quadrant layouts
+- 🔐 Complete OAuth installation flow for TRMNL plugins
+- ⚙️ User configuration interface for location and preferences
 
 ## Architecture
 
@@ -27,6 +29,17 @@ The solution uses:
 - **Backend**: AWS Serverless (Lambda + API Gateway) in eu-west-2 region
 - **Language**: TypeScript
 - **Data Source**: [Aladhan Prayer Times API](https://aladhan.com/prayer-times-api)
+
+## TRMNL Plugin Installation Flow
+
+The plugin implements the complete TRMNL OAuth installation flow:
+
+1. **Installation Request**: When a user installs the plugin, TRMNL sends a request to the installation endpoint with a token and callback URL.
+2. **Token Exchange**: The server exchanges the token for an access token using the TRMNL OAuth endpoint.
+3. **Redirect**: The server redirects the user back to TRMNL using the callback URL.
+4. **Success Webhook**: TRMNL sends a success webhook to the server with the user's information.
+5. **Plugin Configuration**: The user can configure their prayer times settings through the plugin management interface.
+6. **Markup Generation**: The server provides the appropriate markup template based on the view size.
 
 ## Project Structure
 
@@ -48,9 +61,27 @@ trmnl-salah-times/
 │   │   │   ├── index.ts          # Handler implementation
 │   │   │   ├── schema.ts         # Validation schema
 │   │   │   └── README.md         # Handler documentation
+│   │   ├── installation-handler/  # Installation handler module
+│   │   │   ├── index.ts          # Handler implementation
+│   │   │   └── README.md         # Handler documentation
+│   │   ├── installation-success-handler/  # Installation success handler module
+│   │   │   ├── index.ts          # Handler implementation
+│   │   │   └── README.md         # Handler documentation
+│   │   ├── plugin-markup-handler/  # Plugin markup handler module
+│   │   │   ├── index.ts          # Handler implementation
+│   │   │   └── README.md         # Handler documentation
+│   │   ├── plugin-management-handler/  # Plugin management handler module
+│   │   │   ├── index.ts          # Handler implementation
+│   │   │   └── README.md         # Handler documentation
 │   │   └── index.ts             # Re-export for backward compatibility
 │   ├── services/                # Business logic
 │   │   └── prayer-times/        # Prayer times service
+│   ├── templates/                # Template files
+│   │   └── trmnl-plugin/         # TRMNL plugin templates
+│   │       ├── markup.html              # Full-screen plugin template
+│   │       ├── half-view-markup.html    # Half-screen plugin template
+│   │       ├── quadrant-view-markup.html # Quadrant plugin template
+│   │       └── README.md                # Plugin-specific documentation
 │   └── utils/                   # Utility functions
 │       ├── calculateTimeUntilNextPrayer.ts  # Time calculation utility
 │       ├── convertTo24Hour.ts              # Time format utility
@@ -66,11 +97,7 @@ trmnl-salah-times/
 │       │       └── schema.test.ts   # Schema tests
 │       ├── services/             # Service unit tests
 │       └── utils/                # Utility unit tests
-├── trmnl-plugin/                # TRMNL plugin templates
-│   ├── markup.html              # Full-screen plugin template
-│   ├── half-view-markup.html    # Half-screen plugin template
-│   ├── quadrant-view-markup.html # Quadrant plugin template
-│   └── README.md                # Plugin-specific documentation
+
 ├── package.json                 # Dependencies and scripts
 ├── serverless.yml               # Serverless configuration
 └── README.md                    # Project overview
@@ -102,6 +129,29 @@ This structure provides several benefits:
 2. Serverless Framework CLI
 3. AWS Account
 4. TRMNL Device with Developer Edition add-on
+
+### TRMNL Plugin Setup
+
+1. Create a new plugin in the TRMNL dashboard at https://usetrmnl.com/plugins/my/new
+2. Configure the plugin with the following information:
+   - **Name**: Salah Times
+   - **Description**: Islamic prayer times & Hijri date for TRMNL
+   - **Icon**: Upload a 40x40 PNG icon
+   - **Installation URL**: `https://your-api-gateway-url/install`
+   - **Installation Success Webhook URL**: `https://your-api-gateway-url/installation-success`
+   - **Plugin Management URL**: `https://your-api-gateway-url/manage`
+   - **Plugin Markup URL**: `https://your-api-gateway-url/plugin-markup`
+
+3. Set the environment variables for your TRMNL plugin credentials:
+   ```
+   export TRMNL_CLIENT_ID=your-client-id
+   export TRMNL_CLIENT_SECRET=your-client-secret
+   ```
+
+4. Add the following secrets to your GitHub repository for CI/CD:
+   - `AWS_ACCOUNT_ID`: Your AWS account ID
+   - `TRMNL_CLIENT_ID`: Your TRMNL plugin client ID
+   - `TRMNL_CLIENT_SECRET`: Your TRMNL plugin client secret
 
 ### Backend Setup
 

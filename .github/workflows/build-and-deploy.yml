@@ -75,6 +75,9 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/TrmnlSalahTimesDeployRole
           aws-region: eu-west-2  # AWS region for deployment
-          
+
       - name: Deploy to AWS (Production)
         run: yarn serverless:deploy --stage prod
+        env:
+          TRMNL_CLIENT_ID: ${{ secrets.TRMNL_CLIENT_ID }}
+          TRMNL_CLIENT_SECRET: ${{ secrets.TRMNL_CLIENT_SECRET }}

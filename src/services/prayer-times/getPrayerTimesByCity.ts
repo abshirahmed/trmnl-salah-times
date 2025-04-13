@@ -1,4 +1,4 @@
-import { prayerTimesClient } from '@/clients/prayerTimesClient';
+import { prayerTimesClient } from '@/clients/prayer-times';
 import {
   GetPrayerTimesByCityRequest,
   GetPrayerTimesByCityResponse,

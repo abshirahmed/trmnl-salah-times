@@ -1,4 +1,4 @@
-import { handler } from '@/handlers/prayer-times-handler/index';
+import { handler } from '@/handlers/prayer-times-handler';
 import { createMockAPIGatewayProxyEvent } from '@tests/mocks/createMockAPIGatewayProxyEvent';
 import { createMockLambdaContext } from '@tests/mocks/createMockLambdaContext';
 
