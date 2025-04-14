@@ -6,6 +6,10 @@ plugins:
   - serverless-esbuild
   - serverless-better-credentials
 
+custom:
+  esbuild:
+    packager: yarn
+
 provider:
   name: aws
   runtime: nodejs20.x
