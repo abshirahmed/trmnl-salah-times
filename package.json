@@ -10,7 +10,7 @@
   "scripts": {
     "serverless:deploy": "serverless deploy --verbose",
     "serverless:package": "serverless package",
-    "serverless:offline": "serverless offline",
+    "serverless:offline": "serverless offline --config serverless.offline.yml",
     "test": "jest",
     "prepare": "husky",
     "check-types": "tsc --noEmit",
@@ -63,6 +63,7 @@
     "prettier": "^3.5.3",
     "serverless": "^3.38.0",
     "serverless-better-credentials": "^2.0.1",
+    "serverless-dotenv-plugin": "^6.0.0",
     "serverless-esbuild": "^1.54.6",
     "serverless-offline": "^14.4.0",
     "supabase": "^2.20.12",

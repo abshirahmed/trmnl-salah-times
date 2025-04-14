@@ -1,10 +1,13 @@
-service: trmnl-salah-times
+service: trmnl-salah-times-offline
 
 frameworkVersion: '3'
+useDotenv: true
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-esbuild
   - serverless-better-credentials
+  - serverless-offline
 
 custom:
   esbuild:
@@ -13,6 +16,15 @@ custom:
     minify: true
   serverless-offline:
     noPrependStageInUrl: true
+  dotenv:
+    # default: plugin does not cause an error if any file or env variable is missing
+    required:
+      env:
+        - TRMNL_CLIENT_ID
+        - TRMNL_CLIENT_SECRET
+        - SUPABASE_URL
+        - SUPABASE_SERVICE_KEY
+        - AWS_PROFILE
 
 provider:
   name: aws
