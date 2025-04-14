@@ -10,11 +10,9 @@ plugins:
   - serverless-offline
 
 custom:
-#  esbuild:
-#    packager: yarn
-#    format: esm
-#    external:
-#      - velocityjs
+  esbuild:
+    packager: yarn
+    format: esm
   serverless-offline:
     noPrependStageInUrl: true
   dotenv:

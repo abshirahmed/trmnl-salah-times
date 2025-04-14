@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "serverless:deploy": "serverless deploy --verbose",
-    "serverless:offline": "serverless offline --config serverless.offline.yml --reloadHandler | pino-pretty",
+    "serverless:offline": "serverless offline --config serverless.offline.yml",
     "test": "jest",
     "prepare": "husky",
     "check-types": "tsc --noEmit",
