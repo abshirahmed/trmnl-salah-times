@@ -8,6 +8,7 @@ plugins:
 
 custom:
   esbuild:
+    format: esm
     packager: yarn
 
 provider:
@@ -25,6 +26,8 @@ functions:
   prayerTimesHandler:
     handler: src/handlers/prayer-times-handler/index.handler
     description: Handler for prayer times API endpoint
+    environment:
+      POWERTOOLS_SERVICE_NAME: ${self:service}-prayerTimesHandler-${self:provider.stage}
     events:
       - http:
           path: prayer-times
@@ -40,6 +43,7 @@ functions:
     handler: src/handlers/installation-handler/index.handler
     description: Handler for TRMNL plugin installation
     environment:
+      POWERTOOLS_SERVICE_NAME: ${self:service}-installationHandler-${self:provider.stage}
       TRMNL_CLIENT_ID: ${env:TRMNL_CLIENT_ID}
       TRMNL_CLIENT_SECRET: ${env:TRMNL_CLIENT_SECRET}
     events:
@@ -52,6 +56,7 @@ functions:
     handler: src/handlers/installation-success-handler/index.handler
     description: Handler for TRMNL plugin installation success webhook
     environment:
+      POWERTOOLS_SERVICE_NAME: ${self:service}-installationSuccessHandler-${self:provider.stage}
       SUPABASE_URL: ${env:SUPABASE_URL}
       SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
     events:
@@ -64,6 +69,7 @@ functions:
     handler: src/handlers/plugin-markup-handler/index.handler
     description: Handler for serving TRMNL plugin markup templates
     environment:
+      POWERTOOLS_SERVICE_NAME: ${self:service}-pluginMarkupHandler-${self:provider.stage}
       SUPABASE_URL: ${env:SUPABASE_URL}
       SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
     events:
@@ -76,6 +82,7 @@ functions:
     handler: src/handlers/plugin-management-handler/index.handler
     description: Handler for TRMNL plugin management interface
     environment:
+      POWERTOOLS_SERVICE_NAME: ${self:service}-pluginManagementHandler-${self:provider.stage}
       SUPABASE_URL: ${env:SUPABASE_URL}
       SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
     events:
@@ -88,6 +95,7 @@ functions:
     handler: src/handlers/save-settings-handler/index.handler
     description: Handler for saving user settings
     environment:
+      POWERTOOLS_SERVICE_NAME: ${self:service}-saveSettingsHandler-${self:provider.stage}
       SUPABASE_URL: ${env:SUPABASE_URL}
       SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
     events:
@@ -100,6 +108,7 @@ functions:
     handler: src/handlers/uninstallation-handler/index.handler
     description: Handler for TRMNL plugin uninstallation webhook
     environment:
+      POWERTOOLS_SERVICE_NAME: ${self:service}-uninstallationHandler-${self:provider.stage}
       SUPABASE_URL: ${env:SUPABASE_URL}
       SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
     events:

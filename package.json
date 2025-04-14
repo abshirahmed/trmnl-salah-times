@@ -1,7 +1,6 @@
 {
   "name": "trmnl-salah-times",
   "version": "1.0.0",
-  "type": "module",
   "description": "Serverless backend for TRMNL Salah Prayer Times plugin",
   "author": {
     "name": "Uncle Abshir"
@@ -9,8 +8,7 @@
   "license": "MIT",
   "scripts": {
     "serverless:deploy": "serverless deploy --verbose",
-    "serverless:package": "serverless package",
-    "serverless:offline": "serverless offline --config serverless.offline.yml",
+    "serverless:offline": "serverless offline --config serverless.offline.yml --reloadHandler | pino-pretty",
     "test": "jest",
     "prepare": "husky",
     "check-types": "tsc --noEmit",
