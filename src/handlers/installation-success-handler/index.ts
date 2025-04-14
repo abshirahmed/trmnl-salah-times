@@ -1,4 +1,5 @@
 import { installationSuccessBodySchema } from '@/handlers/installation-success-handler/schema';
+import { verifyAuthHeader } from '@/utils/auth';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -11,23 +12,9 @@ import { HttpStatusCode } from 'axios';
 const installationSuccessHandler = async (event: APIGatewayProxyEvent) => {
   try {
     // Verify authorization header
-    const authHeader =
-      event.headers.Authorization || event.headers.authorization;
+    verifyAuthHeader(event);
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      logger.error('Missing or invalid authorization header');
-      return {
-        statusCode: HttpStatusCode.Unauthorized,
-        body: {
-          message: 'Unauthorized',
-        },
-      };
-    }
-
-    // Validate request body (already parsed by middy jsonBodyParser)
-    const { data: body, error } = installationSuccessBodySchema.safeParse(
-      event.body,
-    );
+    const { data, error } = installationSuccessBodySchema.safeParse(event.body);
 
     if (error) {
       logger.error('Invalid installation success webhook body', {
@@ -43,9 +30,7 @@ const installationSuccessHandler = async (event: APIGatewayProxyEvent) => {
       };
     }
 
-    const userData = body.user;
-
-    const { name, email, time_zone_iana, plugin_setting_id, uuid } = userData;
+    const { name, email, time_zone_iana, plugin_setting_id, uuid } = data.user;
 
     logger.info('User successfully installed the plugin', {
       name,

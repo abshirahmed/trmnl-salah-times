@@ -22,14 +22,3 @@ export const templates = {
   half: halfTemplate,
   quadrant: quadrantTemplate,
 };
-
-/**
- * Get template by view size
- * @param viewSize View size
- * @returns Template for the specified view size
- */
-export const getTemplateByViewSize = (
-  viewSize: 'full' | 'half' | 'quadrant',
-): string => {
-  return templates[viewSize];
-};

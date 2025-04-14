@@ -27,7 +27,9 @@ The solution uses:
 
 - **Frontend**: TRMNL Private Plugin with custom HTML/Liquid templates that follow TRMNL's design system
 - **Backend**: AWS Serverless (Lambda + API Gateway) in eu-west-2 region
+- **Database**: Supabase for storing user settings
 - **Language**: TypeScript
+- **Date Handling**: date-fns and date-fns-tz for timezone-aware date operations
 - **Data Source**: [Aladhan Prayer Times API](https://aladhan.com/prayer-times-api)
 
 ## TRMNL Plugin Installation Flow
@@ -83,8 +85,7 @@ trmnl-salah-times/
 │   │       ├── quadrant-view-markup.html # Quadrant plugin template
 │   │       └── README.md                # Plugin-specific documentation
 │   └── utils/                   # Utility functions
-│       ├── calculateTimeUntilNextPrayer.ts  # Time calculation utility
-│       ├── convertTo24Hour.ts              # Time format utility
+│       ├── dateUtils.ts                    # Date and time utilities using date-fns
 │       ├── logger.ts                       # Logging utility
 │       └── middify.ts                      # Lambda middleware utility
 ├── tests/                       # Test files
@@ -128,7 +129,8 @@ This structure provides several benefits:
 1. Node.js 20.x or later
 2. Serverless Framework CLI
 3. AWS Account
-4. TRMNL Device with Developer Edition add-on
+4. Supabase Account
+5. TRMNL Device with Developer Edition add-on
 
 ### TRMNL Plugin Setup
 
@@ -142,16 +144,37 @@ This structure provides several benefits:
    - **Plugin Management URL**: `https://your-api-gateway-url/manage`
    - **Plugin Markup URL**: `https://your-api-gateway-url/plugin-markup`
 
-3. Set the environment variables for your TRMNL plugin credentials:
+3. Set up a Supabase project:
+   - Create a new project in Supabase
+   - Create a table called `user_settings` with the following schema:
+     ```sql
+     CREATE TABLE user_settings (
+       id SERIAL PRIMARY KEY,
+       uuid UUID NOT NULL UNIQUE,
+       city TEXT NOT NULL,
+       country TEXT NOT NULL,
+       method INTEGER NOT NULL DEFAULT 2,
+       "timeFormat" TEXT NOT NULL DEFAULT '24h',
+       created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+       updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+     );
+     ```
+   - Get your Supabase URL and service key from the project settings
+
+4. Set the environment variables for your TRMNL plugin and Supabase credentials:
    ```
    export TRMNL_CLIENT_ID=your-client-id
    export TRMNL_CLIENT_SECRET=your-client-secret
+   export SUPABASE_URL=your-supabase-url
+   export SUPABASE_SERVICE_KEY=your-supabase-service-key
    ```
 
-4. Add the following secrets to your GitHub repository for CI/CD:
+5. Add the following secrets to your GitHub repository for CI/CD:
    - `AWS_ACCOUNT_ID`: Your AWS account ID
    - `TRMNL_CLIENT_ID`: Your TRMNL plugin client ID
    - `TRMNL_CLIENT_SECRET`: Your TRMNL plugin client secret
+   - `SUPABASE_URL`: Your Supabase URL
+   - `SUPABASE_SERVICE_KEY`: Your Supabase service key
 
 ### Backend Setup
 

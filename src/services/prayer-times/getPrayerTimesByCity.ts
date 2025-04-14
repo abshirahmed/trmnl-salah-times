@@ -5,11 +5,11 @@ import {
 } from '@/services/prayer-times';
 import { logger } from '@/utils/logger';
 
-export const getPrayerTimesByCity = async (
-  params: GetPrayerTimesByCityRequest,
-) => {
-  const { city, country, method = '2' } = params;
-
+export const getPrayerTimesByCity = async ({
+  city,
+  country,
+  method = 2,
+}: GetPrayerTimesByCityRequest) => {
   logger.info('Fetching prayer times from Aladhan API', {
     city,
     country,

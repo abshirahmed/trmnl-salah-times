@@ -97,8 +97,7 @@ src/
 │   └── prayer-times/              # Prayer times service
 │       └── getPrayerTimesByCity.ts # Service implementation
 └── utils/
-    ├── calculateTimeUntilNextPrayer.ts  # Time calculation utility
-    ├── convertTo24Hour.ts               # Time format utility
+    ├── dateUtils.ts                     # Date and time utilities using date-fns
     ├── logger.ts                        # Logging utility
     └── middify.ts                       # Lambda middleware utility
 ```

@@ -11,8 +11,7 @@ import { HttpStatusCode } from 'axios';
  */
 const installationHandler = async (event: APIGatewayProxyEvent) => {
   try {
-    // Validate query parameters using Zod schema
-    const { data: queryParams, error } = installationQuerySchema.safeParse(
+    const { data, error } = installationQuerySchema.safeParse(
       event.queryStringParameters,
     );
 
@@ -30,12 +29,11 @@ const installationHandler = async (event: APIGatewayProxyEvent) => {
       };
     }
 
-    const { token, installation_callback_url: installationCallbackUrl } =
-      queryParams;
+    const { token, installation_callback_url } = data;
 
     logger.info('Received installation request', {
       token: token.substring(0, 5) + '...',
-      installationCallbackUrl,
+      installation_callback_url,
     });
 
     // Exchange token for access token using TRMNL client
@@ -52,7 +50,7 @@ const installationHandler = async (event: APIGatewayProxyEvent) => {
       return {
         statusCode: HttpStatusCode.Found,
         headers: {
-          Location: installationCallbackUrl,
+          Location: installation_callback_url,
         },
         body: '',
       };

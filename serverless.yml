@@ -22,6 +22,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   memorySize: 512
   timeout: 30
+  environment:
+    SUPABASE_URL: ${env:SUPABASE_URL}
+    SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
 
 functions:
   prayerTimesHandler:
@@ -42,8 +45,8 @@ functions:
     handler: src/handlers/installation-handler/index.handler
     description: Handler for TRMNL plugin installation
     environment:
-      TRMNL_CLIENT_ID: ${env:TRMNL_CLIENT_ID, ''}
-      TRMNL_CLIENT_SECRET: ${env:TRMNL_CLIENT_SECRET, ''}
+      TRMNL_CLIENT_ID: ${env:TRMNL_CLIENT_ID}
+      TRMNL_CLIENT_SECRET: ${env:TRMNL_CLIENT_SECRET}
     events:
       - http:
           path: install
@@ -53,6 +56,9 @@ functions:
   installationSuccessHandler:
     handler: src/handlers/installation-success-handler/index.handler
     description: Handler for TRMNL plugin installation success webhook
+    environment:
+      SUPABASE_URL: ${env:SUPABASE_URL}
+      SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
     events:
       - http:
           path: installation-success
@@ -62,17 +68,35 @@ functions:
   pluginMarkupHandler:
     handler: src/handlers/plugin-markup-handler/index.handler
     description: Handler for serving TRMNL plugin markup templates
+    environment:
+      SUPABASE_URL: ${env:SUPABASE_URL}
+      SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
     events:
       - http:
           path: plugin-markup
-          method: get
+          method: post
           cors: true
 
   pluginManagementHandler:
     handler: src/handlers/plugin-management-handler/index.handler
     description: Handler for TRMNL plugin management interface
+    environment:
+      SUPABASE_URL: ${env:SUPABASE_URL}
+      SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
     events:
       - http:
           path: manage
           method: get
+          cors: true
+
+  saveSettingsHandler:
+    handler: src/handlers/save-settings-handler/index.handler
+    description: Handler for saving user settings
+    environment:
+      SUPABASE_URL: ${env:SUPABASE_URL}
+      SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
+    events:
+      - http:
+          path: save-settings
+          method: post
           cors: true

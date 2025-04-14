@@ -1,5 +1,7 @@
-import { pluginMarkupQuerySchema } from '@/handlers/plugin-markup-handler/schema';
-import { getTemplateByViewSize } from '@/templates/trmnl-plugin';
+import { createSupabaseClient } from '@/clients/supabase';
+import { pluginMarkupController } from '@/controllers/plugin-markup-controller';
+import { pluginMarkupBodySchema } from '@/handlers/plugin-markup-handler/schema';
+import { verifyAuthHeader } from '@/utils/auth';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -7,59 +9,51 @@ import { HttpStatusCode } from 'axios';
 
 /**
  * Handler for serving TRMNL plugin markup templates
- * Returns the appropriate template based on the view size
+ * Processes POST requests from TRMNL for screen generation
  */
 const pluginMarkupHandler = async (event: APIGatewayProxyEvent) => {
   try {
     // Verify authorization header
-    const authHeader =
-      event.headers.Authorization || event.headers.authorization;
+    verifyAuthHeader(event);
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      logger.error('Missing or invalid authorization header');
-      return {
-        statusCode: HttpStatusCode.Unauthorized,
-        body: {
-          message: 'Unauthorized',
-        },
-      };
-    }
-
-    // Validate and determine which template to return based on the view size
-    const { data, error } = pluginMarkupQuerySchema.safeParse(
-      event.queryStringParameters,
-    );
+    const { data, error } = pluginMarkupBodySchema.safeParse(event.body);
 
     if (error) {
-      logger.error('Invalid plugin markup query parameters', {
+      logger.error('Invalid plugin markup request body', {
         errors: error.flatten(),
       });
 
       return {
         statusCode: HttpStatusCode.BadRequest,
-        body: {
-          message: 'Invalid query parameters',
+        body: JSON.stringify({
+          message: 'Invalid request body',
           errors: error.flatten(),
-        },
+        }),
       };
     }
 
-    // Use the data directly - Zod has already validated it matches our schema
-    const viewSize = data.view_size;
+    // Extract the user UUID from the request body
+    const { user_uuid } = data;
 
-    // Get the template for the specified view size
-    const template = getTemplateByViewSize(viewSize);
-
-    logger.info('Serving plugin markup template', {
-      viewSize,
+    logger.info('Received markup generation request', {
+      user_uuid,
     });
+
+    // Get user settings from Supabase
+    const supabaseClient = createSupabaseClient();
+    const userSettings = await supabaseClient.getUserSettings(user_uuid);
+
+    // Generate markup for all view sizes using the controller
+    const markup = await pluginMarkupController.generateMarkup(userSettings);
+
+    logger.info('Generated markup for all view sizes');
 
     return {
       statusCode: HttpStatusCode.Ok,
       headers: {
-        'Content-Type': 'text/html',
+        'Content-Type': 'application/json',
       },
-      body: template,
+      body: JSON.stringify(markup),
     };
   } catch (error) {
     logger.error('Error serving plugin markup template', { error });
