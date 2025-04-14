@@ -1,4 +1,4 @@
-import { SupabaseService } from '@/clients/supabase/client';
+import { SupabaseClient } from '@/clients/supabase/client';
 import { UserSettings } from '@/clients/supabase/types';
 import { logger } from '@/utils/logger';
 
@@ -6,13 +6,13 @@ import { logger } from '@/utils/logger';
  * Controller for user settings management
  */
 export class UserSettingsController {
-  private supabaseClient: SupabaseService;
+  private supabaseClient: SupabaseClient;
 
   /**
    * Create a new user settings controller
    * @param supabaseClient Supabase client
    */
-  constructor(supabaseClient: SupabaseService) {
+  constructor(supabaseClient: SupabaseClient) {
     this.supabaseClient = supabaseClient;
   }
 
@@ -24,7 +24,21 @@ export class UserSettingsController {
   async getUserSettings(uuid: string): Promise<UserSettings | null> {
     try {
       logger.info('Getting user settings', { uuid });
-      return await this.supabaseClient.getUserSettings(uuid);
+      const { data, error } = await this.supabaseClient.getUserSettings(uuid);
+
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // Not found
+          return null;
+        }
+        logger.error('Error getting user settings', {
+          error,
+          uuid,
+        });
+        throw error;
+      }
+
+      return data;
     } catch (error) {
       logger.error('Error getting user settings', { error, uuid });
       throw error;
@@ -39,7 +53,17 @@ export class UserSettingsController {
   async saveUserSettings(settings: UserSettings): Promise<boolean> {
     try {
       logger.info('Saving user settings', { uuid: settings.uuid });
-      return await this.supabaseClient.saveUserSettings(settings);
+      const { error } = await this.supabaseClient.saveUserSettings(settings);
+
+      if (error) {
+        logger.error('Error saving user settings', {
+          error,
+          uuid: settings.uuid,
+        });
+        return false;
+      }
+
+      return true;
     } catch (error) {
       logger.error('Error saving user settings', {
         error,
@@ -127,13 +151,13 @@ export class UserSettingsController {
     </head>
     <body>
       <h1>Salah Times Settings</h1>
-      
+
       <div id="success-alert" class="alert alert-success">Settings saved successfully!</div>
       <div id="error-alert" class="alert alert-error">Failed to save settings. Please try again.</div>
-      
+
       <form id="settings-form">
         <input type="hidden" id="uuid" name="uuid" value="${uuid}">
-        
+
         <div class="form-group">
           <label for="city">City</label>
           <input type="text" id="city" name="city" placeholder="Enter your city" value="${userSettings?.city || ''}" required>
@@ -178,7 +202,7 @@ export class UserSettingsController {
       <script>
         document.getElementById('settings-form').addEventListener('submit', function(e) {
           e.preventDefault();
-          
+
           // Hide any previous alerts
           document.getElementById('success-alert').style.display = 'none';
           document.getElementById('error-alert').style.display = 'none';
@@ -208,7 +232,7 @@ export class UserSettingsController {
             if (data.success) {
               // Show success message
               document.getElementById('success-alert').style.display = 'block';
-              
+
               // Redirect back to TRMNL after a short delay
               setTimeout(() => {
                 window.location.href = 'https://usetrmnl.com';
@@ -232,7 +256,7 @@ export class UserSettingsController {
 
 // Factory function to create a controller instance
 export const createUserSettingsController = (
-  supabaseClient: SupabaseService,
+  supabaseClient: SupabaseClient,
 ): UserSettingsController => {
   return new UserSettingsController(supabaseClient);
 };

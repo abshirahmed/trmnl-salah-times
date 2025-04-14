@@ -40,21 +40,11 @@ const uninstallationHandler = async (event: APIGatewayProxyEvent) => {
     // Delete user settings from Supabase
     try {
       const supabaseClient = createSupabaseClient();
-      const success = await supabaseClient.deleteUserSettings(user_uuid);
+      const { error } = await supabaseClient.deleteUserSettings(user_uuid);
 
-      if (success) {
-        logger.info('Successfully deleted user settings', {
-          user_uuid,
-        });
-
-        return {
-          statusCode: HttpStatusCode.Ok,
-          body: {
-            message: 'Uninstallation successful',
-          },
-        };
-      } else {
+      if (error) {
         logger.warn('Failed to delete user settings', {
+          error,
           user_uuid,
         });
 
@@ -65,6 +55,17 @@ const uninstallationHandler = async (event: APIGatewayProxyEvent) => {
           },
         };
       }
+
+      logger.info('Successfully deleted user settings', {
+        user_uuid,
+      });
+
+      return {
+        statusCode: HttpStatusCode.Ok,
+        body: {
+          message: 'Uninstallation successful',
+        },
+      };
     } catch (clientError) {
       logger.error('Error deleting user settings', {
         error: clientError,

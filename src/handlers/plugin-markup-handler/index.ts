@@ -41,7 +41,8 @@ const pluginMarkupHandler = async (event: APIGatewayProxyEvent) => {
 
     // Get user settings from Supabase
     const supabaseClient = createSupabaseClient();
-    const userSettings = await supabaseClient.getUserSettings(user_uuid);
+    const { data: userSettings } =
+      await supabaseClient.getUserSettings(user_uuid);
 
     // Generate markup for all view sizes using the controller
     const markup = await pluginMarkupController.generateMarkup(userSettings);

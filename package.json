@@ -65,6 +65,7 @@
     "serverless-better-credentials": "^2.0.1",
     "serverless-esbuild": "^1.54.6",
     "serverless-offline": "^14.4.0",
+    "supabase": "^2.20.12",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
