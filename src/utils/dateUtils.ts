@@ -30,7 +30,7 @@ export const parseTimeString = ({
   timeString,
   timezone,
   referenceDate,
-}: ParseTimeStringParams): Date => {
+}: ParseTimeStringParams) => {
   try {
     const referenceDateInTimezone = toZonedTime(referenceDate, timezone);
     const referenceISODate = format(referenceDateInTimezone, 'yyyy-MM-dd');
@@ -61,7 +61,7 @@ export interface FormatTimeParams {
  * @param params Parameters for formatting time
  * @returns Formatted time string (e.g., "05:30 AM")
  */
-export const formatTime12h = ({ date, timezone }: FormatTimeParams): string =>
+export const formatTime12h = ({ date, timezone }: FormatTimeParams) =>
   formatInTimeZone(date, timezone, 'hh:mm a');
 
 /**
@@ -69,7 +69,7 @@ export const formatTime12h = ({ date, timezone }: FormatTimeParams): string =>
  * @param params Parameters for formatting time
  * @returns Formatted time string (e.g., "05:30")
  */
-export const formatTime24h = ({ date, timezone }: FormatTimeParams): string =>
+export const formatTime24h = ({ date, timezone }: FormatTimeParams) =>
   formatInTimeZone(date, timezone, 'HH:mm');
 
 /**
@@ -160,7 +160,7 @@ export const parsePrayerTimes = ({
   prayerTimesResponse,
   timezone,
   date,
-}: ParsePrayerTimesParams): Record<string, Date> => {
+}: ParsePrayerTimesParams) => {
   const prayerTimesStrings = prayerTimesResponse.data.timings;
   const prayerTimes: Record<string, Date> = {};
   const relevantPrayers = [
@@ -212,4 +212,4 @@ export const formatHijriDate = (hijriDate: {
   day: string | number;
   month: { en: string };
   year: string | number;
-}): string => `${hijriDate.day} ${hijriDate.month.en} ${hijriDate.year} AH`;
+}) => `${hijriDate.day} ${hijriDate.month.en} ${hijriDate.year} AH`;

@@ -1,5 +1,5 @@
-import { createTrmnlClient } from '@/clients/trmnl';
 import { installationQuerySchema } from '@/handlers/installation-handler/schema';
+import { exchangeCodeForToken } from '@/services/trmnl';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -33,10 +33,9 @@ const installationHandler = async (event: APIGatewayProxyEvent) => {
       installation_callback_url,
     });
 
-    // Exchange code for access token using TRMNL client
+    // Exchange code for access token using TRMNL service
     try {
-      const trmnlClient = createTrmnlClient();
-      const tokenResponse = await trmnlClient.exchangeCodeForToken(code);
+      const tokenResponse = await exchangeCodeForToken(code);
       const accessToken = tokenResponse.access_token;
 
       logger.info('Successfully obtained access token', {

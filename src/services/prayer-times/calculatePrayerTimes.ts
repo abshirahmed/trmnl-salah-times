@@ -48,7 +48,7 @@ export interface PrayerTimesCalculationResult {
  */
 export const calculatePrayerTimes = async (
   params: PrayerTimesCalculationParams,
-): Promise<PrayerTimesCalculationResult> => {
+) => {
   try {
     const { city, country, method } = params;
 

@@ -7,7 +7,7 @@ import { APIGatewayProxyEvent } from 'aws-lambda';
  * @param event API Gateway event
  * @throws UnauthorizedError if the Authorization header is missing or invalid
  */
-export const verifyAuthHeader = (event: APIGatewayProxyEvent): void => {
+export const verifyAuthHeader = (event: APIGatewayProxyEvent) => {
   const authHeader = event.headers.Authorization || event.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {

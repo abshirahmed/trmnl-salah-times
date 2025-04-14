@@ -15,9 +15,7 @@ export class PluginMarkupController {
    * @param userSettings User settings from Supabase
    * @returns Object containing markup for all view sizes
    */
-  async generateMarkup(
-    userSettings: UserSettings | null,
-  ): Promise<Record<string, string>> {
+  async generateMarkup(userSettings: UserSettings | null) {
     try {
       logger.info('Generating markup', { userSettings });
 

@@ -98,7 +98,9 @@ trmnl-salah-times/
 │   │   │   └── README.md         # Handler documentation
 │   │   └── index.ts             # Re-export for backward compatibility
 │   ├── services/                # Business logic
-│   │   └── prayer-times/        # Prayer times service
+│   │   ├── prayer-times/        # Prayer times service
+│   │   ├── user-settings/       # User settings service
+│   │   └── README.md            # Services documentation
 │   ├── templates/                # Template files
 │   │   └── trmnl-plugin/         # TRMNL plugin templates
 │   │       ├── markup.html              # Full-screen plugin template
@@ -167,19 +169,11 @@ This structure provides several benefits:
 
 3. Set up a Supabase project:
    - Create a new project in Supabase
-   - Create a table called `user_settings` with the following schema:
-     ```sql
-     CREATE TABLE user_settings (
-       id SERIAL PRIMARY KEY,
-       uuid UUID NOT NULL UNIQUE,
-       city TEXT NOT NULL,
-       country TEXT NOT NULL,
-       method INTEGER NOT NULL DEFAULT 2,
-       "timeFormat" TEXT NOT NULL DEFAULT '24h',
-       created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-       updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-     );
-     ```
+   - Run the schema.sql file in the supabase directory to create the necessary tables and policies
+   - The database includes the following tables:
+     - `user_settings`: Stores user preferences for prayer time calculations
+     - `locations`: Stores user locations (prepared for future use)
+     - `prayer_times`: Caches prayer times for locations (prepared for future use)
    - Get your Supabase URL and service key from the project settings
 
 4. Set the environment variables for your TRMNL plugin and Supabase credentials:
