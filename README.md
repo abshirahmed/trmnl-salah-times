@@ -241,7 +241,11 @@ The plugin templates follow TRMNL's design system guidelines for optimal e-ink d
 
 ## Documentation
 
-See the [Product Requirements Document](./docs/prayer-times-plugin/requirements/product-requirements.md) for detailed project requirements and specifications.
+See the following documents for more information:
+
+- [Product Requirements Document](./docs/prayer-times-plugin/requirements/product-requirements.md) - Detailed project requirements and specifications
+- [Engineering Principles](./docs/engineering-principles.md) - Our engineering principles and best practices
+- [Technical Architecture](./docs/prayer-times-plugin/technical/architecture.md) - Technical architecture overview
 
 ## License
 

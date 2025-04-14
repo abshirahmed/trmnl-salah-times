@@ -15,6 +15,8 @@ docs/
 │   │   └── ui-mockups.md          # UI mockups for different screen sizes
 │   └── technical/                 # Technical documentation
 │       └── architecture.md        # Technical architecture overview
+├── engineering-principles.md      # Engineering principles and best practices
+├── wiki/                          # User documentation and wiki
 └── README.md                      # This file
 ```
 

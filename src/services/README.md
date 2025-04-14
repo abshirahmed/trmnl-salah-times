@@ -26,7 +26,6 @@ Located in `src/services/trmnl/`, these services handle TRMNL API interactions:
 
 - **exchangeCodeForToken.ts**: Exchanges an authorization code for an access token
 - **verifyToken.ts**: Verifies if an access token is valid
-- **refreshToken.ts**: Refreshes an expired access token
 
 ## Future Services
 
