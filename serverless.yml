@@ -8,7 +8,6 @@ plugins:
 
 custom:
   esbuild:
-    format: esm
     packager: yarn
 
 provider:
