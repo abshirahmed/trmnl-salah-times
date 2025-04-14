@@ -5,13 +5,14 @@ This handler is responsible for receiving the TRMNL plugin installation success 
 ## Files
 
 - `index.ts` - Main handler implementation
+- `schema.ts` - Validation schema for request body
 
 ## Functionality
 
 - Receives the installation success webhook from TRMNL
 - Verifies the authorization header
 - Extracts the user information from the request body
-- Logs the user information for future use
+- Stores the user information in the database for future use
 
 ## API Endpoint
 
@@ -48,6 +49,7 @@ Returns a 200 OK response if the webhook is processed successfully.
 
 In a production environment, you would:
 
-1. Store the user information in a database
-2. Associate it with the access token
-3. Use this information when generating prayer times for the user
+1. Implement more robust error handling for database operations
+2. Add retry logic for failed database operations
+3. Implement webhook verification to ensure the request is from TRMNL
+4. Add monitoring and alerting for installation failures

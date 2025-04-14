@@ -74,12 +74,14 @@ Muslims need to know daily prayer times, which change daily based on location. C
    - API Gateway endpoint for TRMNL device polling
    - TypeScript implementation for type safety and code quality
    - Error handling and fallback mechanisms
+   - Supabase database for user settings storage
 
 2. **TRMNL Integration**
    - Custom plugin utilizing TRMNL's "Private Plugin" capabilities
    - Polling-based strategy for data retrieval
    - Optimized interface for e-ink display (high contrast, minimal imagery)
    - Adherence to TRMNL design guidelines and framework
+   - Complete plugin lifecycle implementation (installation, management, uninstallation)
 
 3. **Data Source**
    - Primary: Aladhan Prayer Times API
@@ -90,6 +92,11 @@ Muslims need to know daily prayer times, which change daily based on location. C
    - Update prayer times daily at minimum
    - Refresh countdown timer at appropriate intervals
    - Balance accuracy with battery preservation
+
+5. **Security & Privacy**
+   - Secure handling of user data
+   - Complete data removal upon plugin uninstallation
+   - Authentication for all webhook endpoints
 
 ### User Experience Requirements
 
@@ -175,6 +182,7 @@ Muslims need to know daily prayer times, which change daily based on location. C
 6. Implement error handling and logging
 7. Set up testing environment
 8. Deploy to AWS development environment
+9. Implement database integration for user settings storage
 
 ### Phase 2: TRMNL Plugin Development
 
@@ -185,7 +193,10 @@ Muslims need to know daily prayer times, which change daily based on location. C
 5. Create Liquid templates for data display
 6. Test with various locations and calculation methods
 7. Optimize layout for various view sizes
-8. Conduct user testing with Muslim TRMNL users
+8. Implement plugin installation flow
+9. Implement plugin management interface
+10. Implement plugin uninstallation flow
+11. Conduct user testing with Muslim TRMNL users
 
 ### Phase 3: Optimization and Launch
 
@@ -230,9 +241,46 @@ Muslims need to know daily prayer times, which change daily based on location. C
 
 ### API Reference
 
-**API Gateway Endpoint:**
+**Prayer Times Endpoint:**
 ```
 {api-gateway-url}/prayer-times?city={city}&country={country}&method={method}
+```
+
+**Installation Endpoint:**
+```
+{api-gateway-url}/install?token={token}&installation_callback_url={url}
+```
+
+**Installation Success Webhook:**
+```
+POST {api-gateway-url}/installation-success
+Authorization: Bearer {access_token}
+Body: { "user": { ... } }
+```
+
+**Plugin Markup Endpoint:**
+```
+POST {api-gateway-url}/plugin-markup
+Authorization: Bearer {access_token}
+Body: { "user_uuid": "..." }
+```
+
+**Plugin Management Endpoint:**
+```
+{api-gateway-url}/manage?uuid={user_uuid}
+```
+
+**Save Settings Endpoint:**
+```
+POST {api-gateway-url}/save-settings
+Body: { "uuid": "...", "city": "...", ... }
+```
+
+**Uninstallation Webhook:**
+```
+POST {api-gateway-url}/uninstall
+Authorization: Bearer {access_token}
+Body: { "user_uuid": "..." }
 ```
 
 **Aladhan API Endpoint (used by backend):**

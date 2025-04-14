@@ -5,29 +5,44 @@ This handler is responsible for serving TRMNL plugin markup templates.
 ## Files
 
 - `index.ts` - Main handler implementation
+- `schema.ts` - Validation schema for request body
 
 ## Functionality
 
 - Receives requests for plugin markup from TRMNL
 - Verifies the authorization header
-- Determines which template to return based on the view size
-- Returns the appropriate template
+- Extracts the user UUID from the request body
+- Retrieves user settings from the database
+- Generates markup for all view sizes
+- Returns the markup as JSON
 
 ## API Endpoint
 
-`GET /plugin-markup`
+`POST /plugin-markup`
 
 ### Headers
 
 - `Authorization` - Bearer token with the access token
 
-### Query Parameters
+### Request Body
 
-- `view_size` - The size of the view (full, half, quadrant)
+```json
+{
+  "user_uuid": "uuid-of-the-user"
+}
+```
 
 ### Response
 
-Returns the HTML/Liquid template for the specified view size.
+Returns a JSON object containing markup for all view sizes:
+
+```json
+{
+  "full": "<html>...</html>",
+  "half": "<html>...</html>",
+  "quadrant": "<html>...</html>"
+}
+```
 
 ## Templates
 
@@ -41,6 +56,7 @@ The handler serves templates from the `trmnl-plugin` directory:
 
 In a production environment, you would:
 
-1. Retrieve user preferences from a database using the access token
-2. Customize the template based on these preferences
-3. Return the customized template
+1. Implement caching for frequently accessed templates
+2. Add more robust error handling for database operations
+3. Optimize template generation for performance
+4. Add monitoring for template generation times

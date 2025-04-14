@@ -20,6 +20,7 @@ Built with AWS Serverless architecture using TypeScript, the plugin connects to 
 - 📱 Responsive templates for full-screen, half-screen, and quadrant layouts
 - 🔐 Complete OAuth installation flow for TRMNL plugins
 - ⚙️ User configuration interface for location and preferences
+- 🧹 Clean uninstallation flow to remove user data when plugin is uninstalled
 
 ## Architecture
 
@@ -32,9 +33,11 @@ The solution uses:
 - **Date Handling**: date-fns and date-fns-tz for timezone-aware date operations
 - **Data Source**: [Aladhan Prayer Times API](https://aladhan.com/prayer-times-api)
 
-## TRMNL Plugin Installation Flow
+## TRMNL Plugin Lifecycle
 
-The plugin implements the complete TRMNL OAuth installation flow:
+The plugin implements the complete TRMNL plugin lifecycle:
+
+### Installation Flow
 
 1. **Installation Request**: When a user installs the plugin, TRMNL sends a request to the installation endpoint with a token and callback URL.
 2. **Token Exchange**: The server exchanges the token for an access token using the TRMNL OAuth endpoint.
@@ -42,6 +45,12 @@ The plugin implements the complete TRMNL OAuth installation flow:
 4. **Success Webhook**: TRMNL sends a success webhook to the server with the user's information.
 5. **Plugin Configuration**: The user can configure their prayer times settings through the plugin management interface.
 6. **Markup Generation**: The server provides the appropriate markup template based on the view size.
+
+### Uninstallation Flow
+
+1. **Uninstallation Webhook**: When a user uninstalls the plugin, TRMNL sends a webhook to the uninstallation endpoint with the user's UUID.
+2. **Data Cleanup**: The server deletes the user's settings from the database.
+3. **Confirmation**: The server returns a success response to TRMNL.
 
 ## Project Structure
 
@@ -65,15 +74,27 @@ trmnl-salah-times/
 │   │   │   └── README.md         # Handler documentation
 │   │   ├── installation-handler/  # Installation handler module
 │   │   │   ├── index.ts          # Handler implementation
+│   │   │   ├── schema.ts         # Validation schema
 │   │   │   └── README.md         # Handler documentation
 │   │   ├── installation-success-handler/  # Installation success handler module
 │   │   │   ├── index.ts          # Handler implementation
+│   │   │   ├── schema.ts         # Validation schema
 │   │   │   └── README.md         # Handler documentation
 │   │   ├── plugin-markup-handler/  # Plugin markup handler module
 │   │   │   ├── index.ts          # Handler implementation
+│   │   │   ├── schema.ts         # Validation schema
 │   │   │   └── README.md         # Handler documentation
 │   │   ├── plugin-management-handler/  # Plugin management handler module
 │   │   │   ├── index.ts          # Handler implementation
+│   │   │   ├── schema.ts         # Validation schema
+│   │   │   └── README.md         # Handler documentation
+│   │   ├── save-settings-handler/  # Save settings handler module
+│   │   │   ├── index.ts          # Handler implementation
+│   │   │   ├── schema.ts         # Validation schema
+│   │   │   └── README.md         # Handler documentation
+│   │   ├── uninstallation-handler/  # Uninstallation handler module
+│   │   │   ├── index.ts          # Handler implementation
+│   │   │   ├── schema.ts         # Validation schema
 │   │   │   └── README.md         # Handler documentation
 │   │   └── index.ts             # Re-export for backward compatibility
 │   ├── services/                # Business logic

@@ -100,3 +100,15 @@ functions:
           path: save-settings
           method: post
           cors: true
+
+  uninstallationHandler:
+    handler: src/handlers/uninstallation-handler/index.handler
+    description: Handler for TRMNL plugin uninstallation webhook
+    environment:
+      SUPABASE_URL: ${env:SUPABASE_URL}
+      SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
+    events:
+      - http:
+          path: uninstall
+          method: post
+          cors: true

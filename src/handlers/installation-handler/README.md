@@ -5,6 +5,7 @@ This handler is responsible for handling the TRMNL plugin installation flow.
 ## Files
 
 - `index.ts` - Main handler implementation
+- `schema.ts` - Validation schema for query parameters
 
 ## Functionality
 
@@ -37,3 +38,12 @@ Redirects the user back to TRMNL using the installation callback URL.
 2. This handler exchanges the token for an access token
 3. The handler redirects the user back to TRMNL
 4. TRMNL sends a success webhook to the installation success handler
+
+## Production Considerations
+
+In a production environment, you would:
+
+1. Implement more robust error handling for token exchange failures
+2. Add rate limiting to prevent abuse
+3. Implement proper logging for audit purposes
+4. Add monitoring for installation success rates

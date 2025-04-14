@@ -5,6 +5,7 @@ This handler is responsible for providing a user interface for managing TRMNL pl
 ## Files
 
 - `index.ts` - Main handler implementation
+- `schema.ts` - Validation schema for query parameters
 
 ## Functionality
 
@@ -14,6 +15,10 @@ This handler is responsible for providing a user interface for managing TRMNL pl
 ## API Endpoint
 
 `GET /manage`
+
+### Query Parameters
+
+- `uuid` - The user's UUID
 
 ### Response
 

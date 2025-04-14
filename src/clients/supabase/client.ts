@@ -105,4 +105,31 @@ export class SupabaseService {
       return false;
     }
   }
+
+  /**
+   * Delete user settings by UUID
+   * @param uuid User UUID
+   * @returns True if successful, false otherwise
+   */
+  async deleteUserSettings(uuid: string): Promise<boolean> {
+    try {
+      logger.info('Deleting user settings', { uuid });
+
+      const { error } = await this.client
+        .from('user_settings')
+        .delete()
+        .eq('uuid', uuid);
+
+      if (error) {
+        logger.error('Error deleting user settings', { error, uuid });
+        return false;
+      }
+
+      logger.info('Successfully deleted user settings', { uuid });
+      return true;
+    } catch (error) {
+      logger.error('Failed to delete user settings', { error, uuid });
+      return false;
+    }
+  }
 }
