@@ -7,7 +7,7 @@ import { HttpStatusCode } from 'axios';
 
 /**
  * Handler for the TRMNL plugin installation flow
- * Receives the installation request from TRMNL and exchanges the token for an access token
+ * Receives the installation request from TRMNL and exchanges the code for an access token
  */
 const installationHandler = async (event: APIGatewayProxyEvent) => {
   try {
@@ -29,17 +29,17 @@ const installationHandler = async (event: APIGatewayProxyEvent) => {
       };
     }
 
-    const { token, installation_callback_url } = data;
+    const { code, installation_callback_url } = data;
 
     logger.info('Received installation request', {
-      token: token.substring(0, 5) + '...',
+      code: code.substring(0, 5) + '...',
       installation_callback_url,
     });
 
-    // Exchange token for access token using TRMNL client
+    // Exchange code for access token using TRMNL client
     try {
       const trmnlClient = createTrmnlClient();
-      const tokenResponse = await trmnlClient.exchangeCodeForToken(token);
+      const tokenResponse = await trmnlClient.exchangeCodeForToken(code);
       const accessToken = tokenResponse.access_token;
 
       logger.info('Successfully obtained access token', {

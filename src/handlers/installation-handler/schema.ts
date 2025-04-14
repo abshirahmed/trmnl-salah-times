@@ -3,16 +3,16 @@ import { z } from 'zod';
 /**
  * Validation schema for installation query parameters
  *
- * token: Required string, must not be empty
+ * code: Required string, must not be empty
  * installation_callback_url: Required string, must not be empty and must be a valid URL
  */
 export const installationQuerySchema = z.object({
-  token: z
+  code: z
     .string({
-      required_error: 'Token is required',
-      invalid_type_error: 'Token must be a string',
+      required_error: 'Code is required',
+      invalid_type_error: 'Code must be a string',
     })
-    .min(1, { message: 'Token cannot be empty' })
+    .min(1, { message: 'Code cannot be empty' })
     .trim(),
 
   installation_callback_url: z

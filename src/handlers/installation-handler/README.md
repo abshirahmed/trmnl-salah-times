@@ -10,8 +10,8 @@ This handler is responsible for handling the TRMNL plugin installation flow.
 ## Functionality
 
 - Receives the installation request from TRMNL
-- Extracts the token and installation callback URL from the request
-- Exchanges the token for an access token using the TRMNL OAuth endpoint
+- Extracts the code and installation callback URL from the request
+- Exchanges the code for an access token using the TRMNL OAuth endpoint
 - Redirects the user back to TRMNL using the installation callback URL
 
 ## API Endpoint
@@ -20,7 +20,7 @@ This handler is responsible for handling the TRMNL plugin installation flow.
 
 ### Query Parameters
 
-- `token` - The token provided by TRMNL for the OAuth flow
+- `code` - The authorization code provided by TRMNL for the OAuth flow
 - `installation_callback_url` - The URL to redirect the user back to TRMNL
 
 ### Environment Variables
@@ -34,8 +34,8 @@ Redirects the user back to TRMNL using the installation callback URL.
 
 ## OAuth Flow
 
-1. TRMNL sends an installation request to this endpoint with a token and callback URL
-2. This handler exchanges the token for an access token
+1. TRMNL sends an installation request to this endpoint with a code and callback URL
+2. This handler exchanges the code for an access token
 3. The handler redirects the user back to TRMNL
 4. TRMNL sends a success webhook to the installation success handler
 
