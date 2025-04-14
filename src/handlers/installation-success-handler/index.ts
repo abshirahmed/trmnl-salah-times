@@ -23,10 +23,7 @@ const installationSuccessHandler = async (event: APIGatewayProxyEvent) => {
 
       return {
         statusCode: HttpStatusCode.BadRequest,
-        body: {
-          message: 'Invalid request body',
-          errors: error.flatten(),
-        },
+        message: error.message,
       };
     }
 

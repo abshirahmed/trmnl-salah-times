@@ -21,8 +21,7 @@ const prayerTimesHandler = async (event: APIGatewayProxyEvent) => {
 
     return {
       statusCode: HttpStatusCode.BadRequest,
-      message: 'Invalid query parameters',
-      errors: error.flatten(),
+      message: error.message,
     };
   }
 

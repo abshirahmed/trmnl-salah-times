@@ -20,10 +20,10 @@ describe('Prayer Times Handler', () => {
       },
     };
 
-    const response = await handler(event, mockLambdaContext);
+    const { statusCode, message } = await handler(event, mockLambdaContext);
 
-    expect(response.statusCode).toBe(400);
-    expect(response.message).toBe('Invalid query parameters');
+    expect(statusCode).toBe(400);
+    expect(message).toContain('City is required');
   });
 
   it('should return 400 if country is missing', async () => {
@@ -35,10 +35,10 @@ describe('Prayer Times Handler', () => {
       },
     };
 
-    const response = await handler(event, mockLambdaContext);
+    const { statusCode, message } = await handler(event, mockLambdaContext);
 
-    expect(response.statusCode).toBe(400);
-    expect(response.message).toBe('Invalid query parameters');
+    expect(statusCode).toBe(400);
+    expect(message).toContain('Country is required"');
   });
 
   it('should return enhanced data with next prayer information', async () => {
@@ -50,11 +50,11 @@ describe('Prayer Times Handler', () => {
       },
     };
 
-    const response = await handler(event, mockLambdaContext);
+    const { statusCode, body } = await handler(event, mockLambdaContext);
+    const responseBody = JSON.parse(body);
 
-    expect(response.statusCode).toBe(200);
+    expect(statusCode).toBe(200);
 
-    const responseBody = JSON.parse(response.body);
     expect(responseBody.enhancedData).toBeDefined();
     expect(responseBody.enhancedData.nextPrayer).toBeDefined();
     expect(responseBody.enhancedData.timeUntilNextPrayer).toBeDefined();

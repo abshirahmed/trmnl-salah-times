@@ -23,10 +23,7 @@ const pluginManagementHandler = async (event: APIGatewayProxyEvent) => {
 
       return {
         statusCode: HttpStatusCode.BadRequest,
-        body: {
-          message: 'Invalid query parameters',
-          errors: error.flatten(),
-        },
+        message: error.message,
       };
     }
 

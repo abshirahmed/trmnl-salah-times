@@ -25,10 +25,7 @@ const pluginMarkupHandler = async (event: APIGatewayProxyEvent) => {
 
       return {
         statusCode: HttpStatusCode.BadRequest,
-        body: JSON.stringify({
-          message: 'Invalid request body',
-          errors: error.flatten(),
-        }),
+        message: error.message,
       };
     }
 
@@ -51,10 +48,7 @@ const pluginMarkupHandler = async (event: APIGatewayProxyEvent) => {
 
     return {
       statusCode: HttpStatusCode.Ok,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(markup),
+      body: markup,
     };
   } catch (error) {
     logger.error('Error serving plugin markup template', { error });
