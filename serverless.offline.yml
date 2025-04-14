@@ -11,9 +11,8 @@ plugins:
 
 custom:
   esbuild:
-    packager: yarn
-    sourcemap: false
-    minify: true
+    external:
+      - velocityjs
   serverless-offline:
     noPrependStageInUrl: true
   dotenv:

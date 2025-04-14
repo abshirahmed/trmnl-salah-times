@@ -6,14 +6,6 @@ plugins:
   - serverless-esbuild
   - serverless-better-credentials
 
-custom:
-  esbuild:
-    packager: yarn
-    sourcemap: false
-    minify: true
-  serverless-offline:
-    noPrependStageInUrl: true
-
 provider:
   name: aws
   runtime: nodejs20.x
