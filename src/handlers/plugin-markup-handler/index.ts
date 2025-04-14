@@ -1,6 +1,6 @@
-import { createSupabaseClient } from '@/clients/supabase';
 import { pluginMarkupController } from '@/controllers/plugin-markup-controller';
 import { pluginMarkupBodySchema } from '@/handlers/plugin-markup-handler/schema';
+import { getUserSettings } from '@/services/user-settings';
 import { verifyAuthHeader } from '@/utils/auth';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
@@ -36,10 +36,8 @@ const pluginMarkupHandler = async (event: APIGatewayProxyEvent) => {
       user_uuid,
     });
 
-    // Get user settings from Supabase
-    const supabaseClient = createSupabaseClient();
-    const { data: userSettings } =
-      await supabaseClient.getUserSettings(user_uuid);
+    // Get user settings from service
+    const userSettings = await getUserSettings(user_uuid);
 
     // Generate markup for all view sizes using the controller
     const markup = await pluginMarkupController.generateMarkup(userSettings);

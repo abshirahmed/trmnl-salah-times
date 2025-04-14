@@ -1,5 +1,5 @@
-import { createSupabaseClient } from '@/clients/supabase';
 import { uninstallationBodySchema } from '@/handlers/uninstallation-handler/schema';
+import { deleteUserSettings } from '@/services/user-settings';
 import { verifyAuthHeader } from '@/utils/auth';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
@@ -15,21 +15,23 @@ const uninstallationHandler = async (event: APIGatewayProxyEvent) => {
     // Verify authorization header
     verifyAuthHeader(event);
 
-    const { data, error } = uninstallationBodySchema.safeParse(event.body);
+    const parseResult = uninstallationBodySchema.safeParse(event.body);
 
-    if (error) {
+    if (!parseResult.success) {
       logger.error('Invalid uninstallation webhook body', {
-        errors: error.flatten(),
+        errors: parseResult.error.flatten(),
       });
 
       return {
         statusCode: HttpStatusCode.BadRequest,
         body: {
           message: 'Invalid request body',
-          errors: error.flatten(),
+          errors: parseResult.error.flatten(),
         },
       };
     }
+
+    const { data } = parseResult;
 
     const { user_uuid } = data;
 
@@ -37,52 +39,33 @@ const uninstallationHandler = async (event: APIGatewayProxyEvent) => {
       user_uuid,
     });
 
-    // Delete user settings from Supabase
-    try {
-      const supabaseClient = createSupabaseClient();
-      const { error } = await supabaseClient.deleteUserSettings(user_uuid);
+    // Delete user settings using service
+    const { error } = await deleteUserSettings(user_uuid);
 
-      if (error) {
-        logger.warn('Failed to delete user settings', {
-          error,
-          user_uuid,
-        });
-
-        return {
-          statusCode: HttpStatusCode.InternalServerError,
-          body: {
-            message: 'Failed to delete user settings',
-          },
-        };
-      }
-
-      logger.info('Successfully deleted user settings', {
-        user_uuid,
-      });
-
-      return {
-        statusCode: HttpStatusCode.Ok,
-        body: {
-          message: 'Uninstallation successful',
-        },
-      };
-    } catch (clientError) {
-      logger.error('Error deleting user settings', {
-        error: clientError,
+    if (error) {
+      logger.warn('Failed to delete user settings', {
+        error,
         user_uuid,
       });
 
       return {
         statusCode: HttpStatusCode.InternalServerError,
         body: {
-          message: 'Error deleting user settings',
-          error:
-            clientError instanceof Error
-              ? clientError.message
-              : 'Unknown error',
+          message: 'Failed to delete user settings',
         },
       };
     }
+
+    logger.info('Successfully deleted user settings', {
+      user_uuid,
+    });
+
+    return {
+      statusCode: HttpStatusCode.Ok,
+      body: {
+        message: 'Uninstallation successful',
+      },
+    };
   } catch (error) {
     logger.error('Error processing uninstallation webhook', { error });
 

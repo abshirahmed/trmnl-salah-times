@@ -1,89 +1,18 @@
-import { SupabaseClient } from '@/clients/supabase/client';
-import { UserSettings } from '@/clients/supabase/types';
-import { logger } from '@/utils/logger';
+import { Tables } from '@/clients/supabase/database.types';
+
+type UserSettings = Tables<'user_settings'>;
 
 /**
- * Controller for user settings management
+ * Generate HTML for the management interface
+ * @param uuid User UUID
+ * @param userSettings User settings
+ * @returns HTML for the management interface
  */
-export class UserSettingsController {
-  private supabaseClient: SupabaseClient;
-
-  /**
-   * Create a new user settings controller
-   * @param supabaseClient Supabase client
-   */
-  constructor(supabaseClient: SupabaseClient) {
-    this.supabaseClient = supabaseClient;
-  }
-
-  /**
-   * Get user settings by UUID
-   * @param uuid User UUID
-   * @returns User settings or null if not found
-   */
-  async getUserSettings(uuid: string): Promise<UserSettings | null> {
-    try {
-      logger.info('Getting user settings', { uuid });
-      const { data, error } = await this.supabaseClient.getUserSettings(uuid);
-
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // Not found
-          return null;
-        }
-        logger.error('Error getting user settings', {
-          error,
-          uuid,
-        });
-        throw error;
-      }
-
-      return data;
-    } catch (error) {
-      logger.error('Error getting user settings', { error, uuid });
-      throw error;
-    }
-  }
-
-  /**
-   * Save user settings
-   * @param settings User settings to save
-   * @returns True if successful, false otherwise
-   */
-  async saveUserSettings(settings: UserSettings): Promise<boolean> {
-    try {
-      logger.info('Saving user settings', { uuid: settings.uuid });
-      const { error } = await this.supabaseClient.saveUserSettings(settings);
-
-      if (error) {
-        logger.error('Error saving user settings', {
-          error,
-          uuid: settings.uuid,
-        });
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      logger.error('Error saving user settings', {
-        error,
-        uuid: settings.uuid,
-      });
-      throw error;
-    }
-  }
-
-  /**
-   * Generate HTML for the management interface
-   * @param uuid User UUID
-   * @param userSettings User settings
-   * @returns HTML for the management interface
-   */
-  generateManagementInterface(
-    uuid: string,
-    userSettings: UserSettings | null,
-  ): string {
-    return `
+export const generateManagementInterface = (
+  uuid: string,
+  userSettings: UserSettings | null,
+) => {
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -251,12 +180,4 @@ export class UserSettingsController {
     </body>
     </html>
     `;
-  }
-}
-
-// Factory function to create a controller instance
-export const createUserSettingsController = (
-  supabaseClient: SupabaseClient,
-): UserSettingsController => {
-  return new UserSettingsController(supabaseClient);
 };

@@ -1,8 +1,10 @@
-import { UserSettings } from '@/clients/supabase/types';
+import { Tables } from '@/clients/supabase/database.types';
 import { calculatePrayerTimes } from '@/services/prayer-times/calculatePrayerTimes';
 import { templates } from '@/templates/trmnl-plugin';
 import { formatTime12h } from '@/utils/dateUtils';
 import { logger } from '@/utils/logger';
+
+type UserSettings = Tables<'user_settings'>;
 
 /**
  * Controller for plugin markup generation

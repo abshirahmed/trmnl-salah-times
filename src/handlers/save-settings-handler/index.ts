@@ -1,6 +1,5 @@
-import { createSupabaseClient } from '@/clients/supabase';
-import { createUserSettingsController } from '@/controllers/user-settings-controller';
 import { saveSettingsBodySchema } from '@/handlers/save-settings-handler/schema';
+import { saveUserSettings } from '@/services/user-settings';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -12,22 +11,24 @@ import { HttpStatusCode } from 'axios';
  */
 const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
   try {
-    const { data, error } = saveSettingsBodySchema.safeParse(event.body);
+    const parseResult = saveSettingsBodySchema.safeParse(event.body);
 
-    if (error) {
+    if (!parseResult.success) {
       logger.error('Invalid save settings request body', {
-        errors: error.flatten(),
+        errors: parseResult.error.flatten(),
       });
 
       return {
         statusCode: HttpStatusCode.BadRequest,
         body: {
           message: 'Invalid request body',
-          errors: error.flatten(),
+          errors: parseResult.error.flatten(),
           success: false,
         },
       };
     }
+
+    const { data } = parseResult;
 
     const { uuid, city, country, method, timeFormat } = data;
 
@@ -39,10 +40,8 @@ const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
       timeFormat,
     });
 
-    // Save settings to Supabase using the controller
-    const supabaseClient = createSupabaseClient();
-    const userSettingsController = createUserSettingsController(supabaseClient);
-    const success = await userSettingsController.saveUserSettings({
+    // Save settings using service
+    const { error } = await saveUserSettings({
       uuid,
       city,
       country,
@@ -50,8 +49,8 @@ const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
       timeFormat,
     });
 
-    if (!success) {
-      logger.error('Failed to save user settings', { uuid });
+    if (error) {
+      logger.error('Failed to save user settings', { uuid, error });
 
       return {
         statusCode: HttpStatusCode.InternalServerError,

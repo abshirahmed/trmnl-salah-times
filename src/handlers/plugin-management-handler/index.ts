@@ -1,6 +1,6 @@
-import { createSupabaseClient } from '@/clients/supabase';
-import { createUserSettingsController } from '@/controllers/user-settings-controller';
+import { generateManagementInterface } from '@/controllers/user-settings-controller';
 import { pluginManagementQuerySchema } from '@/handlers/plugin-management-handler/schema';
+import { getUserSettings } from '@/services/user-settings';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -29,10 +29,8 @@ const pluginManagementHandler = async (event: APIGatewayProxyEvent) => {
 
     const { uuid } = data;
 
-    // Get user settings from Supabase
-    const supabaseClient = createSupabaseClient();
-    const userSettingsController = createUserSettingsController(supabaseClient);
-    const userSettings = await userSettingsController.getUserSettings(uuid);
+    // Get user settings from service
+    const userSettings = await getUserSettings(uuid);
 
     logger.info('Retrieved user settings for management interface', {
       uuid,
@@ -40,10 +38,7 @@ const pluginManagementHandler = async (event: APIGatewayProxyEvent) => {
     });
 
     // Generate the management interface HTML
-    const html = userSettingsController.generateManagementInterface(
-      uuid,
-      userSettings,
-    );
+    const html = generateManagementInterface(uuid, userSettings);
 
     return {
       statusCode: HttpStatusCode.Ok,
