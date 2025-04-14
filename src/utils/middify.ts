@@ -8,7 +8,10 @@ import httpResponseSerializer from '@middy/http-response-serializer';
 import { Handler } from 'aws-lambda';
 
 export const middify = (handler: Handler) =>
-  middy(handler, { timeoutEarlyInMillis: 0, timeoutEarlyResponse: () => {} })
+  middy(handler, {
+    timeoutEarlyInMillis: 0,
+    timeoutEarlyResponse: () => {},
+  })
     .use(
       injectLambdaContext(logger, {
         logEvent: true,
@@ -22,7 +25,11 @@ export const middify = (handler: Handler) =>
       }),
     )
     .use(httpEventNormalizer())
-    .use(jsonBodyParser())
+    .use(
+      jsonBodyParser({
+        disableContentTypeError: true,
+      }),
+    )
     .use(
       httpResponseSerializer({
         serializers: [
