@@ -120,8 +120,8 @@ export const generateManagementInterface = (
         <div class="form-group">
           <label for="time-format">Time Format</label>
           <select id="time-format" name="timeFormat">
-            <option value="24h" ${!userSettings || userSettings?.timeFormat === '24h' ? 'selected' : ''}>24-hour</option>
-            <option value="12h" ${userSettings?.timeFormat === '12h' ? 'selected' : ''}>12-hour</option>
+            <option value="24h" ${!userSettings || userSettings?.timeformat === '24h' ? 'selected' : ''}>24-hour</option>
+            <option value="12h" ${userSettings?.timeformat === '12h' ? 'selected' : ''}>12-hour</option>
           </select>
         </div>
 

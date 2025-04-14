@@ -1,8 +1,8 @@
 import { createSupabaseClient } from '@/clients/supabase';
-import { InsertTables } from '@/clients/supabase/database.types';
+import { TablesInsert } from '@/clients/supabase/database.types';
 import { logger } from '@/utils/logger';
 
-type UserSettingsInsert = InsertTables<'user_settings'>;
+type UserSettingsInsert = TablesInsert<'user_settings'>;
 
 /**
  * Save user settings (create or update)
@@ -19,7 +19,7 @@ export const saveUserSettings = async (settings: UserSettingsInsert) => {
       city: settings.city,
       country: settings.country,
       method: settings.method,
-      timeFormat: settings.timeFormat,
+      timeformat: settings.timeformat,
       updated_at: new Date().toISOString(),
     },
     { onConflict: 'uuid' },

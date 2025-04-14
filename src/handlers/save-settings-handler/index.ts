@@ -46,7 +46,7 @@ const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
       city,
       country,
       method,
-      timeFormat,
+      timeformat: timeFormat,
     });
 
     if (error) {
