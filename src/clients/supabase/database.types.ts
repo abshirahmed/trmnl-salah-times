@@ -39,17 +39,17 @@ export type Database = {
           city: string;
           country: string;
           created_at: string | null;
-          id: string;
+          id: string | null;
           method: number;
           timeformat: string;
           updated_at: string | null;
           uuid: string;
         };
         Insert: {
-          city?: string;
-          country?: string;
+          city: string;
+          country: string;
           created_at?: string | null;
-          id?: string;
+          id?: string | null;
           method?: number;
           timeformat?: string;
           updated_at?: string | null;
@@ -59,7 +59,7 @@ export type Database = {
           city?: string;
           country?: string;
           created_at?: string | null;
-          id?: string;
+          id?: string | null;
           method?: number;
           timeformat?: string;
           updated_at?: string | null;
