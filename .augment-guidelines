@@ -1,0 +1,117 @@
+# TRMNL Salah Times Project Guidelines
+
+This file provides guidelines for Augment to follow when assisting with the TRMNL Salah Times project or similar TypeScript serverless projects.
+
+## Project Overview
+
+TRMNL Salah Times is a serverless application that displays Islamic prayer times, next prayer countdowns, and Hijri date information on TRMNL e-ink devices in an elegant, distraction-free format.
+
+## Technology Stack
+
+- **Backend**: AWS Serverless (Lambda + API Gateway) in eu-west-2 region
+- **Database**: Supabase for storing user settings
+- **Language**: TypeScript
+- **Date Handling**: date-fns and date-fns-tz for timezone-aware date operations
+- **Data Source**: Aladhan Prayer Times API
+- **Testing**: Jest with jest-extended
+- **Linting**: ESLint with TypeScript support
+- **Formatting**: Prettier
+
+## Code Organization
+
+- Follow the established modular structure where each feature is self-contained
+- Respect the separation between handlers, controllers, services, and templates
+- Keep related files together in their respective directories
+- Maintain proper separation of concerns
+
+## TypeScript Guidelines
+
+- Use strong typing and avoid `any` type
+- Follow interface-first design by defining interfaces before implementation
+- Use readonly properties for values that shouldn't change after initialization
+- Leverage Zod schemas for input validation
+- Use TypeScript path aliases (@/ for src/ directory)
+
+## Coding Standards
+
+- Follow the established patterns in the codebase
+- Use meaningful names for variables, functions, and classes
+- Keep functions small and focused on a single task
+- Follow DRY (Don't Repeat Yourself) principles
+- Implement proper error handling and logging
+- Use the logger utility for consistent logging
+- Write comprehensive unit tests for new functionality
+
+## File Structure Patterns
+
+- **Handlers**: Each Lambda handler should have:
+    - Implementation file (`index.ts`)
+    - Validation schema (`schema.ts`)
+    - Documentation (`README.md`)
+
+- **Services**: Implement business logic and interact with external APIs/databases
+- **Controllers**: Orchestrate application logic between handlers and services
+- **Templates**: Define UI for different view sizes (full, half, quadrant)
+- **Utils**: Utility functions that can be used across the application
+
+## Formatting
+
+- Use single quotes for strings
+- Use trailing commas in arrays and objects
+- Use semicolons at the end of statements
+- Follow the Prettier configuration in the project
+
+## Import Order
+
+- Group imports in the following order:
+    1. Built-in Node.js modules
+    2. External dependencies
+    3. Internal modules
+    4. Parent/sibling/index imports
+- Alphabetize imports within each group
+
+## Error Handling
+
+- Use a consistent approach to error handling
+- Provide clear error messages for API responses
+- Validate inputs early to catch errors before they propagate
+
+## Testing
+
+- Write tests before or alongside implementation
+- Test individual units of code in isolation
+- Aim for high test coverage, especially for critical paths
+- Use Jest with jest-extended for testing
+
+## Documentation
+
+- Document public APIs, complex logic, and non-obvious behavior
+- Each module should have a README explaining its purpose and usage
+- Keep documentation updated when code changes
+
+## Serverless Best Practices
+
+- Be mindful of cold starts and execution time limits
+- Use environment variables for sensitive configuration
+- Follow the principle of least privilege for permissions
+- Optimize Lambda function size to reduce cold start times
+- Use appropriate memory allocation for Lambda functions
+- Implement proper error handling and retries for external service calls
+- Consider using step functions for complex workflows
+
+## Project-Specific Guidelines
+
+- Prayer time calculations should follow established Islamic calculation methods
+- User settings should be stored securely in Supabase
+- UI templates should follow TRMNL's design system guidelines
+- All time-related operations should be timezone-aware using date-fns-tz
+- Provide clear error messages for users when prayer times cannot be fetched
+
+## Documentation References
+
+For more detailed information, refer to:
+
+- [Engineering Principles](./docs/engineering-principles.md)
+- [Project Structure](./docs/PROJECT_STRUCTURE.md)
+- [AI Agent Guide](./docs/AI_AGENT_GUIDE.md)
+- [Technical Architecture](./docs/prayer-times-plugin/technical/architecture.md)
