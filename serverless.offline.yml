@@ -31,6 +31,7 @@ provider:
   memorySize: 512
   timeout: 30
   environment:
+    STAGE: ${opt:stage, 'dev'}
     SUPABASE_URL: ${env:SUPABASE_URL}
     SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
 
@@ -95,6 +96,7 @@ functions:
     description: Handler for TRMNL plugin management interface
     environment:
       POWERTOOLS_SERVICE_NAME: ${self:service}-pluginManagementHandler-${self:provider.stage}
+      STAGE: ${opt:stage, 'dev'}
       SUPABASE_URL: ${env:SUPABASE_URL}
       SUPABASE_SERVICE_KEY: ${env:SUPABASE_SERVICE_KEY}
     events:

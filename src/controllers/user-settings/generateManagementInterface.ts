@@ -12,6 +12,9 @@ export const generateManagementInterface = (
   uuid: string,
   userSettings: UserSettings | null,
 ) => {
+  const apiUrlPrefix =
+    process.env.STAGE !== 'dev' ? `/${process.env.STAGE}` : '';
+
   return `
     <!DOCTYPE html>
     <html>
@@ -129,6 +132,8 @@ export const generateManagementInterface = (
       </form>
 
       <script>
+        const apiUrlPrefix = '${apiUrlPrefix}';
+
         document.getElementById('settings-form').addEventListener('submit', function(e) {
           e.preventDefault();
 
@@ -147,12 +152,12 @@ export const generateManagementInterface = (
             uuid,
             city,
             country,
-            method: method,
+            method,
             timeFormat,
           }).toString();
 
           // Send settings to the server using GET
-          fetch('/save-settings?' + queryParams)
+          fetch(apiUrlPrefix + '/save-settings?' + queryParams)
             .then(response => {
               if (!response.ok) {
                 throw new Error('Failed to save settings');
@@ -164,10 +169,10 @@ export const generateManagementInterface = (
                 // Show success message
                 document.getElementById('success-alert').style.display = 'block';
 
-                // Redirect back to TRMNL after a short delay
+                // Close the management interface after a short delay
                 setTimeout(() => {
-                  window.location.href = 'https://usetrmnl.com';
-                }, 2000);
+                  window.close()
+                }, 1500);
               } else {
                 // Show error message
                 document.getElementById('error-alert').textContent = data.message || 'Failed to save settings. Please try again.';
