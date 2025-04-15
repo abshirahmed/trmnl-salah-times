@@ -71,12 +71,12 @@ export class PluginMarkupController {
           prayerTimesResult,
         ),
         markup_half_horizontal: this.processTemplate(
-          templates.half,
+          templates.halfHorizontal,
           templateData,
           prayerTimesResult,
         ),
         markup_half_vertical: this.processTemplate(
-          templates.half,
+          templates.halfVertical,
           templateData,
           prayerTimesResult,
         ),
@@ -90,10 +90,10 @@ export class PluginMarkupController {
       logger.error('Error generating markup', { error, userSettings });
       // Return a simple markup with error message
       return {
-        markup: `<div class="error">Unable to load prayer times. Please try again later.</div>`,
-        markup_half_horizontal: `<div class="error">Unable to load prayer times.</div>`,
-        markup_half_vertical: `<div class="error">Unable to load prayer times.</div>`,
-        markup_quadrant: `<div class="error">Error</div>`,
+        markup: `<div class="view view--full"><div class="layout"><div class="columns"><div class="column"><div class="error">Unable to load prayer times. Please try again later.</div></div></div></div></div>`,
+        markup_half_horizontal: `<div class="view view--half_horizontal"><div class="error">Unable to load prayer times.</div></div>`,
+        markup_half_vertical: `<div class="view view--half_vertical"><div class="error">Unable to load prayer times.</div></div>`,
+        markup_quadrant: `<div class="view view--quadrant"><div class="error">Error</div></div>`,
       };
     }
   }

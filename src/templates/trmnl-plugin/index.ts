@@ -4,8 +4,13 @@ import path from 'path';
 // Read template files at build time
 const fullTemplate = readFileSync(path.join(__dirname, 'markup.html'), 'utf8');
 
-const halfTemplate = readFileSync(
+const halfVerticalTemplate = readFileSync(
   path.join(__dirname, 'half-view-markup.html'),
+  'utf8',
+);
+
+const halfHorizontalTemplate = readFileSync(
+  path.join(__dirname, 'half-horizontal-view-markup.html'),
   'utf8',
 );
 
@@ -19,6 +24,7 @@ const quadrantTemplate = readFileSync(
  */
 export const templates = {
   full: fullTemplate,
-  half: halfTemplate,
+  halfVertical: halfVerticalTemplate,
+  halfHorizontal: halfHorizontalTemplate,
   quadrant: quadrantTemplate,
 };
