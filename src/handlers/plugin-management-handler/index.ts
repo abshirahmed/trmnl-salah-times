@@ -38,6 +38,9 @@ const pluginManagementHandler = async (event: APIGatewayProxyEvent) => {
 
     return {
       statusCode: HttpStatusCode.Ok,
+      headers: {
+        'Content-Type': 'text/html',
+      },
       body: html,
     };
   } catch (error) {
