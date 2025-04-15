@@ -1,6 +1,6 @@
 import { calculatePrayerTimes } from '@/services/prayer-times/calculatePrayerTimes';
-import { formatTime12h } from '@/utils/dateUtils';
 import { logger } from '@/utils/logger';
+import { formatNextPrayerTime } from '@/utils/prayerTimeUtils';
 
 /**
  * Parameters for getPrayerTimes function
@@ -31,25 +31,11 @@ export const getPrayerTimes = async (params: GetPrayerTimesParams) => {
       method,
     });
 
-    // Format the next prayer time as a 12-hour string for display
-    let formattedNextPrayerTime = '';
-    try {
-      const timezone = prayerTimesResult.rawData.meta.timezone || 'UTC';
-      formattedNextPrayerTime = formatTime12h({
-        date: prayerTimesResult.nextPrayerTime,
-        timezone,
-      });
-    } catch (formatError) {
-      logger.warn('Error formatting next prayer time', { formatError });
-      // Fallback to raw time string if formatting fails
-      formattedNextPrayerTime = prayerTimesResult.nextPrayer.includes(
-        'Tomorrow',
-      )
-        ? prayerTimesResult.prayerTimes.Fajr
-        : prayerTimesResult.prayerTimes[
-            prayerTimesResult.nextPrayer as keyof typeof prayerTimesResult.prayerTimes
-          ] || '';
-    }
+    // Format the next prayer time
+    const formattedNextPrayerTime = formatNextPrayerTime(
+      prayerTimesResult,
+      prayerTimesResult.rawData.meta.timezone || 'UTC',
+    );
 
     // Prepare enhanced response with calculated data
     return {

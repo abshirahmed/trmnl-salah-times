@@ -1,4 +1,5 @@
 import { createTrmnlClient, TrmnlOAuthTokenResponse } from '@/clients/trmnl';
+import { handleError } from '@/utils/errorHandler';
 import { logger } from '@/utils/logger';
 
 /**
@@ -32,7 +33,6 @@ export const exchangeCodeForToken = async (code: string) => {
 
     return response.data;
   } catch (error) {
-    logger.error('Failed to exchange code for token', { error });
-    throw error;
+    return handleError('Failed to exchange code for token', { error });
   }
 };

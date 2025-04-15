@@ -5,6 +5,7 @@ import {
   formatTime24h,
   parsePrayerTimes,
 } from '@/utils/dateUtils';
+import { handleError } from '@/utils/errorHandler';
 import { logger } from '@/utils/logger';
 
 /**
@@ -84,7 +85,13 @@ export const calculatePrayerTimes = async (
       isTomorrow,
     };
   } catch (error) {
-    logger.error('Error calculating prayer times', { error, ...params });
-    throw error;
+    return handleError('Error calculating prayer times', {
+      error,
+      context: {
+        city: params.city,
+        country: params.country,
+        method: params.method,
+      },
+    });
   }
 };
