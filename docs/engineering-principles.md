@@ -103,3 +103,11 @@ This structure provides several benefits:
 4. **Keep Dependencies Updated**: Regularly update dependencies to get bug fixes and security patches
 
 By following these principles, we aim to create a codebase that is maintainable, reliable, and easy to understand for all team members.
+
+## Related Documentation
+
+- [Project Structure](./PROJECT_STRUCTURE.md) - Overview of the codebase organization
+- [AI Agent Guide](./AI_AGENT_GUIDE.md) - Instructions for AI agents working with this codebase
+- [Resource Integration Examples](./RESOURCE_INTEGRATION_EXAMPLES.md) - Examples for referencing files and resources
+- [Technical Architecture](./prayer-times-plugin/technical/architecture.md) - Detailed information about the system architecture
+- [Main README](../README.md) - Project overview and setup instructions

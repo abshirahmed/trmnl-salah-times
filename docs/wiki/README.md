@@ -24,3 +24,11 @@ This wiki is designed to help users get the most out of the TRMNL Salah Times pl
 - [Configuring Your Location](settings.md#location)
 - [Calculation Methods](settings.md#calculation-methods)
 - [Common Issues](troubleshooting.md#common-issues)
+
+## Developer Resources
+
+If you're a developer or AI agent working with the TRMNL Salah Times codebase, please refer to the following resources:
+
+- [Main README](../../README.md) - Project overview and setup instructions
+- [Project Structure](../PROJECT_STRUCTURE.md) - Overview of the codebase organization
+- [AI Agent Guide](../AI_AGENT_GUIDE.md) - Guide for AI agents working with this codebase

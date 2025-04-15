@@ -243,9 +243,21 @@ The plugin templates follow TRMNL's design system guidelines for optimal e-ink d
 
 See the following documents for more information:
 
-- [Product Requirements Document](./docs/prayer-times-plugin/requirements/product-requirements.md) - Detailed project requirements and specifications
+### Developer Documentation
+
 - [Engineering Principles](./docs/engineering-principles.md) - Our engineering principles and best practices
+- [Project Structure](./docs/PROJECT_STRUCTURE.md) - Overview of the codebase structure
 - [Technical Architecture](./docs/prayer-times-plugin/technical/architecture.md) - Technical architecture overview
+- [Product Requirements Document](./docs/prayer-times-plugin/requirements/product-requirements.md) - Detailed project requirements and specifications
+
+### AI Agent Documentation
+
+- [AI Agent Guide](./docs/AI_AGENT_GUIDE.md) - Guide for AI agents working with this codebase
+- [Resource Integration Examples](./docs/RESOURCE_INTEGRATION_EXAMPLES.md) - Examples for referencing files and resources
+
+### User Documentation
+
+- [User Wiki](./docs/wiki/README.md) - End-user documentation for using the TRMNL Salah Times plugin
 
 ## License
 
