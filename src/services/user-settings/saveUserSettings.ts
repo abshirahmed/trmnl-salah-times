@@ -12,7 +12,6 @@ type UserSettingsInsert = TablesInsert<'user_settings'>;
 export const saveUserSettings = async (settings: UserSettingsInsert) => {
   logger.info('Saving user settings', { uuid: settings.uuid });
   const supabase = createSupabaseClient();
-
   return supabase.from('user_settings').upsert(
     {
       uuid: settings.uuid,

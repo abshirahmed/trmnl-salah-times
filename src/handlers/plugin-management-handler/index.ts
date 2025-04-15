@@ -30,7 +30,17 @@ const pluginManagementHandler = async (event: APIGatewayProxyEvent) => {
     const { uuid } = data;
 
     // Get user settings from service
-    const userSettings = await getUserSettings(uuid);
+    const { data: userSettings } = await getUserSettings(uuid);
+
+    if (!userSettings) {
+      logger.warn('User settings not found', { uuid });
+      return {
+        statusCode: HttpStatusCode.NotFound,
+        body: {
+          message: 'User settings not found',
+        },
+      };
+    }
 
     logger.info('Retrieved user settings for management interface', {
       uuid,

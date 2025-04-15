@@ -17,31 +17,6 @@ export interface PrayerTimesCalculationParams {
 }
 
 /**
- * Interface for prayer times calculation result
- */
-export interface PrayerTimesCalculationResult {
-  rawData: {
-    meta: {
-      timezone: string;
-      [key: string]: unknown;
-    };
-    [key: string]: unknown;
-  };
-  prayerTimes: Record<string, string>;
-  prayerTimesObjects: Record<string, Date>;
-  nextPrayer: string;
-  nextPrayerTime: Date;
-  timeUntilNextPrayer: {
-    hours: number;
-    minutes: number;
-    total_minutes: number;
-  };
-  hijriDateFormatted: string;
-  currentTime: string;
-  isTomorrow: boolean;
-}
-
-/**
  * Calculate prayer times and related information
  * @param params Parameters for prayer times calculation
  * @returns Calculated prayer times and related information

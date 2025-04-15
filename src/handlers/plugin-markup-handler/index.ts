@@ -37,7 +37,16 @@ const pluginMarkupHandler = async (event: APIGatewayProxyEvent) => {
     });
 
     // Get user settings from service
-    const userSettings = await getUserSettings(user_uuid);
+    const { data: userSettings } = await getUserSettings(user_uuid);
+
+    if (!userSettings) {
+      logger.error('User settings not found', { user_uuid });
+
+      return {
+        statusCode: HttpStatusCode.NotFound,
+        message: 'User settings not found',
+      };
+    }
 
     // Generate markup for all view sizes using the controller
     const markup = await pluginMarkupController.generateMarkup(userSettings);

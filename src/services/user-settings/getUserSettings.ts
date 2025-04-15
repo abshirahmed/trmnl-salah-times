@@ -9,19 +9,5 @@ import { logger } from '@/utils/logger';
 export const getUserSettings = async (uuid: string) => {
   logger.info('Getting user settings', { uuid });
   const supabase = createSupabaseClient();
-  const { data, error } = await supabase
-    .from('user_settings')
-    .select()
-    .eq('uuid', uuid)
-    .single();
-
-  if (error) {
-    if (error.code === 'PGRST116') {
-      // Not found
-      return null;
-    }
-    throw error;
-  }
-
-  return data;
+  return supabase.from('user_settings').select().eq('uuid', uuid).single();
 };
