@@ -102,6 +102,14 @@ functions:
           path: save-settings
           method: get
           cors: true
+          request:
+            parameters:
+              querystrings:
+                uuid: true
+                city: true
+                country: true
+                method: false
+                timeFormat: false
 
   uninstallationHandler:
     handler: src/handlers/uninstallation-handler/index.handler
