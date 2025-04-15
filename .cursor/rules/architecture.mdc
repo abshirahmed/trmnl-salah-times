@@ -1,0 +1,15 @@
+---
+description: Maintain clear TS/Node.js architecture (handlers -> controllers -> services pattern).
+globs: 
+alwaysApply: false
+---
+---
+description: Maintain clear TS/Node.js architecture (handlers -> controllers -> services pattern).
+globs: ["**/*.ts", "**/*.js"]
+alwaysApply: false
+---
+
+Module Structure: Follow the handlers -> controllers -> services pattern where applicable. Ensure modules are self-contained and concerns are clearly separated.
+Code Organization: Organize code into logical directories. Group related functionality. Use clear, descriptive names for files, directories, classes, and functions that reflect their purpose.
+Documentation: Document the rationale ("why") behind significant architectural decisions.
+Consistency: Adhere to established architectural patterns used within the project.

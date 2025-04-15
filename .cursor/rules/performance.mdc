@@ -1,0 +1,14 @@
+---
+description: Consider performance implications (optimization, resource mgmt, caching, efficient queries).
+globs: 
+alwaysApply: false
+---
+---
+description: Consider performance implications (optimization, resource mgmt, caching, efficient queries).
+globs: ["**/*.ts", "**/*.js"]
+alwaysApply: false
+---
+
+Optimization: Optimize critical paths and common use cases. Measure performance before and after optimizing (avoid premature optimization). Write efficient database queries (use indexes, avoid N+1).
+Resource Management: Be mindful of memory usage and potential leaks. Optimize network calls (batching, reducing payload size). Use caching strategies (in-memory, distributed) where appropriate. Handle timeouts and retries gracefully.
+Monitoring: Ensure code is written in a way that allows for effective performance monitoring.

@@ -1,0 +1,16 @@
+---
+description: Enforce strict TypeScript type safety practices (strong typing, avoid 'any', interfaces).
+globs: 
+alwaysApply: false
+---
+---
+description: Enforce strict TypeScript type safety practices (strong typing, avoid 'any', interfaces).
+globs: ["**/*.ts", "**/*.tsx", "**/tsconfig.json"]
+alwaysApply: false
+---
+
+Strict Typing: Prioritize strong typing. Avoid using any unless absolutely necessary and document the reason. Enable and respect strictNullChecks.
+Interfaces/Types: Define interfaces or types before implementation, especially for public APIs and complex data structures. Use readonly properties to promote immutability where appropriate.
+Validation: Use validation schemas (like Zod, Joi) for inputs, especially at API boundaries.
+Definitions: Create comprehensive type definitions. Use type guards, assertions, and generics effectively. Ensure all functions have explicit and correct return types.
+Documentation: Document complex types and their relationships.

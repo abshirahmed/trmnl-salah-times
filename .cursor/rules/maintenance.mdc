@@ -1,0 +1,13 @@
+---
+description: Focus on long-term code and system maintainability (refactoring, updates, docs).
+globs: 
+alwaysApply: false
+---
+---
+description: Focus on long-term code and system maintainability (refactoring, updates, docs).
+globs: ["**/*.ts", "**/*.js", "**/*.md", "**/package.json"]
+alwaysApply: false
+---
+
+Code Maintenance: Regularly remove dead or unused code. Refactor incrementally to improve structure and reduce technical debt. Keep external dependencies up-to-date. Monitor code quality metrics.
+System Maintenance: Document operational procedures (deployment, updates, monitoring, backups, recovery). Plan for system updates and patches. Monitor system health and performance.

@@ -1,0 +1,16 @@
+---
+description: Follow best practices for writing and organizing tests (unit, integration).
+globs: 
+alwaysApply: false
+---
+---
+description: Follow best practices for writing and organizing tests (unit, integration).
+globs: ["**/*.test.ts", "**/*.spec.ts", "**/*.test.js", "**/*.spec.js"]
+alwaysApply: false
+---
+
+Implementation: Write tests (unit, integration) alongside or before implementation (TDD/BDD). Focus tests on behavior/requirements, not implementation details. Aim for high test coverage of critical paths and logic.
+Organization: Keep test files close to the code they test (e.g., *.test.ts or __tests__ directory). Use descriptive names for test suites and cases.
+Completeness: Test edge cases, error conditions, and variations in input.
+Isolation: Mock external dependencies (APIs, databases) appropriately for unit tests. Maintain separate and clean test data.
+Documentation: Document complex test setups or expectations.

@@ -1,0 +1,14 @@
+---
+description: Ensure comprehensive code (JSDoc, READMEs) and API (e.g., OpenAPI) documentation.
+globs: 
+alwaysApply: false
+---
+---
+description: Ensure comprehensive code (JSDoc, READMEs) and API (e.g., OpenAPI) documentation.
+globs: ["**/*.ts", "**/*.js", "**/*.md", "**/README.md", "**/swagger.yaml", "**/openapi.json"]
+alwaysApply: false
+---
+
+Code Docs: Use comments (like JSDoc) to explain the "why" behind complex logic, algorithms, or workarounds, not just the "what". Keep documentation synchronized with code changes. Document architectural decisions.
+READMEs: Maintain comprehensive README files at the project and module levels.
+API Docs: Document all public APIs clearly. Specify parameters (types, required/optional), return values (including shape and types), and potential error conditions. Include usage examples. Keep API documentation current.

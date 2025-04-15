@@ -1,0 +1,14 @@
+---
+description: Adhere to project development workflows (Git commits, code reviews, CI/CD).
+globs: 
+alwaysApply: false
+---
+---
+description: Adhere to project development workflows (Git commits, code reviews, CI/CD).
+globs: [] # Or potentially ["**/*"] if broad relevance is desired
+alwaysApply: false
+---
+
+Version Control (Git): Make small, atomic, well-scoped commits. Write clear and descriptive commit messages following conventional standards if applicable. Develop features in separate branches. Integrate frequently.
+Code Reviews: When contributing code, ensure it adheres to quality standards, includes necessary tests, updates documentation, and considers security implications. When reviewing, check for quality, correctness, edge cases, test coverage, documentation, and security.
+CI/CD: Ensure changes integrate smoothly with CI/CD pipelines.
