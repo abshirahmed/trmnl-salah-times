@@ -171,7 +171,7 @@ This structure provides several benefits:
    - Create a new project in Supabase
    - Run the schema.sql file in the supabase directory to create the necessary tables and policies
    - The database includes the following tables:
-     - `user_settings`: Stores user preferences for prayer time calculations
+     - `user_settings`: Stores user preferences including city, country, calculation method, and time format
      - `locations`: Stores user locations (prepared for future use)
      - `prayer_times`: Caches prayer times for locations (prepared for future use)
    - Get your Supabase URL and service key from the project settings
