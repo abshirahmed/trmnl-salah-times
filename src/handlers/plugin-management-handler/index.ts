@@ -1,4 +1,4 @@
-import { generateManagementInterface } from '@/controllers/user-settings-controller';
+import { generateManagementInterface } from '@/controllers/user-settings';
 import { pluginManagementQuerySchema } from '@/handlers/plugin-management-handler/schema';
 import { getUserSettings } from '@/services/user-settings';
 import { logger } from '@/utils/logger';

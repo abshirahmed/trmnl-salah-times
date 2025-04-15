@@ -1,4 +1,4 @@
-import { pluginMarkupController } from '@/controllers/plugin-markup-controller';
+import { generateMarkup } from '@/controllers/plugin-markup';
 import { pluginMarkupBodySchema } from '@/handlers/plugin-markup-handler/schema';
 import { getUserSettings } from '@/services/user-settings';
 import { verifyAuthHeader } from '@/utils/auth';
@@ -48,8 +48,8 @@ const pluginMarkupHandler = async (event: APIGatewayProxyEvent) => {
       };
     }
 
-    // Generate markup for all view sizes using the controller
-    const markup = await pluginMarkupController.generateMarkup(userSettings);
+    // Generate markup for all view sizes
+    const markup = await generateMarkup(userSettings);
 
     logger.info('Generated markup for all view sizes');
 

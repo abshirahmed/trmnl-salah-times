@@ -1,3 +1,3 @@
-export * from '@/controllers/prayer-times-controller';
-export * from '@/controllers/plugin-markup-controller';
-export * from '@/controllers/user-settings-controller';
+export * from '@/controllers/prayer-times';
+export * from '@/controllers/plugin-markup';
+export * from '@/controllers/user-settings';

@@ -1,4 +1,4 @@
-import { prayerTimesController } from '@/controllers/prayer-times-controller';
+import { getPrayerTimes } from '@/controllers/prayer-times';
 import { prayerTimesQuerySchema } from '@/handlers/prayer-times-handler/schema';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
@@ -28,8 +28,8 @@ const prayerTimesHandler = async (event: APIGatewayProxyEvent) => {
   // Extract validated parameters
   const { city, country, method } = data;
 
-  // Use the controller to get prayer times
-  const enhancedResponse = await prayerTimesController.getPrayerTimes({
+  // Get prayer times
+  const enhancedResponse = await getPrayerTimes({
     city,
     country,
     method,
