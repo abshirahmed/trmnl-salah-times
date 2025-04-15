@@ -1,9 +1,9 @@
 import { Tables } from '@/clients/supabase/database.types';
+import { processTemplate, TemplateData } from '@/controllers/plugin-markup';
 import { calculatePrayerTimes } from '@/services/prayer-times/calculatePrayerTimes';
 import { templates } from '@/templates/trmnl-plugin';
 import { logger } from '@/utils/logger';
 import { formatNextPrayerTime } from '@/utils/prayerTimeUtils';
-import { processTemplate, TemplateData } from './processTemplate';
 
 type UserSettings = Tables<'user_settings'>;
 
