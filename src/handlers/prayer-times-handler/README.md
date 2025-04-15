@@ -71,3 +71,12 @@ The response includes all data from the Aladhan API plus enhanced data:
 | 13     | Diyanet İşleri Başkanlığı, Turkey           |
 | 14     | Spiritual Administration of Muslims of Russia|
 | 15     | Moonsighting Committee Worldwide             |
+
+## Implementation Notes
+
+This handler includes:
+
+1. Authorization verification
+2. Input validation using Zod schema
+3. Error handling for API and database operations
+4. Logging for tracking prayer times requests

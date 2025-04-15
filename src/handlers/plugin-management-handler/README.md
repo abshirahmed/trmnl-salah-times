@@ -31,11 +31,11 @@ Returns an HTML page with a form for configuring prayer times settings.
 - `method` - The prayer time calculation method
 - `timeFormat` - The time format preference (12h or 24h)
 
-## Production Considerations
+## Implementation Notes
 
-In a production environment, you would:
+This handler includes:
 
-1. Verify the user's identity
-2. Retrieve their current settings from a database
-3. Pre-populate the form with these settings
-4. Process form submissions to update the settings in the database
+1. Input validation using Zod schema
+2. Retrieval of user settings from the database
+3. Pre-population of the form with existing settings
+4. Form submission handling to update settings

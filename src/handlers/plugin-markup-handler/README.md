@@ -52,11 +52,11 @@ The handler serves templates from the `trmnl-plugin` directory:
 - `half-view-markup.html` - Half-screen view template
 - `quadrant-view-markup.html` - Quadrant view template
 
-## Production Considerations
+## Implementation Notes
 
-In a production environment, you would:
+This handler includes:
 
-1. Implement caching for frequently accessed templates
-2. Add more robust error handling for database operations
-3. Optimize template generation for performance
-4. Add monitoring for template generation times
+1. Authorization verification
+2. Input validation using Zod schema
+3. Error handling for database operations
+4. Logging for tracking markup generation

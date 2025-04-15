@@ -27,28 +27,6 @@ Located in `src/services/trmnl/`, these services handle TRMNL API interactions:
 - **exchangeCodeForToken.ts**: Exchanges an authorization code for an access token
 - **verifyToken.ts**: Verifies if an access token is valid
 
-## Future Services
-
-The database schema includes tables for locations and cached prayer times that are not currently used by the application. In the future, these services could be implemented:
-
-### Locations Services
-
-These services would manage user locations:
-
-- **getLocations**: Retrieve all locations for a user
-- **getLocation**: Retrieve a specific location by ID
-- **saveLocation**: Create or update a location
-- **deleteLocation**: Delete a location
-- **setDefaultLocation**: Set a location as the default for a user
-
-### Prayer Times Database Services
-
-These services would manage cached prayer times in the database:
-
-- **getCachedPrayerTimes**: Retrieve cached prayer times for a specific location and date
-- **cachePrayerTimes**: Store prayer times in the database to reduce API calls
-- **deleteCachedPrayerTimes**: Delete cached prayer times
-
 ## Service Design Principles
 
 1. **Single Responsibility**: Each service file focuses on a specific task
