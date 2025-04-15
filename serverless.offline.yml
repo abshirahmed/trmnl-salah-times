@@ -113,7 +113,7 @@ functions:
     events:
       - http:
           path: save-settings
-          method: post
+          method: get
           cors: true
 
   uninstallationHandler:

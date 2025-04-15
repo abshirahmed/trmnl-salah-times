@@ -10,24 +10,26 @@ This handler is responsible for saving user settings for the TRMNL plugin.
 ## Functionality
 
 - Receives settings form submissions from the management interface
-- Validates the request body
+- Validates the query parameters
 - Saves the user settings to the database
 - Returns a success or error response
 
 ## API Endpoint
 
-`POST /save-settings`
+`GET /save-settings`
 
-### Request Body
+### Query Parameters
 
-```json
-{
-  "uuid": "674c9d99-cea1-4e52-9025-9efbe0e30901",
-  "city": "London",
-  "country": "UK",
-  "method": 2,
-  "timeFormat": "12h"
-}
+- `uuid` - User UUID (required)
+- `city` - User's city (required)
+- `country` - User's country (required)
+- `method` - Prayer time calculation method (optional, defaults to 2)
+- `timeFormat` - Time format preference (optional, defaults to '24h')
+
+### Example
+
+```
+/save-settings?uuid=674c9d99-cea1-4e52-9025-9efbe0e30901&city=London&country=UK&method=2&timeFormat=12h
 ```
 
 ### Response

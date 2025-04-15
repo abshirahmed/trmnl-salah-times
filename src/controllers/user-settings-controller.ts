@@ -142,39 +142,36 @@ export const generateManagementInterface = (
           const method = document.getElementById('method').value;
           const timeFormat = document.getElementById('time-format').value;
 
-          // Send settings to the server
-          fetch('/save-settings', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              uuid,
-              city,
-              country,
-              method: parseInt(method, 10),
-              timeFormat
-            })
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              // Show success message
-              document.getElementById('success-alert').style.display = 'block';
+          // Build query string for GET request
+          const queryParams = new URLSearchParams({
+            uuid,
+            city,
+            country,
+            method: method,
+            timeFormat,
+          }).toString();
 
-              // Redirect back to TRMNL after a short delay
-              setTimeout(() => {
-                window.location.href = 'https://usetrmnl.com';
-              }, 2000);
-            } else {
-              // Show error message
+          // Send settings to the server using GET
+          fetch('/save-settings?' + queryParams)
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Show success message
+                document.getElementById('success-alert').style.display = 'block';
+
+                // Redirect back to TRMNL after a short delay
+                setTimeout(() => {
+                  window.location.href = 'https://usetrmnl.com';
+                }, 2000);
+              } else {
+                // Show error message
+                document.getElementById('error-alert').style.display = 'block';
+              }
+            })
+            .catch(error => {
+              console.error('Error saving settings:', error);
               document.getElementById('error-alert').style.display = 'block';
-            }
-          })
-          .catch(error => {
-            console.error('Error saving settings:', error);
-            document.getElementById('error-alert').style.display = 'block';
-          });
+            });
         });
       </script>
     </body>

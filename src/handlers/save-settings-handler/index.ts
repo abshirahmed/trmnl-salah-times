@@ -1,4 +1,4 @@
-import { saveSettingsBodySchema } from '@/handlers/save-settings-handler/schema';
+import { saveSettingsQuerySchema } from '@/handlers/save-settings-handler/schema';
 import { saveUserSettings } from '@/services/user-settings';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
@@ -11,17 +11,19 @@ import { HttpStatusCode } from 'axios';
  */
 const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
   try {
-    const parseResult = saveSettingsBodySchema.safeParse(event.body);
+    const parseResult = saveSettingsQuerySchema.safeParse(
+      event.queryStringParameters,
+    );
 
     if (!parseResult.success) {
-      logger.error('Invalid save settings request body', {
+      logger.error('Invalid save settings query parameters', {
         errors: parseResult.error.flatten(),
       });
 
       return {
         statusCode: HttpStatusCode.BadRequest,
         body: {
-          message: 'Invalid request body',
+          message: 'Invalid request parameters',
           errors: parseResult.error.flatten(),
           success: false,
         },
