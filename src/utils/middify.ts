@@ -6,6 +6,7 @@ import httpErrorHandler from '@middy/http-error-handler';
 import httpEventNormalizer from '@middy/http-event-normalizer';
 import jsonBodyParser from '@middy/http-json-body-parser';
 import httpResponseSerializer from '@middy/http-response-serializer';
+import httpUrlEncodeBodyParser from '@middy/http-urlencode-body-parser';
 import { Handler } from 'aws-lambda';
 
 export const middify = (handler: Handler) =>
@@ -29,6 +30,11 @@ export const middify = (handler: Handler) =>
     .use(httpEventNormalizer())
     .use(
       jsonBodyParser({
+        disableContentTypeError: true,
+      }),
+    )
+    .use(
+      httpUrlEncodeBodyParser({
         disableContentTypeError: true,
       }),
     )

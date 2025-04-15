@@ -1228,24 +1228,24 @@
     fast-check "^3.21.0"
 
 "@emnapi/core@^1.4.0":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@emnapi/core/-/core-1.4.1.tgz#1841d87508c70d9f3008da52a4a50579e03e5728"
-  integrity sha512-4JFstCTaToCFrPqrGzgkF8N2NHjtsaY4uRh6brZQ5L9e4wbMieX8oDT8N7qfVFTQecHFEtkj4ve49VIZ3mKVqw==
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@emnapi/core/-/core-1.4.3.tgz#9ac52d2d5aea958f67e52c40a065f51de59b77d6"
+  integrity sha512-4m62DuCE07lw01soJwPiBGC0nAww0Q+RY70VZ+n49yDIO13yyinhbWCeNnaob0lakDtWQzSdtNWzJeOJt2ma+g==
   dependencies:
-    "@emnapi/wasi-threads" "1.0.1"
+    "@emnapi/wasi-threads" "1.0.2"
     tslib "^2.4.0"
 
 "@emnapi/runtime@^1.4.0":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@emnapi/runtime/-/runtime-1.4.1.tgz#79e54e3cc7f1955b3080f6e1e0e111e06114e114"
-  integrity sha512-LMshMVP0ZhACNjQNYXiU1iZJ6QCcv0lUdPDPugqGvCGXt5xtRVBPdtA0qU12pEXZzpWAhWlZYptfdAFq10DOVQ==
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@emnapi/runtime/-/runtime-1.4.3.tgz#c0564665c80dc81c448adac23f9dfbed6c838f7d"
+  integrity sha512-pBPWdu6MLKROBX05wSNKcNb++m5Er+KQ9QkB+WVM+pW2Kx9hoSrVTnu3BdkI5eBLZoKu/J6mW/B6i6bJB2ytXQ==
   dependencies:
     tslib "^2.4.0"
 
-"@emnapi/wasi-threads@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@emnapi/wasi-threads/-/wasi-threads-1.0.1.tgz#d7ae71fd2166b1c916c6cd2d0df2ef565a2e1a5b"
-  integrity sha512-iIBu7mwkq4UQGeMEM8bLwNK962nXdhodeScX4slfQnRhEMMzvYivHhutCIk8uojvmASXXPC2WNEjwxFWk72Oqw==
+"@emnapi/wasi-threads@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@emnapi/wasi-threads/-/wasi-threads-1.0.2.tgz#977f44f844eac7d6c138a415a123818c655f874c"
+  integrity sha512-5n3nTJblwRi8LlXkJ9eBzu+kZR8Yxcc7ubakyQTFzPMtIhFpUBRbsnc2Dv88IZDIbCDlBiWrknhB4Lsz7mg6BA==
   dependencies:
     tslib "^2.4.0"
 
@@ -2062,6 +2062,11 @@
   dependencies:
     "@middy/util" "6.1.6"
 
+"@middy/http-urlencode-body-parser@^6.1.6":
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@middy/http-urlencode-body-parser/-/http-urlencode-body-parser-6.1.6.tgz#b949a985a53a700c4b32b4f9e9d4f64db379df62"
+  integrity sha512-JvWsVyCpULS+bts7ErRiimB6qqfQbpikKyKPJ7gkAjTzX7BEaKXxUbAMwS7iwjFYYzSC6tz8F1DYnx/oMYNB7A==
+
 "@middy/util@6.1.6":
   version "6.1.6"
   resolved "https://registry.yarnpkg.com/@middy/util/-/util-6.1.6.tgz#acb6d3bb0f8cf585bfea10e880fe6f46cf586f47"
@@ -2187,9 +2192,9 @@
     "@parcel/watcher-win32-x64" "2.5.1"
 
 "@pkgr/core@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.3.tgz#4946c50a8e1272a5529ebd4e2d5869db183a3cbe"
-  integrity sha512-yMV8bb9prWI21N6FsrnPCbhoYb8UUvYCDGoSvPHBloVC095Ef2ker43hzXkJ6TpJPw53S8FeFYkARa7GGIGwxg==
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.4.tgz#d897170a2b0ba51f78a099edccd968f7b103387c"
+  integrity sha512-ROFF39F6ZrnzSUEmQQZUar0Jt4xVoP9WnDRdWwF4NNcXs3xBTLgBUDoOwW141y1jP+S8nahIbdxbFC7IShw9Iw==
 
 "@rtsao/scc@^1.1.0":
   version "1.1.0"
@@ -4642,9 +4647,9 @@ eastasianwidth@^0.2.0:
   integrity sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==
 
 effect@^3.8.3:
-  version "3.14.8"
-  resolved "https://registry.yarnpkg.com/effect/-/effect-3.14.8.tgz#8f830e73b2175fb6dced5375abf22838e4c086b9"
-  integrity sha512-cHV6Mc2gb1e6l+CxhCeZm1JOzE4C9Mp7MhqHNFuAcSds2c2f23ZAb1ef4gBRHMIcdJ5sr3KGm+Xn+4z/UByE8w==
+  version "3.14.9"
+  resolved "https://registry.yarnpkg.com/effect/-/effect-3.14.9.tgz#960f7f59765ff490f76996027fe82a1961e8b8f1"
+  integrity sha512-VzcsPr7w2sw4R9HH1zrsqNMd2HWq2BTbW5PRd1dnx3RcRzdiUIBa8ogfumvSzjBY0TuJrADKMkBkuaE3V5WMpw==
   dependencies:
     "@standard-schema/spec" "^1.0.0"
     fast-check "^3.23.1"
