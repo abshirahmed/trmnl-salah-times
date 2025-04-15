@@ -100,7 +100,7 @@ export const generateManagementInterface = (
         <div class="form-group">
           <label for="method">Calculation Method</label>
           <select id="method" name="method">
-            <option value="2" ${userSettings?.method === 2 || !userSettings ? 'selected' : ''}>Islamic Society of North America (ISNA)</option>
+            <option value="2" ${!userSettings || userSettings?.method === 2 ? 'selected' : ''}>Islamic Society of North America (ISNA)</option>
             <option value="1" ${userSettings?.method === 1 ? 'selected' : ''}>University of Islamic Sciences, Karachi</option>
             <option value="3" ${userSettings?.method === 3 ? 'selected' : ''}>Muslim World League</option>
             <option value="4" ${userSettings?.method === 4 ? 'selected' : ''}>Umm Al-Qura University, Makkah</option>
@@ -120,8 +120,8 @@ export const generateManagementInterface = (
         <div class="form-group">
           <label for="time-format">Time Format</label>
           <select id="time-format" name="timeFormat">
-            <option value="24h" ${!userSettings || userSettings?.timeformat === '24h' ? 'selected' : ''}>24-hour</option>
-            <option value="12h" ${userSettings?.timeformat === '12h' ? 'selected' : ''}>12-hour</option>
+            <option value="12h" ${!userSettings || userSettings?.timeformat === '12h' ? 'selected' : ''}>12-hour</option>
+            <option value="24h" ${userSettings?.timeformat === '24h' ? 'selected' : ''}>24-hour</option>
           </select>
         </div>
 
@@ -153,7 +153,12 @@ export const generateManagementInterface = (
 
           // Send settings to the server using GET
           fetch('/save-settings?' + queryParams)
-            .then(response => response.json())
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to save settings');
+              }
+              return response.json();
+            })
             .then(data => {
               if (data.success) {
                 // Show success message
@@ -165,11 +170,13 @@ export const generateManagementInterface = (
                 }, 2000);
               } else {
                 // Show error message
+                document.getElementById('error-alert').textContent = data.message || 'Failed to save settings. Please try again.';
                 document.getElementById('error-alert').style.display = 'block';
               }
             })
             .catch(error => {
               console.error('Error saving settings:', error);
+              document.getElementById('error-alert').textContent = 'Failed to save settings. Please try again.';
               document.getElementById('error-alert').style.display = 'block';
             });
         });
