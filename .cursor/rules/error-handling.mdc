@@ -3,12 +3,6 @@ description: Implement consistent error handling and contextual logging in TS/No
 globs: 
 alwaysApply: false
 ---
----
-description: Implement consistent error handling and contextual logging in TS/Node.js.
-globs: ["**/*.ts", "**/*.js"]
-alwaysApply: false
----
-
 Error Management: Follow established error handling patterns. Validate inputs early. Use custom error types or hierarchies where beneficial. Provide user-friendly error messages at boundaries.
 Logging: Use the project's standard logging utility. Log errors with sufficient context (e.g., request ID, user ID, operation). Use appropriate severity levels (error, warn, info, debug).
 Security: Do not log sensitive information (passwords, tokens, PII) unless properly masked or encrypted.

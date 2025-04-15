@@ -3,12 +3,6 @@ description: Apply security best practices (input validation, secrets, dependenc
 globs: 
 alwaysApply: false
 ---
----
-description: Apply security best practices (input validation, secrets, dependencies, auth).
-globs: ["**/*.ts", "**/*.js", "**/Dockerfile", "**/package.json", "**/yarn.lock", "**/pnpm-lock.yaml", "**/config.{js,json,ts}"]
-alwaysApply: false
----
-
 Input Validation: Validate and sanitize all inputs rigorously, especially data coming from external sources or users.
 Least Privilege: Apply the principle of least privilege for processes, permissions, and API access.
 Secrets Management: Use environment variables or a dedicated secrets management solution for sensitive data (API keys, passwords, tokens). Never hardcode secrets.

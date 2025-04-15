@@ -3,12 +3,6 @@ description: Write clean, readable, maintainable code following style guides (e.
 globs: 
 alwaysApply: false
 ---
----
-description: Write clean, readable, maintainable code following style guides (e.g., ESLint/Prettier).
-globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/.eslintrc.{js,json,yaml}", "**/.prettierrc.{js,json,yaml}"]
-alwaysApply: false
----
-
 Clean Code: Follow clean code principles: Use meaningful names, keep functions small and focused (Single Responsibility Principle), avoid duplication (DRY), keep solutions simple (KISS).
 Code Style: Adhere strictly to the project's established code formatting rules (e.g., enforced by Prettier, ESLint). Use consistent naming conventions. Maintain proper indentation and reasonable line lengths. Use comments judiciously where code cannot be self-explanatory.
 Refactoring: Regularly refactor to improve clarity, remove unused code, and address technical debt.
