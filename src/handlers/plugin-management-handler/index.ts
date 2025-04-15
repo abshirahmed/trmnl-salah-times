@@ -1,6 +1,7 @@
 import { generateManagementInterface } from '@/controllers/user-settings';
 import { pluginManagementQuerySchema } from '@/handlers/plugin-management-handler/schema';
 import { getUserSettings } from '@/services/user-settings';
+import { handleError } from '@/utils/errorHandler';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -58,15 +59,10 @@ const pluginManagementHandler = async (event: APIGatewayProxyEvent) => {
       body: html,
     };
   } catch (error) {
-    logger.error('Error serving plugin management interface', { error });
-
-    return {
-      statusCode: HttpStatusCode.InternalServerError,
-      body: {
-        message: 'Error serving plugin management interface',
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-    };
+    return handleError('Error serving plugin management interface', {
+      error,
+      context: { event },
+    });
   }
 };
 

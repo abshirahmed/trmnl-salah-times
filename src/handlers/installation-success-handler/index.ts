@@ -1,5 +1,6 @@
 import { installationSuccessBodySchema } from '@/handlers/installation-success-handler/schema';
 import { verifyAuthHeader } from '@/utils/auth';
+import { handleError } from '@/utils/errorHandler';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -44,15 +45,10 @@ const installationSuccessHandler = async (event: APIGatewayProxyEvent) => {
       },
     };
   } catch (error) {
-    logger.error('Error processing installation success webhook', { error });
-
-    return {
-      statusCode: HttpStatusCode.InternalServerError,
-      body: {
-        message: 'Error processing installation success webhook',
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-    };
+    return handleError('Error processing installation success webhook', {
+      error,
+      context: { event },
+    });
   }
 };
 

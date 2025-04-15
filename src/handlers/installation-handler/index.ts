@@ -1,5 +1,6 @@
 import { installationQuerySchema } from '@/handlers/installation-handler/schema';
 import { exchangeCodeForToken } from '@/services/trmnl';
+import { handleError } from '@/utils/errorHandler';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -51,29 +52,16 @@ const installationHandler = async (event: APIGatewayProxyEvent) => {
         body: '',
       };
     } catch (clientError) {
-      logger.error('Failed to obtain access token', { error: clientError });
-
-      return {
-        statusCode: HttpStatusCode.InternalServerError,
-        body: {
-          message: 'Failed to obtain access token',
-          error:
-            clientError instanceof Error
-              ? clientError.message
-              : 'Unknown error',
-        },
-      };
+      return handleError('Failed to obtain access token', {
+        error: clientError,
+        context: { code },
+      });
     }
   } catch (error) {
-    logger.error('Error during installation process', { error });
-
-    return {
-      statusCode: HttpStatusCode.InternalServerError,
-      body: {
-        message: 'Installation process failed',
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-    };
+    return handleError('Error during installation process', {
+      error,
+      context: { event },
+    });
   }
 };
 

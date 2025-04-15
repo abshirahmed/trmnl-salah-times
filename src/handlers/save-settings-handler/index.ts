@@ -1,5 +1,6 @@
 import { saveSettingsQuerySchema } from '@/handlers/save-settings-handler/schema';
 import { saveUserSettings } from '@/services/user-settings';
+import { handleError } from '@/utils/errorHandler';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -52,15 +53,10 @@ const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
     });
 
     if (error) {
-      logger.error('Failed to save user settings', { uuid, error });
-
-      return {
-        statusCode: HttpStatusCode.InternalServerError,
-        body: {
-          message: 'Failed to save settings',
-          success: false,
-        },
-      };
+      return handleError('Failed to save user settings', {
+        error,
+        context: { uuid },
+      });
     }
 
     logger.info('Successfully saved user settings', { uuid });
@@ -73,16 +69,10 @@ const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
       },
     };
   } catch (error) {
-    logger.error('Error saving user settings', { error });
-
-    return {
-      statusCode: HttpStatusCode.InternalServerError,
-      body: {
-        message: 'Error saving settings',
-        error: error instanceof Error ? error.message : 'Unknown error',
-        success: false,
-      },
-    };
+    return handleError('Error saving user settings', {
+      error,
+      context: { event },
+    });
   }
 };
 

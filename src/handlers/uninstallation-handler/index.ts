@@ -1,6 +1,7 @@
 import { uninstallationBodySchema } from '@/handlers/uninstallation-handler/schema';
 import { deleteUserSettings } from '@/services/user-settings';
 import { verifyAuthHeader } from '@/utils/auth';
+import { handleError } from '@/utils/errorHandler';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -43,17 +44,10 @@ const uninstallationHandler = async (event: APIGatewayProxyEvent) => {
     const { error } = await deleteUserSettings(user_uuid);
 
     if (error) {
-      logger.warn('Failed to delete user settings', {
+      return handleError('Failed to delete user settings', {
         error,
-        user_uuid,
+        context: { user_uuid },
       });
-
-      return {
-        statusCode: HttpStatusCode.InternalServerError,
-        body: {
-          message: 'Failed to delete user settings',
-        },
-      };
     }
 
     logger.info('Successfully deleted user settings', {
@@ -67,15 +61,10 @@ const uninstallationHandler = async (event: APIGatewayProxyEvent) => {
       },
     };
   } catch (error) {
-    logger.error('Error processing uninstallation webhook', { error });
-
-    return {
-      statusCode: HttpStatusCode.InternalServerError,
-      body: {
-        message: 'Error processing uninstallation webhook',
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-    };
+    return handleError('Error processing uninstallation webhook', {
+      error,
+      context: { event },
+    });
   }
 };
 

@@ -2,6 +2,7 @@ import { generateMarkup } from '@/controllers/plugin-markup';
 import { pluginMarkupBodySchema } from '@/handlers/plugin-markup-handler/schema';
 import { getUserSettings } from '@/services/user-settings';
 import { verifyAuthHeader } from '@/utils/auth';
+import { handleError } from '@/utils/errorHandler';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
 import { APIGatewayProxyEvent } from 'aws-lambda';
@@ -58,15 +59,10 @@ const pluginMarkupHandler = async (event: APIGatewayProxyEvent) => {
       body: markup,
     };
   } catch (error) {
-    logger.error('Error serving plugin markup template', { error });
-
-    return {
-      statusCode: HttpStatusCode.InternalServerError,
-      body: {
-        message: 'Error serving plugin markup template',
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-    };
+    return handleError('Error serving plugin markup template', {
+      error,
+      context: { event },
+    });
   }
 };
 
