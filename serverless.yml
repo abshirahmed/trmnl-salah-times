@@ -9,6 +9,10 @@ plugins:
 custom:
   esbuild:
     packager: yarn
+    bundle: true
+    minify: false
+    sourcemap: true
+    keepOutputDirectory: true
 
 provider:
   name: aws
