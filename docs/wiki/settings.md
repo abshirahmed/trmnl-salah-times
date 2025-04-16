@@ -17,59 +17,94 @@ To access the settings for TRMNL Salah Times:
 #### City
 - **What it does**: Sets the city for which prayer times will be calculated
 - **How to set**: Enter the name of your city (e.g., "London", "New York", "Dubai")
+- **Default**: London
 - **Tips**: Use the official city name without abbreviations for best results
 
 #### Country
 - **What it does**: Sets the country for which prayer times will be calculated
 - **How to set**: Enter the name of your country (e.g., "United Kingdom", "United States", "UAE")
+- **Default**: UK
 - **Tips**: Use the full country name rather than country codes
 
-### Calculation Methods {#calculation-methods}
+### Calculation Methods
 
 The calculation method determines how prayer times are calculated based on different scholarly opinions and conventions.
 
 Available methods:
 
-1. **Muslim World League (Default)**
+1. **University of Islamic Sciences, Karachi**
+   - Used in Pakistan and neighboring countries
+   - Fajr angle: 18°, Isha angle: 18°
+
+2. **Islamic Society of North America (ISNA) - Default**
+   - Used by ISNA
+   - Fajr angle: 15°, Isha angle: 15°
+   - Default method for the plugin
+   - Popular in North America
+
+3. **Muslim World League**
    - Used by the Muslim World League
    - Fajr angle: 18°, Isha angle: 17°
    - Widely used in Europe, Far East, and parts of America
 
-2. **Islamic Society of North America (ISNA)**
-   - Used by the Islamic Society of North America
-   - Fajr angle: 15°, Isha angle: 15°
-   - Popular in North America
-
-3. **Egyptian General Authority of Survey**
-   - Used in Egypt and many African countries
-   - Fajr angle: 19.5°, Isha angle: 17.5°
-
 4. **Umm al-Qura University, Makkah**
    - Used in Saudi Arabia
-   - Fajr angle: 18.5°, Isha: 90 minutes after Maghrib (120 minutes during Ramadan)
+   - Fajr angle: 18.5°
+   - Isha: 90 minutes after Maghrib (120 minutes during Ramadan)
 
-5. **University of Islamic Sciences, Karachi**
-   - Used in Pakistan and neighboring countries
-   - Fajr angle: 18°, Isha angle: 18°
+5. **Egyptian General Authority of Survey**
+   - Used in Egypt and many African countries
+   - Fajr angle: 19.5°, Isha angle: 17.5°
 
 6. **Institute of Geophysics, University of Tehran**
    - Used in Iran and some Shia communities
    - Fajr angle: 17.7°, Isha angle: 14°
 
-7. **Shia Ithna-Ashari, Leva Research Institute, Qum**
-   - Used by many Shia communities worldwide
-   - Fajr angle: 16°, Isha angle: 14°
+7. **Gulf Region**
+   - Used in Gulf Cooperation Council regions
+   - Similar to Umm al-Qura but with different Isha calculation
 
-#### How to Choose a Calculation Method
+8. **Kuwait**
+   - Used in Kuwait
+   - Fajr angle: 18°, Isha angle: 17.5°
 
-- Select the method that is commonly used in your region
-- Consult with your local mosque or Islamic authority if unsure
-- You can always change the method if you find the prayer times don't align with your local community
+9. **Qatar**
+   - Used in Qatar
+   - Similar to Gulf Region method with local adjustments
 
-### Time Format
+10. **Majlis Ugama Islam Singapura**
+    - Used in Singapore
+    - Specific to Singapore's geographical position
 
-- **12-hour format**: Displays times in AM/PM format (e.g., 5:30 AM, 7:45 PM)
-- **24-hour format**: Displays times in 24-hour format (e.g., 05:30, 19:45)
+11. **Union Organization Islamic de France**
+    - Used in France
+    - Adapted for higher latitudes
+
+12. **Diyanet İşleri Başkanlığı**
+    - Used in Turkey and Turkish communities
+    - Specific to Turkey's geographical position
+
+13. **Spiritual Administration of Muslims of Russia**
+    - Used in Russia and neighboring regions
+    - Adapted for high latitudes
+
+14. **Moonsighting Committee Worldwide**
+    - Global method based on moon sighting
+    - Uses astronomical twilight if sun doesn't reach required angle
+
+## Time Format
+
+The plugin uses the following time formats:
+
+- Prayer times: 24-hour format (e.g., "15:30")
+- Next prayer time: 12-hour format with AM/PM (e.g., "3:30 PM")
+- Time until next prayer: Hours and minutes (e.g., "2 hours 15 minutes")
+
+## Timezone Handling
+
+- Prayer times are automatically adjusted to your local timezone
+- The plugin uses the IANA timezone database for accurate calculations
+- Timezone is determined from the Aladhan API response based on location
 
 ## Saving Your Settings
 

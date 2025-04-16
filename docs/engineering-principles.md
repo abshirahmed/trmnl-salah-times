@@ -12,102 +12,168 @@ We organize our codebase into a modular structure where each feature or componen
    - Implementation file (`index.ts`)
    - Validation schema (`schema.ts`)
    - Documentation (`README.md`)
+   - Unit and integration tests
 
 2. **Services**: Business logic is separated into service modules that:
    - Focus on a single responsibility
    - Can be reused across different handlers
-   - Are properly typed and documented
+   - Are properly typed with TypeScript
+   - Include comprehensive error handling
+   - Have dedicated type definition files
 
-3. **Utilities**: Common utilities are centralized and shared across the application
+3. **Controllers**: Business logic orchestration layer that:
+   - Coordinates between handlers and services
+   - Handles data transformation
+   - Manages error handling and logging
+   - Provides a clean API for handlers
+
+4. **Utilities**: Common utilities are centralized and shared across the application:
+   - Date and time handling with timezone support
+   - Logging with proper context
+   - Error handling with standardized formats
+   - Middleware for AWS Lambda functions
 
 This structure provides several benefits:
 - **Cohesion**: All files related to a specific feature are grouped together
 - **Discoverability**: Easy to find all components of a feature
-- **Modularity**: Each handler is a self-contained unit
+- **Modularity**: Each component is a self-contained unit
 - **Maintainability**: Changes to a feature only require modifying files in one location
+- **Testability**: Components can be tested in isolation
 
 ## Code Quality
 
 ### TypeScript Best Practices
 
-1. **Strong Typing**: We use TypeScript's type system extensively to catch errors at compile time
-2. **Interface-First Design**: Define interfaces before implementation to ensure clear contracts
-3. **Avoid `any` Type**: Use specific types or generics instead of `any` to maintain type safety
-4. **Readonly Properties**: Use readonly for properties that shouldn't change after initialization
+1. **Strong Typing**: We use TypeScript's type system extensively:
+   - Interfaces for API requests and responses
+   - Type definitions for external API responses
+   - Enums for fixed sets of values
+   - Generics for reusable components
+2. **Zod Schema Validation**: Use Zod for runtime validation of:
+   - API request parameters
+   - Configuration objects
+   - External API responses
+3. **Avoid `any` Type**: Use specific types or generics instead of `any`
+4. **Readonly Properties**: Use readonly for immutable data
 
 ### Clean Code Principles
 
-1. **Meaningful Names**: Use descriptive names for variables, functions, and classes
-2. **Single Responsibility**: Each function or class should have only one reason to change
-3. **Small Functions**: Keep functions small and focused on a single task
-4. **DRY (Don't Repeat Yourself)**: Avoid code duplication through proper abstraction
-5. **KISS (Keep It Simple, Stupid)**: Prefer simple solutions over complex ones
-6. **Comments**: Use comments to explain "why" not "what" (the code should be self-explanatory)
+1. **Meaningful Names**: Use descriptive names that reflect purpose
+2. **Single Responsibility**: Each function or class has one purpose
+3. **Small Functions**: Keep functions focused and manageable
+4. **DRY (Don't Repeat Yourself)**: Abstract common functionality
+5. **KISS (Keep It Simple, Stupid)**: Prefer simple solutions
+6. **Comments**: Document complex logic and business rules
 
 ## Error Handling
 
-1. **Consistent Error Handling**: Use a consistent approach to error handling across the application
-2. **Proper Logging**: Log errors with appropriate context for debugging
-3. **User-Friendly Error Messages**: Provide clear error messages for API responses
-4. **Fail Fast**: Validate inputs early to catch errors before they propagate
+1. **Standardized Error Handling**:
+   - Consistent error response format
+   - Error types for different scenarios
+   - Proper error logging with context
+2. **Graceful Degradation**:
+   - Fallback values for missing data
+   - Default settings when user preferences unavailable
+   - Timezone fallback to UTC
+3. **Input Validation**:
+   - Schema validation for all inputs
+   - Parameter sanitization
+   - Type checking at runtime
 
 ## Testing
 
-1. **Test-Driven Development**: Write tests before or alongside implementation
-2. **Unit Testing**: Test individual units of code in isolation
-3. **Integration Testing**: Test interactions between components
-4. **Test Coverage**: Aim for high test coverage, especially for critical paths
-5. **Meaningful Tests**: Tests should verify behavior, not implementation details
+1. **Comprehensive Test Coverage**:
+   - Unit tests for business logic
+   - Integration tests for API endpoints
+   - Schema validation tests
+   - Time handling tests across timezones
+2. **Test Organization**:
+   - Tests mirror source code structure
+   - Shared test utilities and fixtures
+   - Clear test descriptions
+3. **Edge Cases**:
+   - Test timezone edge cases
+   - Handle prayer time edge cases
+   - Test date boundary conditions
 
 ## Documentation
 
-1. **Code Documentation**: Document public APIs, complex logic, and non-obvious behavior
-2. **README Files**: Each module should have a README explaining its purpose and usage
-3. **Architecture Documentation**: Maintain high-level documentation of the system architecture
-4. **Keep Documentation Updated**: Update documentation when code changes
+1. **Code Documentation**:
+   - JSDoc comments for functions
+   - Interface and type documentation
+   - Complex logic explanation
+2. **README Files**:
+   - Module-level documentation
+   - Setup and configuration guides
+   - API documentation
+3. **Wiki Documentation**:
+   - User settings guide
+   - Calculation methods explanation
+   - Time format documentation
 
 ## Version Control
 
-1. **Small, Focused Commits**: Make small, focused commits that address a single concern
-2. **Descriptive Commit Messages**: Write clear commit messages that explain the change
-3. **Feature Branches**: Develop new features in dedicated branches
-4. **Pull Requests**: Use pull requests for code review before merging
-5. **CI/CD**: Leverage continuous integration and deployment for automated testing and deployment
-
-## Code Review
-
-1. **Constructive Feedback**: Provide constructive feedback during code reviews
-2. **Focus on Quality**: Review for code quality, not just functionality
-3. **Check for Edge Cases**: Consider edge cases and error scenarios
-4. **Verify Tests**: Ensure appropriate tests are included with changes
+1. **Git Best Practices**:
+   - Meaningful commit messages
+   - Feature branches
+   - Pull request reviews
+2. **CI/CD Pipeline**:
+   - Automated testing
+   - Linting and type checking
+   - Serverless deployment
+3. **Environment Management**:
+   - Separate development and production
+   - Environment variable management
+   - Secret handling
 
 ## Security
 
-1. **Input Validation**: Validate all inputs to prevent injection attacks
-2. **Least Privilege**: Follow the principle of least privilege for permissions
-3. **Environment Variables**: Use environment variables for sensitive configuration
-4. **Dependency Management**: Keep dependencies updated to avoid security vulnerabilities
+1. **Input Validation**:
+   - Parameter validation
+   - Query string sanitization
+   - Type checking
+2. **API Security**:
+   - TRMNL OAuth integration
+   - Token validation
+   - Rate limiting
+3. **Data Protection**:
+   - Secure user settings storage
+   - Environment variable encryption
+   - Minimal data collection
 
 ## Performance
 
-1. **Optimize for Common Cases**: Focus optimization efforts on common use cases
-2. **Measure First**: Measure performance before optimizing
-3. **Consider Serverless Constraints**: Be mindful of cold starts and execution time limits
-4. **Efficient Database Queries**: Write efficient database queries to minimize costs
+1. **Lambda Optimization**:
+   - Cold start optimization
+   - Memory allocation tuning
+   - Response time monitoring
+2. **Caching Strategy**:
+   - Prayer times caching
+   - User settings caching
+   - API response caching
+3. **Resource Usage**:
+   - Efficient database queries
+   - Minimal API calls
+   - Optimized calculations
 
 ## Maintenance
 
-1. **Remove Unused Code**: Regularly remove unused code to keep the codebase clean
-2. **Refactor Gradually**: Refactor code gradually to improve quality without disrupting development
-3. **Technical Debt**: Address technical debt regularly, not just when it becomes a problem
-4. **Keep Dependencies Updated**: Regularly update dependencies to get bug fixes and security patches
-
-By following these principles, we aim to create a codebase that is maintainable, reliable, and easy to understand for all team members.
+1. **Code Quality**:
+   - Regular dependency updates
+   - Technical debt management
+   - Code cleanup
+2. **Monitoring**:
+   - Error tracking
+   - Performance monitoring
+   - Usage analytics
+3. **Documentation**:
+   - Keep documentation updated
+   - Document breaking changes
+   - Maintain changelog
 
 ## Related Documentation
 
-- [Project Structure](./PROJECT_STRUCTURE.md) - Overview of the codebase organization
-- [AI Agent Guide](./AI_AGENT_GUIDE.md) - Instructions for AI agents working with this codebase
-- [Resource Integration Examples](./RESOURCE_INTEGRATION_EXAMPLES.md) - Examples for referencing files and resources
-- [Technical Architecture](./prayer-times-plugin/technical/architecture.md) - Detailed information about the system architecture
 - [Main README](../README.md) - Project overview and setup instructions
+- [Prayer Times Handler](../src/handlers/prayer-times-handler/README.md) - Prayer times API documentation
+- [Services Documentation](../src/services/README.md) - Service layer documentation
+- [Settings Guide](../docs/wiki/settings.md) - User settings documentation

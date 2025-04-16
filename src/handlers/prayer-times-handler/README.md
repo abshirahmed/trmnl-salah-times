@@ -28,19 +28,18 @@ This handler is responsible for retrieving prayer times based on city and countr
 
 ### Response
 
-The response includes all data from the Aladhan API plus enhanced data:
+The response includes the following data:
 
 ```json
 {
-  "code": 200,
-  "status": "OK",
-  "data": {
-    "timings": { ... },
-    "date": { ... },
-    "meta": { ... },
+  "statusCode": 200,
+  "body": {
+    "city": "London",
+    "country": "UK",
+    "method": 2,
     "enhancedData": {
       "nextPrayer": "Asr",
-      "nextPrayerTime": "15:30",
+      "nextPrayerTime": "3:30 PM",
       "timeUntilNextPrayer": {
         "hours": 2,
         "minutes": 15,
@@ -58,7 +57,7 @@ The response includes all data from the Aladhan API plus enhanced data:
 | Method | Description                                  |
 |--------|----------------------------------------------|
 | 1      | University of Islamic Sciences, Karachi      |
-| 2      | Islamic Society of North America             |
+| 2      | Islamic Society of North America (Default)   |
 | 3      | Muslim World League                          |
 | 4      | Umm Al-Qura University, Makkah               |
 | 5      | Egyptian General Authority of Survey         |
@@ -76,7 +75,9 @@ The response includes all data from the Aladhan API plus enhanced data:
 
 This handler includes:
 
-1. Authorization verification
-2. Input validation using Zod schema
-3. Error handling for API and database operations
-4. Logging for tracking prayer times requests
+1. Input validation using Zod schema
+2. Error handling for API and database operations
+3. Logging for tracking prayer times requests
+4. Time zone-aware calculations using date-fns-tz
+5. 12-hour time format for next prayer time
+6. Support for next day's Fajr prayer when all prayers for current day have passed
