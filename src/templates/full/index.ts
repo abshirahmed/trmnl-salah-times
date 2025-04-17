@@ -6,23 +6,27 @@ export const fullTemplate = `
 <div class="environment trmnl">
   <div class="screen">
     <div class="view view--full">
-      <div class="layout padding">
-        <!-- Header Section with Last Sync Time -->
+      <div class="layout padding--large">
+        <!-- Header Section with Current Time and Date -->
         <div class="flex flex--col flex--align-center gap--small margin-bottom">
-          <div class="title title--large">Salah Times</div>
           <div class="flex flex--col flex--align-center gap--xxsmall">
             <div class="value value--xlarge value--tnums format-value">{{ IDX_0.enhancedData.currentTime }}</div>
-            <div class="description description--small text--center">Last Synced</div>
+            <div class="flex flex--col flex--align-center gap--xxsmall">
+              <div class="description text--center">{{ IDX_0.enhancedData.gregorianDate }}</div>
+              <div class="description description--small text--center">Last Updated: {{ IDX_0.enhancedData.lastSyncTime }}</div>
+            </div>
           </div>
-          <div class="label text--center">{{ IDX_0.data.meta.timezone }}</div>
         </div>
 
         <!-- Next Prayer Information - Prominent Display -->
-        <div class="item background--dark border radius margin-bottom">
-          <div class="content padding">
-            <div class="flex flex--col flex--align-center gap--small">
+        <div class="item background--dark border radius margin-bottom--large">
+          <div class="content padding--large">
+            <div class="flex flex--col flex--align-center gap">
               <span class="label label--large">Next Prayer</span>
-              <span class="title title--large fit-value" data-min-size="24" data-max-size="48">{{ IDX_0.enhancedData.nextPrayer }}</span>
+              <div class="flex flex--col flex--align-center gap--small">
+                <span class="title title--large fit-value" data-min-size="32" data-max-size="48">{{ IDX_0.enhancedData.nextPrayer }}</span>
+                <span class="value value--large value--tnums format-value">{{ IDX_0.enhancedData.nextPrayerTime }}</span>
+              </div>
               <div class="flex flex--align-center gap">
                 <span class="value value--large format-value">{{ IDX_0.enhancedData.timeUntilNextPrayer.hours }}</span>
                 <span class="description">hours</span>
@@ -39,18 +43,26 @@ export const fullTemplate = `
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Fajr' %}background--dark{% else %}background--light{% endif %} border radius">
             <div class="content padding">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col gap--xsmall">
-                  <span class="label">Fajr</span>
+                <div class="flex flex--col">
+                  <span class="label label--large">Fajr Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Fajr' %}
-                    <span class="description">Current Prayer</span>
+                    <span class="description description--small">Current Prayer</span>
                   {% endif %}
                 </div>
-                <div class="flex flex--col flex--align-end">
-                  <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Fajr | slice: 0, 5 }}</span>
-                  {% if IDX_0.enhancedData.nextPrayer == 'Fajr' %}
-                    <span class="description description--small">Next</span>
-                  {% endif %}
+                <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Fajr | slice: 0, 5 }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sunrise -->
+          <div class="item background--light border radius">
+            <div class="content padding">
+              <div class="flex flex--between flex--align-center">
+                <div class="flex flex--col">
+                  <span class="label label--large">Sunrise</span>
+                  <span class="description description--small">End of Fajr Time</span>
                 </div>
+                <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Sunrise | slice: 0, 5 }}</span>
               </div>
             </div>
           </div>
@@ -59,18 +71,13 @@ export const fullTemplate = `
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Dhuhr' %}background--dark{% else %}background--light{% endif %} border radius">
             <div class="content padding">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col gap--xsmall">
-                  <span class="label">Dhuhr</span>
+                <div class="flex flex--col">
+                  <span class="label label--large">Dhuhr Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Dhuhr' %}
-                    <span class="description">Current Prayer</span>
+                    <span class="description description--small">Current Prayer</span>
                   {% endif %}
                 </div>
-                <div class="flex flex--col flex--align-end">
-                  <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Dhuhr | slice: 0, 5 }}</span>
-                  {% if IDX_0.enhancedData.nextPrayer == 'Dhuhr' %}
-                    <span class="description description--small">Next</span>
-                  {% endif %}
-                </div>
+                <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Dhuhr | slice: 0, 5 }}</span>
               </div>
             </div>
           </div>
@@ -79,18 +86,13 @@ export const fullTemplate = `
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Asr' %}background--dark{% else %}background--light{% endif %} border radius">
             <div class="content padding">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col gap--xsmall">
-                  <span class="label">Asr</span>
+                <div class="flex flex--col">
+                  <span class="label label--large">Asr Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Asr' %}
-                    <span class="description">Current Prayer</span>
+                    <span class="description description--small">Current Prayer</span>
                   {% endif %}
                 </div>
-                <div class="flex flex--col flex--align-end">
-                  <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Asr | slice: 0, 5 }}</span>
-                  {% if IDX_0.enhancedData.nextPrayer == 'Asr' %}
-                    <span class="description description--small">Next</span>
-                  {% endif %}
-                </div>
+                <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Asr | slice: 0, 5 }}</span>
               </div>
             </div>
           </div>
@@ -99,18 +101,13 @@ export const fullTemplate = `
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Maghrib' %}background--dark{% else %}background--light{% endif %} border radius">
             <div class="content padding">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col gap--xsmall">
-                  <span class="label">Maghrib</span>
+                <div class="flex flex--col">
+                  <span class="label label--large">Maghrib Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Maghrib' %}
-                    <span class="description">Current Prayer</span>
+                    <span class="description description--small">Current Prayer</span>
                   {% endif %}
                 </div>
-                <div class="flex flex--col flex--align-end">
-                  <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Maghrib | slice: 0, 5 }}</span>
-                  {% if IDX_0.enhancedData.nextPrayer == 'Maghrib' %}
-                    <span class="description description--small">Next</span>
-                  {% endif %}
-                </div>
+                <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Maghrib | slice: 0, 5 }}</span>
               </div>
             </div>
           </div>
@@ -119,29 +116,41 @@ export const fullTemplate = `
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Isha' %}background--dark{% else %}background--light{% endif %} border radius">
             <div class="content padding">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col gap--xsmall">
-                  <span class="label">Isha</span>
+                <div class="flex flex--col">
+                  <span class="label label--large">Isha Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Isha' %}
-                    <span class="description">Current Prayer</span>
+                    <span class="description description--small">Current Prayer</span>
                   {% endif %}
                 </div>
-                <div class="flex flex--col flex--align-end">
-                  <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Isha | slice: 0, 5 }}</span>
-                  {% if IDX_0.enhancedData.nextPrayer == 'Isha' %}
-                    <span class="description description--small">Next</span>
-                  {% endif %}
-                </div>
+                <span class="value value--large value--tnums format-value">{{ IDX_0.data.timings.Isha | slice: 0, 5 }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Hijri Date Section -->
-        <div class="item background--light border radius margin-top">
-          <div class="content padding">
-            <div class="flex flex--col flex--align-center gap--xsmall">
-              <span class="label">Islamic Date</span>
-              <span class="value fit-value" data-min-size="16" data-max-size="24">{{ IDX_0.enhancedData.hijriDateFormatted }}</span>
+        <!-- Additional Information Section -->
+        <div class="flex flex--col gap margin-top">
+          <!-- Islamic Date -->
+          <div class="item background--light border radius">
+            <div class="content padding">
+              <div class="flex flex--col flex--align-center gap--xsmall">
+                <span class="label">Islamic Date</span>
+                <span class="value value--large">{{ IDX_0.data.date.hijri.weekday.en }}, {{ IDX_0.data.date.hijri.day }} {{ IDX_0.data.date.hijri.month.en }} {{ IDX_0.data.date.hijri.year }} {{ IDX_0.data.date.hijri.designation.abbreviated }}</span>
+                {% if IDX_0.data.date.hijri.holidays.length > 0 %}
+                  <span class="description description--small">{{ IDX_0.data.date.hijri.holidays[0] }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculation Method -->
+          <div class="item background--light border radius">
+            <div class="content padding">
+              <div class="flex flex--col flex--align-center gap--xsmall">
+                <span class="label">Calculation Method</span>
+                <span class="value value--medium">{{ IDX_0.data.meta.method.name }}</span>
+                <span class="description description--small">Fajr Angle: {{ IDX_0.data.meta.method.params.Fajr }}° • Isha Angle: {{ IDX_0.data.meta.method.params.Isha }}°</span>
+              </div>
             </div>
           </div>
         </div>
