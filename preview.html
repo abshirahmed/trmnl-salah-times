@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TRMNL Salah Times Preview</title>
+  <!-- TRMNL CSS and JS -->
+  <link rel="stylesheet" href="https://usetrmnl.com/css/latest/plugins.css">
+  <script src="https://usetrmnl.com/js/latest/plugins.js"></script>
+
+  <!-- Optional: Include Inter font for consistent typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;350;375;400;450;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+    .controls {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn:hover {
+      background-color: #45a049;
+    }
+    .btn.active {
+      background-color: #2E7D32;
+      font-weight: bold;
+    }
+    .trmnl-container {
+      width: 800px;
+      height: 480px;
+      background-color: white;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .trmnl-container.half {
+      width: 400px;
+      height: 480px;
+    }
+    .trmnl-container.quadrant {
+      width: 400px;
+      height: 240px;
+    }
+    .status {
+      margin-top: 10px;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>TRMNL Salah Times Preview</h1>
+
+  <div class="controls">
+    <button class="btn active" data-size="full">Full View</button>
+    <button class="btn" data-size="half">Half View</button>
+    <button class="btn" data-size="quadrant">Quadrant View</button>
+    <button class="btn" id="refresh">Refresh</button>
+  </div>
+
+  <div class="trmnl-container" id="container"></div>
+
+  <div class="status" id="status">Loading...</div>
+
+  <script>
+    // Function to fetch and display the markup
+    async function loadMarkup(viewSize = 'full') {
+      const container = document.getElementById('container');
+      const status = document.getElementById('status');
+
+      // Update container class
+      container.className = `trmnl-container ${viewSize !== 'full' ? viewSize : ''}`;
+
+      // Update button states
+      document.querySelectorAll('.btn[data-size]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.size === viewSize);
+      });
+
+      // Show loading status
+      status.textContent = `Loading ${viewSize} view...`;
+
+      try {
+        const response = await fetch('http://localhost:3000/plugin-markup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user_uuid: '61d0314b-72c4-43b9-961d-23fa2b268f37',
+            viewSize: viewSize
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const markupData = await response.json();
+        let markup;
+
+        // Select the appropriate markup based on the viewSize
+        if (viewSize === 'full') {
+          markup = markupData.markup;
+        } else if (viewSize === 'half') {
+          markup = markupData.markup_half_horizontal;
+        } else if (viewSize === 'quadrant') {
+          markup = markupData.markup_quadrant;
+        } else {
+          markup = markupData.markup;
+        }
+
+        container.innerHTML = markup;
+        status.textContent = `${viewSize.charAt(0).toUpperCase() + viewSize.slice(1)} view loaded successfully`;
+      } catch (error) {
+        console.error('Error loading markup:', error);
+        container.innerHTML = `<p style="padding: 20px; color: red;">Error loading markup: ${error.message}</p>`;
+        status.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    // Set up event listeners for buttons
+    document.querySelectorAll('.btn[data-size]').forEach(btn => {
+      btn.addEventListener('click', () => loadMarkup(btn.dataset.size));
+    });
+
+    // Set up refresh button
+    document.getElementById('refresh').addEventListener('click', () => {
+      const activeButton = document.querySelector('.btn[data-size].active');
+      loadMarkup(activeButton.dataset.size);
+    });
+
+    // Load the full view by default
+    loadMarkup('full');
+  </script>
+</body>
+</html>

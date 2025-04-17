@@ -63,6 +63,21 @@ A basic TRMNL template follows this structure:
 </div>
 ```
 
+### Template Development Options
+
+There are two primary ways to develop templates for TRMNL:
+
+#### 1. TRMNL Account (Recommended)
+
+The easiest way to start building with TRMNL is by [making a Private Plugin](https://usetrmnl.com/plugin_settings?keyname=private_plugin) from inside your account. This includes:
+- An inline editor for writing your template
+- Merge variable interpolation
+- A live previewer that shows results in real-time
+
+#### 2. External Development (No TRMNL account)
+
+You can also develop templates outside the TRMNL platform by creating an HTML file with the required CSS and JS files embedded in the `<head>`. This is useful for local development or when working within existing frameworks.
+
 ## Framework Components
 
 The TRMNL design system is organized into several categories of components:
@@ -860,33 +875,197 @@ Example of a half-vertical view:
 
 ## Templating with Liquid
 
-TRMNL uses the Liquid templating language (by Shopify) to make templates dynamic. Use `{{ variable }}` syntax to interpolate values.
+TRMNL uses the [Liquid templating language](https://shopify.github.io/liquid/) (by Shopify) to make templates dynamic. Liquid is similar to other templating languages like Twig, and uses specific syntax for different operations.
 
-### Example with Liquid Templates
+### Liquid Basics
 
-```html
-<div class="item">
-  <div class="content">
-    <span class="title title--small">{{ event.title }}</span>
-    <span class="description">{{ event.description }}</span>
-    <span class="label">{{ event.start_time }}</span>
-  </div>
-</div>
+Liquid has three main components:
+
+1. **Objects**: Display content using double curly braces `{{ variable }}`
+2. **Tags**: Create logic and control flow using curly brace percentage delimiters `{% tag %}`
+3. **Filters**: Transform output using a pipe character `| filter`
+
+### Object Output
+
+Use double curly braces to output variable content:
+
+```liquid
+{{ page.title }}
+{{ user.name }}
+{{ trmnl.plugin_settings.instance_name }}
 ```
 
-### Conditional Logic
+### Object Variables Available in TRMNL
 
-```html
+TRMNL provides several built-in variables:
+
+```liquid
+{{ trmnl.user.utc_offset }}  <!-- User's timezone offset in seconds -->
+{{ trmnl.plugin_settings.instance_name }}  <!-- The name of the plugin instance -->
+```
+
+### Control Flow
+
+Use tags for conditional logic and loops:
+
+```liquid
 {% if events.size > 0 %}
   {% for event in events %}
     <div class="item">
-      <!-- event content -->
+      <div class="content">
+        <span class="title title--small">{{ event.title }}</span>
+        <span class="description">{{ event.description }}</span>
+        <span class="label">{{ event.start_time }}</span>
+      </div>
     </div>
   {% endfor %}
 {% else %}
   <span class="title title--small">No events scheduled.</span>
 {% endif %}
 ```
+
+### Liquid Filters
+
+Filters can transform content by modifying data output:
+
+```liquid
+{{ "hello world" | capitalize }}  <!-- Output: Hello world -->
+{{ 10 | plus: 5 }}  <!-- Output: 15 -->
+{{ "/my/page" | append: ".html" }}  <!-- Output: /my/page.html -->
+```
+
+### Advanced Liquid Techniques
+
+#### Assigning Variables
+
+```liquid
+{% assign username = "John Doe" %}
+{% assign user_count = users.size %}
+```
+
+#### Working with Arrays (Lists)
+
+```liquid
+{% assign event_count = events.size %}
+{% assign first_event = events.first %}
+{% assign last_event = events.last %}
+
+<!-- Split an array in half for multi-column layouts -->
+{% assign events_half = events.size | times: 0.5 | ceil %}
+
+<!-- First column -->
+{% for event in events limit:events_half %}
+  <!-- Event content for first column -->
+{% endfor %}
+
+<!-- Second column -->
+{% for event in events offset:events_half %}
+  <!-- Event content for second column -->
+{% endfor %}
+```
+
+#### Date Handling 
+
+```liquid
+<!-- Format a date -->
+{{ event.date | date: "%B %d, %Y" }}
+
+<!-- Show current date/time -->
+{{ "now" | date: "%H:%M" }}
+
+<!-- Convert to user's timezone -->
+{{ "2025-02-28T13:35:00Z" | date: "%s" | plus: trmnl.user.utc_offset | date: "%H:%M" }}
+```
+
+#### Type Conversion and Formatting
+
+```liquid
+<!-- Format a number -->
+{{ 1.5 | replace: ".", "," }}  <!-- Output: 1,5 -->
+
+<!-- Division with decimal results -->
+{{ 1.0 | divided_by: 2 }}  <!-- Output: 0.5 instead of 0 -->
+
+<!-- Left-pad with zeros -->
+{% assign minutes = 3 %}
+{{ minutes | prepend: "00" | slice: -2, 2 }}  <!-- Output: 03 -->
+```
+
+#### Mixing Liquid and JavaScript
+
+You can use Liquid variables directly in JavaScript code:
+
+```html
+<script>
+  // Using Liquid strings in JavaScript
+  const jsString = "{{ liquid_string }}";
+  
+  // Using Liquid numbers/booleans in JavaScript
+  const jsNumber = {{ liquid_number }};
+  const jsBoolean = {{ liquid_boolean }};
+  
+  // Pushing Liquid array items to JavaScript array
+  const jsArray = [];
+  {% for item in liquid_list %}
+  jsArray.push({{ item }});
+  {% endfor %}
+  
+  // Using Liquid objects in JavaScript via custom json filter
+  const jsObject = {{ liquid_object | json }};
+  console.log(jsObject.property);
+</script>
+```
+
+### TRMNL Custom Liquid Filters
+
+TRMNL provides custom Liquid filters that extend the standard functionality:
+
+```liquid
+<!-- Convert an object to JSON string -->
+{{ my_object | json }}
+```
+
+## Data Sources for Templates
+
+### API Endpoints
+
+TRMNL templates can fetch data from external APIs. When creating a plugin, you can configure:
+
+1. The API URL to fetch data from
+2. Optional headers for authentication
+3. The fetch interval (how often to refresh data)
+
+Within your template, you'll have access to this data through Liquid variables.
+
+### Example: Working with API Data
+
+```html
+<div class="layout">
+  <div class="columns">
+    <div class="column">
+      {% if weather %}
+        <div class="item">
+          <div class="content">
+            <span class="title title--large">{{ weather.temperature }}°</span>
+            <span class="description">{{ weather.condition }}</span>
+            <span class="label">{{ weather.location }}</span>
+          </div>
+        </div>
+      {% else %}
+        <div class="item">
+          <div class="content">
+            <span class="title">Weather data unavailable</span>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+```
+
+### Using JSON Data
+
+If you're creating a JSON API to provide data to your TRMNL plugin, ensure your JSON is properly formatted and consider using authentication headers to secure your endpoint.
 
 ## Data Visualization
 
@@ -974,6 +1153,29 @@ When designing for the TRMNL e-ink display, keep in mind:
 4. **Optimized images**: Always use the image component to properly render images
 5. **Responsive layouts**: Test on the actual display dimensions (800x480px)
 6. **Content overflow**: Use clamp and overflow components to handle content gracefully
+7. **User timezone**: Use the `trmnl.user.utc_offset` variable to display times correctly
+8. **Handle empty states**: Always provide fallback content when data might be missing
+
+## Development Workflow
+
+### Creating a New Plugin
+
+1. **Design** - Sketch your layout and decide what data you need
+2. **Static HTML** - Build a basic template with static content using TRMNL components
+3. **Add Liquid** - Replace static content with Liquid variables and logic
+4. **Test** - Use the live previewer to test your template with real data
+5. **Refine** - Adjust the design for different view sizes and edge cases
+
+### Testing Multi-View Layouts
+
+TRMNL plugins should be designed to work in different view layouts. In the plugin editor, you can create separate templates for different view sizes:
+
+1. **Full view** - The entire screen
+2. **Half view (vertical)** - Top or bottom half of the screen
+3. **Half view (horizontal)** - Left or right half of the screen
+4. **Quadrant view** - One quarter of the screen
+
+Optimize your content for each view size by adjusting the layout and information density.
 
 ## Advanced Features
 
@@ -1004,6 +1206,7 @@ Before deploying, test your template in the following ways:
 3. Check text readability at different distances
 4. Verify proper image dithering and contrast
 5. Test dynamic content with various data conditions
+6. Test with empty or missing data to ensure fallbacks work
 
 ## Complete Example Template
 
@@ -1061,6 +1264,72 @@ Here's a complete example of a weather dashboard template:
         <div class="title_bar">
           <img class="image" src="https://usetrmnl.com/images/plugins/weather-icon.svg" />
           <span class="title">Weather Dashboard</span>
+          <span class="instance">{{ location }}</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+## Example: Prayer Times Template
+
+Here's an example template specifically for displaying prayer times, which could be adapted for the Salah Times plugin:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://usetrmnl.com/css/latest/plugins.css">
+    <script src="https://usetrmnl.com/js/latest/plugins.js"></script>
+  </head>
+  <body class="environment trmnl">
+    <div class="screen">
+      <div class="view view--full">
+        <div class="layout">
+          <div class="markdown">
+            <span class="title text--center">SALAH TIMES</span>
+          </div>
+          
+          {% assign next_prayer = "" %}
+          {% assign next_prayer_time = "" %}
+          {% assign time_remaining = "" %}
+          
+          <div class="table">
+            <div class="table__body">
+              {% for prayer in prayers %}
+                {% if prayer.is_next %}
+                  {% assign next_prayer = prayer.name %}
+                  {% assign next_prayer_time = prayer.time %}
+                  {% assign time_remaining = prayer.remaining %}
+                  <div class="table__row background--light">
+                {% else %}
+                  <div class="table__row">
+                {% endif %}
+                    <div class="table__cell">
+                      <span class="title title--small">{{ prayer.name }}</span>
+                    </div>
+                    <div class="table__cell text--right">
+                      <span class="value">{{ prayer.time }}</span>
+                    </div>
+                  </div>
+              {% endfor %}
+            </div>
+          </div>
+          
+          <div class="margin-top">
+            <div class="item">
+              <div class="content content--center">
+                <span class="description">Next prayer: {{ next_prayer }} in {{ time_remaining }}</span>
+                <span class="label label--underline">{{ hijri_date }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="title_bar">
+          <span class="image">🕌</span>
+          <span class="title">Salah Times</span>
           <span class="instance">{{ location }}</span>
         </div>
       </div>
