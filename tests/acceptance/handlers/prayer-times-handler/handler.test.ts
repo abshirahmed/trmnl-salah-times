@@ -2,8 +2,6 @@ import { handler } from '@/handlers/prayer-times-handler';
 import { createMockAPIGatewayProxyEvent } from '@tests/mocks/createMockAPIGatewayProxyEvent';
 import { createMockLambdaContext } from '@tests/mocks/createMockLambdaContext';
 
-jest.unmock('@/utils/logger');
-
 describe('Prayer Times Handler', () => {
   const mockAPIGatewayProxyEvent = createMockAPIGatewayProxyEvent({
     requestContext: {},
