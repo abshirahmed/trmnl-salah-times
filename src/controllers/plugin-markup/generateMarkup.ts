@@ -11,8 +11,10 @@ import { fullTemplate } from '@/templates/full';
 import { halfHorizontalTemplate } from '@/templates/half-horizontal';
 import { halfVerticalTemplate } from '@/templates/half-vertical';
 import { quadrantTemplate } from '@/templates/quadrant';
+import { calculateCurrentPrayer } from '@/utils/dateUtils';
 import { logger } from '@/utils/logger';
 import { formatNextPrayerTime } from '@/utils/prayerTimeUtils';
+import { formatInTimeZone } from 'date-fns-tz';
 
 type UserSettings = Tables<'user_settings'>;
 
@@ -43,6 +45,27 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
       prayerTimesResult.rawData.meta.timezone || 'UTC',
     );
 
+    // Calculate current prayer
+    const currentPrayer = calculateCurrentPrayer(
+      prayerTimesResult.prayerTimesObjects,
+      prayerTimesResult.rawData.meta.timezone,
+    );
+
+    // Format gregorian date
+    const now = new Date();
+    const gregorianDate = formatInTimeZone(
+      now,
+      prayerTimesResult.rawData.meta.timezone || 'UTC',
+      'EEEE, MMMM d, yyyy',
+    );
+
+    // Format last sync time
+    const lastSyncTime = formatInTimeZone(
+      now,
+      prayerTimesResult.rawData.meta.timezone || 'UTC',
+      'HH:mm',
+    );
+
     // Prepare data for template rendering
     const templateData: TemplateData = {
       data: prayerTimesResult.rawData,
@@ -52,6 +75,9 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
         timeUntilNextPrayer: prayerTimesResult.timeUntilNextPrayer,
         hijriDateFormatted: prayerTimesResult.hijriDateFormatted,
         currentTime: prayerTimesResult.currentTime,
+        gregorianDate,
+        lastSyncTime,
+        currentPrayer,
       },
     };
 

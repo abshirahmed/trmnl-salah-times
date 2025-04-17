@@ -13,6 +13,9 @@ export interface TemplateData {
     };
     hijriDateFormatted: string;
     currentTime: string;
+    gregorianDate?: string;
+    lastSyncTime?: string;
+    currentPrayer?: string;
   };
 }
 
@@ -82,6 +85,34 @@ export const processTemplate = (
     templateData.enhancedData.timeUntilNextPrayer.minutes.toString(),
   );
 
+  // Replace IDX_0.enhancedData.currentTime
+  processedTemplate = processedTemplate.replace(
+    /{{ IDX_0\.enhancedData\.currentTime }}/g,
+    templateData.enhancedData.currentTime,
+  );
+
+  // Replace IDX_0.enhancedData.gregorianDate
+  if (templateData.enhancedData.gregorianDate) {
+    processedTemplate = processedTemplate.replace(
+      /{{ IDX_0\.enhancedData\.gregorianDate }}/g,
+      templateData.enhancedData.gregorianDate,
+    );
+  }
+
+  // Replace IDX_0.enhancedData.lastSyncTime
+  if (templateData.enhancedData.lastSyncTime) {
+    processedTemplate = processedTemplate.replace(
+      /{{ IDX_0\.enhancedData\.lastSyncTime }}/g,
+      templateData.enhancedData.lastSyncTime,
+    );
+  }
+
+  // Replace IDX_0.enhancedData.nextPrayerTime
+  processedTemplate = processedTemplate.replace(
+    /{{ IDX_0\.enhancedData\.nextPrayerTime }}/g,
+    templateData.enhancedData.nextPrayerTime,
+  );
+
   // Handle conditional classes for highlighting the next prayer
   processedTemplate = processedTemplate.replace(
     /{%\s*if\s+IDX_0\.enhancedData\.nextPrayer\s*==\s*'([^']+)'\s*or\s+IDX_0\.enhancedData\.nextPrayer\s*==\s*'([^']+)'\s*%}item--highlight{%\s*endif\s*%}/g,
@@ -101,6 +132,28 @@ export const processTemplate = (
     (_, prayer) => {
       if (templateData.enhancedData.nextPrayer === prayer) {
         return 'item--highlight';
+      }
+      return '';
+    },
+  );
+
+  // Handle conditional classes for current prayer background
+  processedTemplate = processedTemplate.replace(
+    /{%\s*if\s+IDX_0\.enhancedData\.currentPrayer\s*==\s*'([^']+)'\s*%}background--dark{%\s*else\s*%}background--light{%\s*endif\s*%}/g,
+    (_, prayer) => {
+      if (templateData.enhancedData.currentPrayer === prayer) {
+        return 'background--dark';
+      }
+      return 'background--light';
+    },
+  );
+
+  // Handle conditional display for current prayer text
+  processedTemplate = processedTemplate.replace(
+    /{%\s*if\s+IDX_0\.enhancedData\.currentPrayer\s*==\s*'([^']+)'\s*%}([\s\S]*?){%\s*endif\s*%}/g,
+    (_, prayer, content) => {
+      if (templateData.enhancedData.currentPrayer === prayer) {
+        return content;
       }
       return '';
     },

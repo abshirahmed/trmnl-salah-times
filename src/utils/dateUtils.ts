@@ -135,6 +135,43 @@ export const calculateNextPrayer = ({
 };
 
 /**
+ * Calculate the current prayer based on the current time
+ * @param prayerTimes Prayer times as Date objects
+ * @param timezone IANA timezone string
+ * @returns The current prayer name
+ */
+export const calculateCurrentPrayer = (
+  prayerTimes: Record<string, Date>,
+  timezone: string,
+): string => {
+  const currentDate = new Date();
+  const currentDateInTimezone = toZonedTime(currentDate, timezone);
+  const prayerOrder = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
+  // Find the current prayer by checking which prayer time has passed most recently
+  let currentPrayer = 'Isha'; // Default to Isha if no prayer time has passed yet
+
+  // Check if we're before Fajr, in which case the current prayer is Isha from yesterday
+  if (currentDateInTimezone < prayerTimes['Fajr']) {
+    return 'Isha';
+  }
+
+  // Find the last prayer that has passed
+  for (let i = prayerOrder.length - 1; i >= 0; i--) {
+    const prayer = prayerOrder[i];
+    if (currentDateInTimezone >= prayerTimes[prayer]) {
+      // Skip Sunrise as it's not a prayer
+      if (prayer !== 'Sunrise') {
+        currentPrayer = prayer;
+      }
+      break;
+    }
+  }
+
+  return currentPrayer;
+};
+
+/**
  * Parameters for parsePrayerTimes function
  */
 export interface ParsePrayerTimesParams {
