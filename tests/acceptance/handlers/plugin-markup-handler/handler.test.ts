@@ -1,3 +1,4 @@
+import { TEMPLATE_IDENTIFIERS } from '@/constants/templateConstants';
 import { handler } from '@/handlers/plugin-markup-handler';
 import { v4 as uuidv4 } from 'uuid';
 import { createMockAPIGatewayProxyEvent } from '@tests/mocks/createMockAPIGatewayProxyEvent';
@@ -65,8 +66,6 @@ describe('Plugin Markup Handler', () => {
     const { statusCode, body } = await handler(event, mockLambdaContext);
 
     expect(statusCode).toBe(200);
-    expect(body).toContain(
-      '<!-- TRMNL Salah Prayer Times Plugin Markup - Optimized for TRMNL framework -->',
-    );
+    expect(body).toContain(TEMPLATE_IDENTIFIERS.FULL_TEMPLATE_COMMENT);
   });
 });

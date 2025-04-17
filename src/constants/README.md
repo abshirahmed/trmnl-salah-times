@@ -1,14 +1,24 @@
 # TRMNL Salah Prayer Times Plugin Templates
 
-This directory contains optimized HTML/Liquid templates for the Salah Prayer Times plugin, designed according to TRMNL's design system guidelines.
+This directory contains the template constants for the Salah Prayer Times plugin, designed according to TRMNL's design system guidelines.
 
-## Template Files
+## Template Constants
 
-| Filename | Description |
+The templates are now embedded directly in the code as constants in `templateConstants.ts`, which provides several benefits:
+
+1. **No filesystem access required** - Templates are available in all environments
+2. **Better testability** - Constants can be imported and used in tests
+3. **Improved organization** - All templates are in one place
+4. **Type safety** - TypeScript provides type checking for templates
+
+## Template Structure
+
+| Constant | Description |
 |----------|-------------|
-| `markup.html` | Full-screen view - provides comprehensive prayer time information |
-| `half-view-markup.html` | Half-screen view - compact layout for horizontal or vertical half-screen |
-| `quadrant-view-markup.html` | Quadrant view - ultra-compact layout for when space is limited |
+| `TEMPLATES.full` | Full-screen view - provides comprehensive prayer time information |
+| `TEMPLATES.halfVertical` | Half-screen vertical view - compact layout for vertical half-screen |
+| `TEMPLATES.halfHorizontal` | Half-screen horizontal view - compact layout for horizontal half-screen |
+| `TEMPLATES.quadrant` | Quadrant view - ultra-compact layout for when space is limited |
 
 ## TRMNL Design System Implementation
 
@@ -34,15 +44,16 @@ These templates follow TRMNL's design system best practices for e-ink displays:
    - Responsive column structure in half-view
    - Ultra-compact design for quadrant view
 
-## Usage in TRMNL
+## Usage in Tests
 
-To use these templates in your TRMNL plugin:
+The `TEMPLATE_IDENTIFIERS` constants can be used in tests to verify that the correct templates are being used:
 
-1. Create a Private Plugin in your TRMNL account
-2. Set up the API polling to your AWS API Gateway endpoint
-3. Copy the content of the appropriate template from this directory
-4. Paste into the Markup Editor in your TRMNL account
-5. Test across different view sizes to ensure proper rendering
+```typescript
+import { TEMPLATE_IDENTIFIERS } from '@/constants/templateConstants';
+
+// In your test
+expect(response.body).toContain(TEMPLATE_IDENTIFIERS.FULL_TEMPLATE_COMMENT);
+```
 
 ## Notes on E-ink Optimization
 

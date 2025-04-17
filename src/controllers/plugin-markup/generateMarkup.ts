@@ -1,7 +1,7 @@
 import { Tables } from '@/clients/supabase/database.types';
+import { ERROR_TEMPLATES, TEMPLATES } from '@/constants/templateConstants';
 import { processTemplate, TemplateData } from '@/controllers/plugin-markup';
 import { calculatePrayerTimes } from '@/services/prayer-times/calculatePrayerTimes';
-import { templates } from '@/templates/trmnl-plugin';
 import { logger } from '@/utils/logger';
 import { formatNextPrayerTime } from '@/utils/prayerTimeUtils';
 
@@ -48,19 +48,19 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
 
     // Process templates for all view sizes
     return {
-      markup: processTemplate(templates.full, templateData, prayerTimesResult),
+      markup: processTemplate(TEMPLATES.full, templateData, prayerTimesResult),
       markup_half_horizontal: processTemplate(
-        templates.halfHorizontal,
+        TEMPLATES.halfHorizontal,
         templateData,
         prayerTimesResult,
       ),
       markup_half_vertical: processTemplate(
-        templates.halfVertical,
+        TEMPLATES.halfVertical,
         templateData,
         prayerTimesResult,
       ),
       markup_quadrant: processTemplate(
-        templates.quadrant,
+        TEMPLATES.quadrant,
         templateData,
         prayerTimesResult,
       ),
@@ -69,10 +69,10 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
     logger.error('Error generating markup', { error, userSettings });
     // Return a simple markup with error message
     return {
-      markup: `<div class="view view--full"><div class="layout"><div class="columns"><div class="column"><div class="error">Unable to load prayer times. Please try again later.</div></div></div></div></div>`,
-      markup_half_horizontal: `<div class="view view--half_horizontal"><div class="error">Unable to load prayer times.</div></div>`,
-      markup_half_vertical: `<div class="view view--half_vertical"><div class="error">Unable to load prayer times.</div></div>`,
-      markup_quadrant: `<div class="view view--quadrant"><div class="error">Error</div></div>`,
+      markup: ERROR_TEMPLATES.FULL,
+      markup_half_horizontal: ERROR_TEMPLATES.HALF_HORIZONTAL,
+      markup_half_vertical: ERROR_TEMPLATES.HALF_VERTICAL,
+      markup_quadrant: ERROR_TEMPLATES.QUADRANT,
     };
   }
 };
