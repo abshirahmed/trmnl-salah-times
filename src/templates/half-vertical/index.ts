@@ -6,65 +6,118 @@ export const halfVerticalTemplate = `
 <div class="environment trmnl">
   <div class="screen">
     <div class="view view--half_vertical">
-      <div class="layout layout--col gap--small">
-        <!-- Header Section -->
-        <div class="title title--medium mb--xsmall">Salah Times</div>
-
-        <!-- Prayer Times Section - Compact Layout -->
-        <div class="grid grid--cols-1 gap--xsmall">
-          <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Fajr' or IDX_0.enhancedData.nextPrayer == 'Fajr (Tomorrow)' %}item--highlight{% else %}bg--gray-7{% endif %}">
-            <div class="content">
-              <div class="flex flex--between flex--center-y">
-                <span class="label label--small no-shrink">Fajr</span>
-                <span class="value value--medium value--tnums">{{ IDX_0.data.timings.Fajr | slice: 0, 5 }}</span>
-              </div>
-            </div>
+      <div class="layout padding--small">
+        <!-- Header with Last Sync Time -->
+        <div class="flex flex--between flex--align-center margin-bottom--small">
+          <div class="flex flex--col">
+            <span class="title title--medium">Salah Times</span>
+            <span class="description description--small">{{ IDX_0.data.meta.timezone }}</span>
           </div>
-
-          <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Dhuhr' %}item--highlight{% else %}bg--gray-7{% endif %}">
-            <div class="content">
-              <div class="flex flex--between flex--center-y">
-                <span class="label label--small no-shrink">Dhuhr</span>
-                <span class="value value--medium value--tnums">{{ IDX_0.data.timings.Dhuhr | slice: 0, 5 }}</span>
-              </div>
-            </div>
+          <div class="flex flex--col flex--align-end gap--xxsmall">
+            <span class="value value--medium value--tnums format-value">{{ IDX_0.enhancedData.currentTime }}</span>
+            <span class="description description--small">Last Synced</span>
           </div>
+        </div>
 
-          <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Asr' %}item--highlight{% else %}bg--gray-7{% endif %}">
-            <div class="content">
-              <div class="flex flex--between flex--center-y">
-                <span class="label label--small no-shrink">Asr</span>
-                <span class="value value--medium value--tnums">{{ IDX_0.data.timings.Asr | slice: 0, 5 }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Maghrib' %}item--highlight{% else %}bg--gray-7{% endif %}">
-            <div class="content">
-              <div class="flex flex--between flex--center-y">
-                <span class="label label--small no-shrink">Maghrib</span>
-                <span class="value value--medium value--tnums">{{ IDX_0.data.timings.Maghrib | slice: 0, 5 }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="item {% if IDX_0.enhancedData.nextPrayer == 'Isha' %}item--highlight{% else %}bg--gray-7{% endif %}">
-            <div class="content">
-              <div class="flex flex--between flex--center-y">
-                <span class="label label--small no-shrink">Isha</span>
-                <span class="value value--medium value--tnums">{{ IDX_0.data.timings.Isha | slice: 0, 5 }}</span>
+        <!-- Next Prayer Information -->
+        <div class="item background--dark border radius margin-bottom--small">
+          <div class="content padding--small">
+            <div class="flex flex--col flex--align-center gap--xxsmall">
+              <span class="label label--small">Next Prayer</span>
+              <span class="value value--medium fit-value" data-min-size="16" data-max-size="24">{{ IDX_0.enhancedData.nextPrayer }}</span>
+              <div class="flex flex--align-center gap--xsmall">
+                <span class="value value--small format-value">{{ IDX_0.enhancedData.timeUntilNextPrayer.hours }}</span>
+                <span class="description description--small">h</span>
+                <span class="value value--small format-value">{{ IDX_0.enhancedData.timeUntilNextPrayer.minutes }}</span>
+                <span class="description description--small">m</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Next Prayer Information - Compact -->
-        <div class="layout layout--center">
-          <div class="item bg--gray-6">
-            <div class="content">
-              <div class="flex flex--col">
-                <span class="label label--small label--highlight text--center">Next: {{ IDX_0.enhancedData.nextPrayer }}</span>
-                <span class="label label--small text--center text--gray-2">In {{ IDX_0.enhancedData.timeUntilNextPrayer.hours }}h {{ IDX_0.enhancedData.timeUntilNextPrayer.minutes }}m</span>
+        <!-- Prayer Times List -->
+        <div class="flex flex--col gap--small overflow overflow--fade">
+          <!-- Fajr -->
+          <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Fajr' %}background--dark{% else %}background--light{% endif %} border radius">
+            <div class="content padding--small">
+              <div class="flex flex--between flex--align-center">
+                <div class="flex flex--col">
+                  <span class="label label--small">Fajr</span>
+                  {% if IDX_0.enhancedData.currentPrayer == 'Fajr' %}
+                    <span class="description description--small">Current</span>
+                  {% elsif IDX_0.enhancedData.nextPrayer == 'Fajr' %}
+                    <span class="description description--small">Next</span>
+                  {% endif %}
+                </div>
+                <span class="value value--medium value--tnums format-value">{{ IDX_0.data.timings.Fajr | slice: 0, 5 }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dhuhr -->
+          <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Dhuhr' %}background--dark{% else %}background--light{% endif %} border radius">
+            <div class="content padding--small">
+              <div class="flex flex--between flex--align-center">
+                <div class="flex flex--col">
+                  <span class="label label--small">Dhuhr</span>
+                  {% if IDX_0.enhancedData.currentPrayer == 'Dhuhr' %}
+                    <span class="description description--small">Current</span>
+                  {% elsif IDX_0.enhancedData.nextPrayer == 'Dhuhr' %}
+                    <span class="description description--small">Next</span>
+                  {% endif %}
+                </div>
+                <span class="value value--medium value--tnums format-value">{{ IDX_0.data.timings.Dhuhr | slice: 0, 5 }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Asr -->
+          <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Asr' %}background--dark{% else %}background--light{% endif %} border radius">
+            <div class="content padding--small">
+              <div class="flex flex--between flex--align-center">
+                <div class="flex flex--col">
+                  <span class="label label--small">Asr</span>
+                  {% if IDX_0.enhancedData.currentPrayer == 'Asr' %}
+                    <span class="description description--small">Current</span>
+                  {% elsif IDX_0.enhancedData.nextPrayer == 'Asr' %}
+                    <span class="description description--small">Next</span>
+                  {% endif %}
+                </div>
+                <span class="value value--medium value--tnums format-value">{{ IDX_0.data.timings.Asr | slice: 0, 5 }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Maghrib -->
+          <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Maghrib' %}background--dark{% else %}background--light{% endif %} border radius">
+            <div class="content padding--small">
+              <div class="flex flex--between flex--align-center">
+                <div class="flex flex--col">
+                  <span class="label label--small">Maghrib</span>
+                  {% if IDX_0.enhancedData.currentPrayer == 'Maghrib' %}
+                    <span class="description description--small">Current</span>
+                  {% elsif IDX_0.enhancedData.nextPrayer == 'Maghrib' %}
+                    <span class="description description--small">Next</span>
+                  {% endif %}
+                </div>
+                <span class="value value--medium value--tnums format-value">{{ IDX_0.data.timings.Maghrib | slice: 0, 5 }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Isha -->
+          <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Isha' %}background--dark{% else %}background--light{% endif %} border radius">
+            <div class="content padding--small">
+              <div class="flex flex--between flex--align-center">
+                <div class="flex flex--col">
+                  <span class="label label--small">Isha</span>
+                  {% if IDX_0.enhancedData.currentPrayer == 'Isha' %}
+                    <span class="description description--small">Current</span>
+                  {% elsif IDX_0.enhancedData.nextPrayer == 'Isha' %}
+                    <span class="description description--small">Next</span>
+                  {% endif %}
+                </div>
+                <span class="value value--medium value--tnums format-value">{{ IDX_0.data.timings.Isha | slice: 0, 5 }}</span>
               </div>
             </div>
           </div>

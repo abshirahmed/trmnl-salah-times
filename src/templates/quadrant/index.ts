@@ -6,17 +6,20 @@ export const quadrantTemplate = `
 <div class="environment trmnl">
   <div class="screen">
     <div class="view view--quadrant">
-      <div class="layout layout--col gap--xsmall">
-        <!-- Header Section -->
-        <div class="title title--small mb--xxsmall">Salah Times</div>
+      <div class="layout padding--xsmall">
+        <!-- Header with Current Time -->
+        <div class="flex flex--between flex--align-center margin-bottom--xsmall">
+          <span class="title title--small">Salah</span>
+          <span class="value value--small value--tnums">{{ IDX_0.enhancedData.currentTime }}</span>
+        </div>
 
         <!-- Next Prayer Information - Ultra Compact -->
-        <div class="item bg--gray-6">
-          <div class="content">
-            <div class="flex flex--col flex--center">
-              <span class="label label--small label--highlight text--center">{{ IDX_0.enhancedData.nextPrayer }}</span>
+        <div class="item background--dark border radius">
+          <div class="content padding--xsmall">
+            <div class="flex flex--col flex--align-center gap--xxsmall">
+              <span class="label label--small">{{ IDX_0.enhancedData.nextPrayer }}</span>
               <span class="value value--medium value--tnums">{{ IDX_0.enhancedData.nextPrayerTime }}</span>
-              <span class="label label--small text--center text--gray-2">In {{ IDX_0.enhancedData.timeUntilNextPrayer.hours }}h {{ IDX_0.enhancedData.timeUntilNextPrayer.minutes }}m</span>
+              <span class="description description--small">{{ IDX_0.enhancedData.timeUntilNextPrayer.hours }}h {{ IDX_0.enhancedData.timeUntilNextPrayer.minutes }}m</span>
             </div>
           </div>
         </div>
