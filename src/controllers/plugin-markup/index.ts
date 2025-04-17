@@ -1,2 +1,6 @@
-export * from '@/controllers/plugin-markup/generateMarkup';
-export * from '@/controllers/plugin-markup/processTemplate';
+export { generateMarkup } from './generateMarkup';
+export {
+  processTemplate,
+  TemplateData,
+  PrayerTimesResult,
+} from './processTemplate';

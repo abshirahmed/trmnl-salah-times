@@ -1,7 +1,16 @@
 import { Tables } from '@/clients/supabase/database.types';
-import { ERROR_TEMPLATES, TEMPLATES } from '@/constants/templateConstants';
-import { processTemplate, TemplateData } from '@/controllers/plugin-markup';
-import { calculatePrayerTimes } from '@/services/prayer-times/calculatePrayerTimes';
+import { processTemplate, TemplateData } from '@/controllers';
+import { calculatePrayerTimes } from '@/services';
+import {
+  fullErrorTemplate,
+  halfHorizontalErrorTemplate,
+  halfVerticalErrorTemplate,
+  quadrantErrorTemplate,
+} from '@/templates/errors';
+import { fullTemplate } from '@/templates/full';
+import { halfHorizontalTemplate } from '@/templates/half-horizontal';
+import { halfVerticalTemplate } from '@/templates/half-vertical';
+import { quadrantTemplate } from '@/templates/quadrant';
 import { logger } from '@/utils/logger';
 import { formatNextPrayerTime } from '@/utils/prayerTimeUtils';
 
@@ -48,19 +57,19 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
 
     // Process templates for all view sizes
     return {
-      markup: processTemplate(TEMPLATES.full, templateData, prayerTimesResult),
+      markup: processTemplate(fullTemplate, templateData, prayerTimesResult),
       markup_half_horizontal: processTemplate(
-        TEMPLATES.halfHorizontal,
+        halfHorizontalTemplate,
         templateData,
         prayerTimesResult,
       ),
       markup_half_vertical: processTemplate(
-        TEMPLATES.halfVertical,
+        halfVerticalTemplate,
         templateData,
         prayerTimesResult,
       ),
       markup_quadrant: processTemplate(
-        TEMPLATES.quadrant,
+        quadrantTemplate,
         templateData,
         prayerTimesResult,
       ),
@@ -69,10 +78,10 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
     logger.error('Error generating markup', { error, userSettings });
     // Return a simple markup with error message
     return {
-      markup: ERROR_TEMPLATES.FULL,
-      markup_half_horizontal: ERROR_TEMPLATES.HALF_HORIZONTAL,
-      markup_half_vertical: ERROR_TEMPLATES.HALF_VERTICAL,
-      markup_quadrant: ERROR_TEMPLATES.QUADRANT,
+      markup: fullErrorTemplate,
+      markup_half_horizontal: halfHorizontalErrorTemplate,
+      markup_half_vertical: halfVerticalErrorTemplate,
+      markup_quadrant: quadrantErrorTemplate,
     };
   }
 };
