@@ -83,18 +83,22 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
 
     // Process templates for all view sizes
     return {
-      markup: processTemplate(fullTemplate, templateData, prayerTimesResult),
-      markup_half_horizontal: processTemplate(
+      markup: await processTemplate(
+        fullTemplate,
+        templateData,
+        prayerTimesResult,
+      ),
+      markup_half_horizontal: await processTemplate(
         halfHorizontalTemplate,
         templateData,
         prayerTimesResult,
       ),
-      markup_half_vertical: processTemplate(
+      markup_half_vertical: await processTemplate(
         halfVerticalTemplate,
         templateData,
         prayerTimesResult,
       ),
-      markup_quadrant: processTemplate(
+      markup_quadrant: await processTemplate(
         quadrantTemplate,
         templateData,
         prayerTimesResult,
