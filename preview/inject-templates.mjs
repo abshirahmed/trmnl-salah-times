@@ -30,7 +30,7 @@ const extractTemplate = (content) => {
 };
 
 // Read the preview HTML
-let previewHtml = fs.readFileSync(path.join(__dirname, 'preview.html'), 'utf8');
+let previewHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
 // Replace template placeholders
 const replacements = [
@@ -41,10 +41,10 @@ const replacements = [
 ];
 
 previewHtml = replacements.reduce(
-  (html, [placeholder, template]) => html.replace(placeholder, extractTemplate(template)),
+  (html, [placeholder, template]) =>
+    html.replace(placeholder, extractTemplate(template)),
   previewHtml,
 );
 
 // Write the updated preview HTML
-fs.writeFileSync(path.join(__dirname, 'preview.html'), previewHtml); 
- 
+fs.writeFileSync(path.join(__dirname, 'index.html'), previewHtml);
