@@ -2,7 +2,28 @@
  * Template data interface
  */
 export interface TemplateData {
-  data: Record<string, unknown>;
+  data: {
+    timings?: Record<string, string>;
+    date?: {
+      hijri?: {
+        weekday?: { en: string };
+        day?: string;
+        month?: { en: string };
+        year?: string;
+        designation?: { abbreviated: string };
+        holidays?: string[];
+      };
+    };
+    meta?: {
+      method?: {
+        name?: string;
+        params?: {
+          Fajr?: string;
+          Isha?: string;
+        };
+      };
+    };
+  };
   enhancedData: {
     nextPrayer: string;
     nextPrayerTime: string;
@@ -61,11 +82,100 @@ export const processTemplate = (
     prayerTimesResult.rawData.meta.timezone,
   );
 
+  // Replace Islamic date references
+  if (templateData.data.date && typeof templateData.data.date === 'object') {
+    const date = templateData.data.date;
+    if (date.hijri) {
+      // Replace weekday
+      if (date.hijri.weekday && date.hijri.weekday.en) {
+        processedTemplate = processedTemplate.replace(
+          /{{ IDX_0\.data\.date\.hijri\.weekday\.en }}/g,
+          date.hijri.weekday.en,
+        );
+      }
+
+      // Replace day
+      if (date.hijri.day) {
+        processedTemplate = processedTemplate.replace(
+          /{{ IDX_0\.data\.date\.hijri\.day }}/g,
+          date.hijri.day,
+        );
+      }
+
+      // Replace month
+      if (date.hijri.month && date.hijri.month.en) {
+        processedTemplate = processedTemplate.replace(
+          /{{ IDX_0\.data\.date\.hijri\.month\.en }}/g,
+          date.hijri.month.en,
+        );
+      }
+
+      // Replace year
+      if (date.hijri.year) {
+        processedTemplate = processedTemplate.replace(
+          /{{ IDX_0\.data\.date\.hijri\.year }}/g,
+          date.hijri.year,
+        );
+      }
+
+      // Replace designation
+      if (date.hijri.designation && date.hijri.designation.abbreviated) {
+        processedTemplate = processedTemplate.replace(
+          /{{ IDX_0\.data\.date\.hijri\.designation\.abbreviated }}/g,
+          date.hijri.designation.abbreviated,
+        );
+      }
+
+      // Handle holidays array access
+      if (
+        date.hijri.holidays &&
+        Array.isArray(date.hijri.holidays) &&
+        date.hijri.holidays.length > 0
+      ) {
+        processedTemplate = processedTemplate.replace(
+          /{{ IDX_0\.data\.date\.hijri\.holidays\[0\] }}/g,
+          date.hijri.holidays[0],
+        );
+      }
+    }
+  }
+
   // Replace IDX_0.enhancedData.nextPrayer
   processedTemplate = processedTemplate.replace(
     /{{ IDX_0\.enhancedData\.nextPrayer }}/g,
     templateData.enhancedData.nextPrayer,
   );
+
+  // Replace calculation method references
+  if (templateData.data.meta && typeof templateData.data.meta === 'object') {
+    const meta = templateData.data.meta;
+    if (meta.method) {
+      // Replace method name
+      if (meta.method.name) {
+        processedTemplate = processedTemplate.replace(
+          /{{ IDX_0\.data\.meta\.method\.name }}/g,
+          meta.method.name,
+        );
+      }
+
+      // Replace method params
+      if (meta.method.params) {
+        if (meta.method.params.Fajr) {
+          processedTemplate = processedTemplate.replace(
+            /{{ IDX_0\.data\.meta\.method\.params\.Fajr }}/g,
+            meta.method.params.Fajr,
+          );
+        }
+
+        if (meta.method.params.Isha) {
+          processedTemplate = processedTemplate.replace(
+            /{{ IDX_0\.data\.meta\.method\.params\.Isha }}/g,
+            meta.method.params.Isha,
+          );
+        }
+      }
+    }
+  }
 
   // Replace IDX_0.enhancedData.hijriDateFormatted
   processedTemplate = processedTemplate.replace(
@@ -153,6 +263,24 @@ export const processTemplate = (
     /{%\s*if\s+IDX_0\.enhancedData\.currentPrayer\s*==\s*'([^']+)'\s*%}([\s\S]*?){%\s*endif\s*%}/g,
     (_, prayer, content) => {
       if (templateData.enhancedData.currentPrayer === prayer) {
+        return content;
+      }
+      return '';
+    },
+  );
+
+  // Handle conditional display for holidays
+  processedTemplate = processedTemplate.replace(
+    /{%\s*if\s+IDX_0\.data\.date\.hijri\.holidays\.length\s*>\s*0\s*%}([\s\S]*?){%\s*endif\s*%}/g,
+    (_, content) => {
+      if (
+        templateData.data.date &&
+        typeof templateData.data.date === 'object' &&
+        templateData.data.date.hijri &&
+        templateData.data.date.hijri.holidays &&
+        Array.isArray(templateData.data.date.hijri.holidays) &&
+        templateData.data.date.hijri.holidays.length > 0
+      ) {
         return content;
       }
       return '';

@@ -105,7 +105,7 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            user_uuid: '61d0314b-72c4-43b9-961d-23fa2b268f37',
+            user_uuid: 'c06523b0-cedc-4ffe-952e-0b66900a7a9b',
             viewSize: viewSize
           })
         });
@@ -128,28 +128,72 @@
           markup = markupData.markup;
         }
 
+        // Use the markup directly from the API response
         container.innerHTML = markup;
         status.textContent = `${viewSize.charAt(0).toUpperCase() + viewSize.slice(1)} view loaded successfully`;
+
+        // Call terminalize() to activate TRMNL plugin library functionality
+        terminalize();
+
       } catch (error) {
         console.error('Error loading markup:', error);
         container.innerHTML = `<p style="padding: 20px; color: red;">Error loading markup: ${error.message}</p>`;
         status.textContent = `Error: ${error.message}`;
+        // Even in error case, try to call terminalize() in case there's partial content
+        try {
+          terminalize();
+        } catch (e) {
+          console.error('Error calling terminalize:', e);
+        }
       }
     }
 
     // Set up event listeners for buttons
     document.querySelectorAll('.btn[data-size]').forEach(btn => {
-      btn.addEventListener('click', () => loadMarkup(btn.dataset.size));
+      btn.addEventListener('click', () => {
+        loadMarkup(btn.dataset.size);
+        // Call terminalize after a short delay to ensure markup is updated
+        setTimeout(() => {
+          try {
+            terminalize();
+            console.log('Terminalize called after view change');
+          } catch (e) {
+            console.error('Error calling terminalize after view change:', e);
+          }
+        }, 500);
+      });
     });
 
     // Set up refresh button
     document.getElementById('refresh').addEventListener('click', () => {
       const activeButton = document.querySelector('.btn[data-size].active');
       loadMarkup(activeButton.dataset.size);
+      // Call terminalize after a short delay to ensure markup is updated
+      setTimeout(() => {
+        try {
+          terminalize();
+          console.log('Terminalize called after refresh');
+        } catch (e) {
+          console.error('Error calling terminalize after refresh:', e);
+        }
+      }, 500);
     });
 
     // Load the full view by default
     loadMarkup('full');
+
+    // Add a window load event listener to ensure terminalize is called after the page is fully loaded
+    window.addEventListener('load', function() {
+      // Wait a short time to ensure the markup is fully rendered
+      setTimeout(function() {
+        try {
+          terminalize();
+          console.log('Terminalize called after window load');
+        } catch (e) {
+          console.error('Error calling terminalize after window load:', e);
+        }
+      }, 500);
+    });
   </script>
 </body>
 </html>
