@@ -13,7 +13,10 @@
     "prepare": "husky",
     "check-types": "tsc --noEmit",
     "lint": "yarn check-types && eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "preview:build": "node preview/inject-templates.mjs",
+    "preview:serve": "serve preview",
+    "preview": "yarn preview:build && yarn preview:serve"
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.18.0",
@@ -61,6 +64,7 @@
     "lint-staged": "^15.5.1",
     "pino-pretty": "^13.0.0",
     "prettier": "^3.5.3",
+    "serve": "^14.2.4",
     "serverless": "^3.38.0",
     "serverless-better-credentials": "^2.0.1",
     "serverless-dotenv-plugin": "^6.0.0",
