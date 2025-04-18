@@ -8,10 +8,10 @@ export const fullTemplate = `
     <div class="view view--full">
       <div class="layout padding--large">
         <!-- Header Section with Current Time and Date -->
-        <div class="flex flex--col flex--align-center gap--small margin-bottom">
-          <div class="flex flex--col flex--align-center gap--xxsmall">
+        <div class="flex flex--col flex--align-center gap--medium margin-bottom--medium">
+          <div class="flex flex--col flex--align-center gap--small">
             <div class="value value--xlarge value--tnums format-value">{{ IDX_0.enhancedData.currentTime }}</div>
-            <div class="flex flex--col flex--align-center gap--xxsmall">
+            <div class="flex flex--col flex--align-center gap--small">
               <div class="description text--center">{{ IDX_0.enhancedData.gregorianDate }}</div>
               <div class="description description--small text--center">Last Updated: {{ IDX_0.enhancedData.lastSyncTime }}</div>
             </div>
@@ -21,13 +21,13 @@ export const fullTemplate = `
         <!-- Next Prayer Information - Prominent Display -->
         <div class="item background--dark border radius margin-bottom--large">
           <div class="content padding--large">
-            <div class="flex flex--col flex--align-center gap">
+            <div class="flex flex--col flex--align-center gap--medium">
               <span class="label label--large">Next Prayer</span>
-              <div class="flex flex--col flex--align-center gap--small">
+              <div class="flex flex--col flex--align-center gap--medium">
                 <span class="title title--large fit-value" data-min-size="32" data-max-size="48">{{ IDX_0.enhancedData.nextPrayer }}</span>
                 <span class="value value--large value--tnums format-value">{{ IDX_0.enhancedData.nextPrayerTime }}</span>
               </div>
-              <div class="flex flex--align-center gap">
+              <div class="flex flex--align-center gap--medium">
                 <span class="value value--large format-value">{{ IDX_0.enhancedData.timeUntilNextPrayer.hours }}</span>
                 <span class="description">hours</span>
                 <span class="value value--large format-value">{{ IDX_0.enhancedData.timeUntilNextPrayer.minutes }}</span>
@@ -38,12 +38,12 @@ export const fullTemplate = `
         </div>
 
         <!-- Prayer Times Section -->
-        <div class="flex flex--col gap">
+        <div class="flex flex--col gap--medium">
           <!-- Fajr -->
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Fajr' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding">
+            <div class="content padding--medium">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col">
+                <div class="flex flex--col gap--small">
                   <span class="label label--large">Fajr Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Fajr' %}
                     <span class="description description--small">Current Prayer</span>
@@ -56,9 +56,9 @@ export const fullTemplate = `
 
           <!-- Sunrise -->
           <div class="item background--light border radius">
-            <div class="content padding">
+            <div class="content padding--medium">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col">
+                <div class="flex flex--col gap--small">
                   <span class="label label--large">Sunrise</span>
                   <span class="description description--small">End of Fajr Time</span>
                 </div>
@@ -69,9 +69,9 @@ export const fullTemplate = `
 
           <!-- Dhuhr -->
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Dhuhr' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding">
+            <div class="content padding--medium">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col">
+                <div class="flex flex--col gap--small">
                   <span class="label label--large">Dhuhr Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Dhuhr' %}
                     <span class="description description--small">Current Prayer</span>
@@ -84,9 +84,9 @@ export const fullTemplate = `
 
           <!-- Asr -->
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Asr' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding">
+            <div class="content padding--medium">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col">
+                <div class="flex flex--col gap--small">
                   <span class="label label--large">Asr Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Asr' %}
                     <span class="description description--small">Current Prayer</span>
@@ -99,9 +99,9 @@ export const fullTemplate = `
 
           <!-- Maghrib -->
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Maghrib' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding">
+            <div class="content padding--medium">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col">
+                <div class="flex flex--col gap--small">
                   <span class="label label--large">Maghrib Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Maghrib' %}
                     <span class="description description--small">Current Prayer</span>
@@ -114,9 +114,9 @@ export const fullTemplate = `
 
           <!-- Isha -->
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Isha' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding">
+            <div class="content padding--medium">
               <div class="flex flex--between flex--align-center">
-                <div class="flex flex--col">
+                <div class="flex flex--col gap--small">
                   <span class="label label--large">Isha Prayer</span>
                   {% if IDX_0.enhancedData.currentPrayer == 'Isha' %}
                     <span class="description description--small">Current Prayer</span>
@@ -129,11 +129,11 @@ export const fullTemplate = `
         </div>
 
         <!-- Additional Information Section -->
-        <div class="flex flex--col gap margin-top">
+        <div class="flex flex--col gap--medium margin-top--medium">
           <!-- Islamic Date -->
           <div class="item background--light border radius">
-            <div class="content padding">
-              <div class="flex flex--col flex--align-center gap--xsmall">
+            <div class="content padding--medium">
+              <div class="flex flex--col flex--align-center gap--medium">
                 <span class="label">Islamic Date</span>
                 <span class="value value--large">{{ IDX_0.data.date.hijri.weekday.en }}, {{ IDX_0.data.date.hijri.day }} {{ IDX_0.data.date.hijri.month.en }} {{ IDX_0.data.date.hijri.year }} {{ IDX_0.data.date.hijri.designation.abbreviated }}</span>
                 {% if IDX_0.data.date.hijri.holidays.length > 0 %}
@@ -145,8 +145,8 @@ export const fullTemplate = `
 
           <!-- Calculation Method -->
           <div class="item background--light border radius">
-            <div class="content padding">
-              <div class="flex flex--col flex--align-center gap--xsmall">
+            <div class="content padding--medium">
+              <div class="flex flex--col flex--align-center gap--medium">
                 <span class="label">Calculation Method</span>
                 <span class="value value--medium">{{ IDX_0.data.meta.method.name }}</span>
                 <span class="description description--small">Fajr Angle: {{ IDX_0.data.meta.method.params.Fajr }}° • Isha Angle: {{ IDX_0.data.meta.method.params.Isha }}°</span>

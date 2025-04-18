@@ -6,10 +6,10 @@ export const quadrantTemplate = `
 <div class="environment trmnl">
   <div class="screen">
     <div class="view view--quadrant">
-      <div class="layout padding--small">
+      <div class="layout padding--medium">
         <!-- Header with Current Time -->
-        <div class="flex flex--between flex--align-center margin-bottom--small">
-          <div class="flex flex--col gap--xxsmall">
+        <div class="flex flex--between flex--align-center margin-bottom--medium">
+          <div class="flex flex--col gap--small">
             <span class="value value--medium value--tnums">{{ IDX_0.enhancedData.currentTime }}</span>
             <span class="description description--small">{{ IDX_0.enhancedData.gregorianDate }}</span>
           </div>
@@ -17,9 +17,9 @@ export const quadrantTemplate = `
         </div>
 
         <!-- Next Prayer Information - Ultra Compact -->
-        <div class="item background--dark border radius margin-bottom--small">
+        <div class="item background--dark border radius margin-bottom--medium">
           <div class="content padding--small">
-            <div class="flex flex--col flex--align-center gap--xxsmall">
+            <div class="flex flex--col flex--align-center gap--small">
               <span class="label">Next Prayer</span>
               <span class="value value--medium">{{ IDX_0.enhancedData.nextPrayer }}</span>
               <span class="value value--small value--tnums">{{ IDX_0.enhancedData.nextPrayerTime }}</span>
@@ -29,10 +29,10 @@ export const quadrantTemplate = `
         </div>
 
         <!-- Prayer Times Grid - Ultra Compact -->
-        <div class="grid grid--3 gap--small">
+        <div class="grid grid--3 gap--medium">
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Fajr' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding--xsmall">
-              <div class="flex flex--col flex--align-center">
+            <div class="content padding--small">
+              <div class="flex flex--col flex--align-center gap--small">
                 <span class="label label--small">Fajr</span>
                 <span class="value value--small value--tnums">{{ IDX_0.data.timings.Fajr | slice: 0, 5 }}</span>
               </div>
@@ -40,8 +40,8 @@ export const quadrantTemplate = `
           </div>
 
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Dhuhr' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding--xsmall">
-              <div class="flex flex--col flex--align-center">
+            <div class="content padding--small">
+              <div class="flex flex--col flex--align-center gap--small">
                 <span class="label label--small">Dhuhr</span>
                 <span class="value value--small value--tnums">{{ IDX_0.data.timings.Dhuhr | slice: 0, 5 }}</span>
               </div>
@@ -49,8 +49,8 @@ export const quadrantTemplate = `
           </div>
 
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Asr' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding--xsmall">
-              <div class="flex flex--col flex--align-center">
+            <div class="content padding--small">
+              <div class="flex flex--col flex--align-center gap--small">
                 <span class="label label--small">Asr</span>
                 <span class="value value--small value--tnums">{{ IDX_0.data.timings.Asr | slice: 0, 5 }}</span>
               </div>
@@ -58,8 +58,8 @@ export const quadrantTemplate = `
           </div>
 
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Maghrib' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding--xsmall">
-              <div class="flex flex--col flex--align-center">
+            <div class="content padding--small">
+              <div class="flex flex--col flex--align-center gap--small">
                 <span class="label label--small">Maghrib</span>
                 <span class="value value--small value--tnums">{{ IDX_0.data.timings.Maghrib | slice: 0, 5 }}</span>
               </div>
@@ -67,8 +67,8 @@ export const quadrantTemplate = `
           </div>
 
           <div class="item {% if IDX_0.enhancedData.currentPrayer == 'Isha' %}background--dark{% else %}background--light{% endif %} border radius">
-            <div class="content padding--xsmall">
-              <div class="flex flex--col flex--align-center">
+            <div class="content padding--small">
+              <div class="flex flex--col flex--align-center gap--small">
                 <span class="label label--small">Isha</span>
                 <span class="value value--small value--tnums">{{ IDX_0.data.timings.Isha | slice: 0, 5 }}</span>
               </div>
@@ -76,8 +76,8 @@ export const quadrantTemplate = `
           </div>
 
           <div class="item background--light border radius">
-            <div class="content padding--xsmall">
-              <div class="flex flex--col flex--align-center">
+            <div class="content padding--small">
+              <div class="flex flex--col flex--align-center gap--small">
                 <span class="label label--small">Sunrise</span>
                 <span class="value value--small value--tnums">{{ IDX_0.data.timings.Sunrise | slice: 0, 5 }}</span>
               </div>
