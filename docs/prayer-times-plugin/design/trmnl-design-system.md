@@ -1,1345 +1,282 @@
-# TRMNL Design System Framework: Complete Documentation for AI Template Building
-
-## Introduction
-
-The TRMNL design system is a comprehensive framework for creating visually consistent, high-quality templates and plugins for the TRMNL e-ink display. This document provides all the necessary information for an AI agent to understand and build templates using the TRMNL design system.
-
-TRMNL is an e-ink display solution designed to serve as a distraction-free companion for focused productivity. It features an 800x480 pixel, black and white, 1-bit grayscale display, which requires specific design considerations. This document details the components, design patterns, and implementation guidelines for creating effective TRMNL templates.
-
-## Technical Specifications
-
-- **Display**: 800x480 pixels, black and white, 1-bit grayscale e-ink display
-- **Template Format**: HTML with Liquid templating language support
-- **Components Library**: Pre-built CSS classes and JavaScript utilities
-- **Framework Location**: [https://usetrmnl.com/framework](https://usetrmnl.com/framework)
-
-## Getting Started
-
-### Required Files
-
-To begin building a TRMNL template, include these files in your HTML:
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="https://usetrmnl.com/css/latest/plugins.css">
-    <script src="https://usetrmnl.com/js/latest/plugins.js"></script>
-    
-    <!-- Optional: Include Inter font for consistent typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;350;375;400;450;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body class="environment trmnl">
-    <div class="screen">
-      <!-- Your template content goes here -->
-    </div>
-  </body>
-</html>
-```
-
-### Basic Template Structure
-
-A basic TRMNL template follows this structure:
-
-```html
-<div class="screen">
-  <div class="view view--full">
-    <div class="layout">
-      <div class="columns">
-        <div class="column">
-          <!-- Main content goes here -->
-        </div>
-      </div>
-    </div>
-
-    <div class="title_bar">
-      <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg" />
-      <span class="title">Plugin Title</span>
-      <span class="instance">Instance Title</span>
-    </div>
-  </div>
-</div>
-```
-
-### Template Development Options
-
-There are two primary ways to develop templates for TRMNL:
-
-#### 1. TRMNL Account (Recommended)
-
-The easiest way to start building with TRMNL is by [making a Private Plugin](https://usetrmnl.com/plugin_settings?keyname=private_plugin) from inside your account. This includes:
-- An inline editor for writing your template
-- Merge variable interpolation
-- A live previewer that shows results in real-time
-
-#### 2. External Development (No TRMNL account)
-
-You can also develop templates outside the TRMNL platform by creating an HTML file with the required CSS and JS files embedded in the `<head>`. This is useful for local development or when working within existing frameworks.
-
-## Framework Components
-
-The TRMNL design system is organized into several categories of components:
-
-### 1. Utilities
-
-Components for styling and layout controls:
-
-#### Background
-
-Grayscale dithered patterns optimized for 1-bit rendering.
-
-```html
-<!-- Available background classes -->
-<div class="background--white"></div>
-<div class="background--light"></div>
-<div class="background--medium"></div>
-<div class="background--dark"></div>
-<div class="background--black"></div>
-
-<!-- Applied to a component -->
-<div class="item background--light">
-  <div class="content">Item with light background</div>
-</div>
-```
-
-#### Border
-
-Apply border patterns that create the illusion of different border intensities.
-
-```html
-<!-- Border all sides -->
-<div class="border"></div>
-
-<!-- Border specific sides -->
-<div class="border-top"></div>
-<div class="border-right"></div>
-<div class="border-bottom"></div>
-<div class="border-left"></div>
-
-<!-- Border color variants -->
-<div class="border border--light"></div>
-<div class="border border--medium"></div>
-<div class="border border--dark"></div>
-
-<!-- Border radius -->
-<div class="border radius"></div>
-<div class="border radius--small"></div>
-```
-
-#### Spacing
-
-Control element spacing with fixed margin and padding values.
-
-```html
-<!-- Margin on all sides -->
-<div class="margin"></div>
-<div class="margin--small"></div>
-<div class="margin--large"></div>
-
-<!-- Margin on specific sides -->
-<div class="margin-top"></div>
-<div class="margin-right"></div>
-<div class="margin-bottom"></div>
-<div class="margin-left"></div>
-
-<!-- Padding on all sides -->
-<div class="padding"></div>
-<div class="padding--small"></div>
-<div class="padding--large"></div>
-
-<!-- Padding on specific sides -->
-<div class="padding-top"></div>
-<div class="padding-right"></div>
-<div class="padding-bottom"></div>
-<div class="padding-left"></div>
-```
-
-#### Gap
-
-Set precise spacing between elements with predefined gap values.
-
-```html
-<!-- Applied to container elements like columns, flex, grid -->
-<div class="columns gap"></div>
-<div class="columns gap--small"></div>
-<div class="columns gap--large"></div>
-
-<!-- Example with flex container -->
-<div class="flex flex--column gap">
-  <div>Item 1</div>
-  <div>Item 2</div>
-  <div>Item 3</div>
-</div>
-```
-
-#### Size
-
-Define exact width and height dimensions for elements.
-
-```html
-<!-- Width classes -->
-<div class="width--auto"></div>
-<div class="width--full"></div>
-<div class="width--half"></div>
-<div class="width--third"></div>
-<div class="width--quarter"></div>
-
-<!-- Width in pixels -->
-<div class="width--25"></div>
-<div class="width--50"></div>
-<div class="width--100"></div>
-<div class="width--200"></div>
-
-<!-- Height classes -->
-<div class="height--auto"></div>
-<div class="height--full"></div>
-<div class="height--half"></div>
-
-<!-- Height in pixels -->
-<div class="height--25"></div>
-<div class="height--50"></div>
-<div class="height--100"></div>
-<div class="height--200"></div>
-```
-
-#### Image
-
-Optimize images using dithering techniques for 1-bit rendering.
-
-```html
-<!-- Basic image with automatic dithering -->
-<img class="image" src="image-url.jpg" />
-
-<!-- Image sizes -->
-<img class="image image--small" src="image-url.jpg" />
-<img class="image image--medium" src="image-url.jpg" />
-<img class="image image--large" src="image-url.jpg" />
-
-<!-- Image with custom dimensions -->
-<img class="image width--100 height--100" src="image-url.jpg" />
-
-<!-- Image with border radius -->
-<img class="image radius" src="image-url.jpg" />
-```
-
-### 2. Base Components
-
-Primary structural elements:
-
-#### View
-
-Show your plugin in different sizes with Mashup view containers.
-
-```html
-<!-- Full-size view (entire display) -->
-<div class="view view--full">
-  <!-- Content -->
-</div>
-
-<!-- Half-height view -->
-<div class="view view--half-vertical">
-  <!-- Content -->
-</div>
-
-<!-- Half-width view -->
-<div class="view view--half-horizontal">
-  <!-- Content -->
-</div>
-
-<!-- Quarter-sized (quadrant) view -->
-<div class="view view--quadrant">
-  <!-- Content -->
-</div>
-```
-
-#### Layout
-
-Primary container for organizing plugin content.
-
-```html
-<!-- Basic layout -->
-<div class="layout">
-  <!-- Content -->
-</div>
-
-<!-- Layout with padding -->
-<div class="layout padding">
-  <!-- Content -->
-</div>
-
-<!-- Layout with background -->
-<div class="layout background--light">
-  <!-- Content -->
-</div>
-
-<!-- Scrollable layout (for content that exceeds view height) -->
-<div class="layout layout--scroll">
-  <!-- Content -->
-</div>
-```
-
-#### Title Bar
-
-Standardized title bar with plugin information and instance details.
-
-```html
-<!-- Basic title bar -->
-<div class="title_bar">
-  <img class="image" src="icon-url.svg" />
-  <span class="title">Plugin Title</span>
-  <span class="instance">Instance Title</span>
-</div>
-
-<!-- Title bar with only plugin name -->
-<div class="title_bar">
-  <span class="title">Plugin Title</span>
-</div>
-
-<!-- Title bar with custom action -->
-<div class="title_bar">
-  <span class="title">Plugin Title</span>
-  <button class="action">Refresh</button>
-</div>
-```
-
-#### Columns
-
-Implement zero-config column layouts for content organization.
-
-```html
-<!-- Two equal columns -->
-<div class="columns">
-  <div class="column">
-    <!-- Left column content -->
-  </div>
-  <div class="column">
-    <!-- Right column content -->
-  </div>
-</div>
-
-<!-- Three columns -->
-<div class="columns columns--3">
-  <div class="column">Column 1</div>
-  <div class="column">Column 2</div>
-  <div class="column">Column 3</div>
-</div>
-
-<!-- Unequal columns (1/3 + 2/3) -->
-<div class="columns">
-  <div class="column column--1-3">
-    <!-- Smaller column content -->
-  </div>
-  <div class="column column--2-3">
-    <!-- Larger column content -->
-  </div>
-</div>
-
-<!-- Columns with gap -->
-<div class="columns gap">
-  <div class="column">Column 1</div>
-  <div class="column">Column 2</div>
-</div>
-```
-
-#### Mashup
-
-Assemble multiple plugin views into a single interface.
-
-```html
-<!-- Basic mashup with multiple views -->
-<div class="mashup">
-  <div class="view view--half-horizontal">
-    <!-- First view content -->
-  </div>
-  <div class="view view--half-horizontal">
-    <!-- Second view content -->
-  </div>
-</div>
-
-<!-- Complex layout with different sized views -->
-<div class="mashup">
-  <div class="view view--half-horizontal">
-    <!-- Left half view -->
-  </div>
-  <div class="view view--quadrant">
-    <!-- Top right quadrant -->
-  </div>
-  <div class="view view--quadrant">
-    <!-- Bottom right quadrant -->
-  </div>
-</div>
-```
-
-#### Grid
-
-Create grid layouts with predefined column structures.
-
-```html
-<!-- Basic 2x2 grid -->
-<div class="grid grid--2">
-  <div class="grid__item">Item 1</div>
-  <div class="grid__item">Item 2</div>
-  <div class="grid__item">Item 3</div>
-  <div class="grid__item">Item 4</div>
-</div>
-
-<!-- 3-column grid -->
-<div class="grid grid--3">
-  <div class="grid__item">Item 1</div>
-  <div class="grid__item">Item 2</div>
-  <div class="grid__item">Item 3</div>
-</div>
-
-<!-- Grid with gap -->
-<div class="grid grid--2 gap">
-  <div class="grid__item">Item 1</div>
-  <div class="grid__item">Item 2</div>
-  <div class="grid__item">Item 3</div>
-  <div class="grid__item">Item 4</div>
-</div>
-```
-
-#### Flex
-
-Arrange elements with flexible layouts and alignment options.
-
-```html
-<!-- Row flex container (default) -->
-<div class="flex">
-  <div>Item 1</div>
-  <div>Item 2</div>
-  <div>Item 3</div>
-</div>
-
-<!-- Column flex container -->
-<div class="flex flex--column">
-  <div>Item 1</div>
-  <div>Item 2</div>
-  <div>Item 3</div>
-</div>
-
-<!-- Flex alignment -->
-<div class="flex flex--justify-center">
-  <div>Centered items</div>
-</div>
-
-<div class="flex flex--justify-between">
-  <div>Left</div>
-  <div>Right</div>
-</div>
-
-<div class="flex flex--align-center">
-  <div>Vertically centered</div>
-</div>
-
-<!-- Combining alignments -->
-<div class="flex flex--justify-center flex--align-center">
-  <div>Perfectly centered</div>
-</div>
-```
-
-### 3. Typography
-
-Text styling components:
-
-#### Text
-
-Control text alignment and formatting.
-
-```html
-<!-- Text alignment -->
-<div class="text--left">Left-aligned text</div>
-<div class="text--center">Center-aligned text</div>
-<div class="text--right">Right-aligned text</div>
-
-<!-- Text weight -->
-<div class="text--light">Light weight text</div>
-<div class="text--normal">Normal weight text</div>
-<div class="text--bold">Bold weight text</div>
-
-<!-- Text styles -->
-<div class="text--uppercase">UPPERCASE TEXT</div>
-<div class="text--monospace">Monospace text</div>
-
-<!-- Text size -->
-<div class="text--small">Small text</div>
-<div class="text--large">Large text</div>
-```
-
-#### Title
-
-Style headings with consistent typography.
-
-```html
-<!-- Basic title -->
-<span class="title">Main Title</span>
-
-<!-- Title sizes -->
-<span class="title title--small">Small Title</span>
-<span class="title title--medium">Medium Title</span>
-<span class="title title--large">Large Title</span>
-
-<!-- Title with alignment -->
-<span class="title text--center">Centered Title</span>
-
-<!-- Underlined title -->
-<span class="title title--underline">Underlined Title</span>
-```
-
-#### Value
-
-Display data values with consistent formatting.
-
-```html
-<!-- Basic value -->
-<span class="value">42</span>
-
-<!-- Value sizes -->
-<span class="value value--small">42</span>
-<span class="value value--large">42</span>
-<span class="value value--xlarge">42</span>
-
-<!-- Value with unit -->
-<span class="value">42<span class="value__unit">%</span></span>
-
-<!-- Currency value -->
-<span class="value">$42.50</span>
-
-<!-- Styled value -->
-<span class="value value--positive">+15%</span>
-<span class="value value--negative">-10%</span>
-```
-
-#### Label
-
-Create clear labels for unified content identification.
-
-```html
-<!-- Basic label -->
-<span class="label">Category</span>
-
-<!-- Label variations -->
-<span class="label label--small">Small label</span>
-<span class="label label--pill">Pill label</span>
-<span class="label label--tag">Tag label</span>
-
-<!-- Label with underline -->
-<span class="label label--underline">Underlined label</span>
-
-<!-- Labels with background -->
-<span class="label background--light">Light background</span>
-<span class="label background--dark">Dark background</span>
-```
-
-#### Description
-
-Format descriptive text with standardized styles.
-
-```html
-<!-- Basic description -->
-<span class="description">This is a description text that provides additional context.</span>
-
-<!-- Description variations -->
-<span class="description description--small">Smaller description text</span>
-<span class="description description--large">Larger description text</span>
-
-<!-- Indented description -->
-<span class="description description--indent">Indented description</span>
-
-<!-- Description with alignment -->
-<span class="description text--center">Centered description</span>
-```
-
-#### Clamp
-
-Manage text overflow with single and multi-line truncation.
-
-```html
-<!-- Single line clamp with ellipsis -->
-<div class="clamp">
-  This is a very long text that will be truncated after one line with an ellipsis.
-</div>
-
-<!-- Multi-line clamp (2 lines) -->
-<div class="clamp clamp--2">
-  This text will be clamped after two lines. Any additional content beyond the
-  second line will be cut off and replaced with an ellipsis.
-</div>
-
-<!-- Multi-line clamp (3 lines) -->
-<div class="clamp clamp--3">
-  This text can span up to three lines before being truncated with an ellipsis.
-  Perfect for longer descriptions or content that needs more space without taking
-  up too much room on the display.
-</div>
-```
-
-### 4. Components
-
-UI elements for content presentation:
-
-#### Item
-
-Build standardized list items and content blocks.
-
-```html
-<!-- Basic item -->
-<div class="item">
-  <div class="content">
-    <span class="title">Item Title</span>
-    <span class="description">Item description</span>
-  </div>
-</div>
-
-<!-- Item with leading icon -->
-<div class="item">
-  <div class="icon">
-    <img class="image" src="icon-url.svg" />
-  </div>
-  <div class="content">
-    <span class="title">Item with Icon</span>
-    <span class="description">Description text</span>
-  </div>
-</div>
-
-<!-- Item with action -->
-<div class="item">
-  <div class="content">
-    <span class="title">Item with Action</span>
-  </div>
-  <div class="action">
-    <button>View</button>
-  </div>
-</div>
-
-<!-- Item with label and value -->
-<div class="item">
-  <div class="content">
-    <span class="label">Temperature</span>
-    <span class="value">72°F</span>
-  </div>
-</div>
-
-<!-- Bordered item -->
-<div class="item border">
-  <div class="content">
-    <span class="title">Bordered Item</span>
-  </div>
-</div>
-```
-
-#### Table
-
-Create data tables optimized for 1-bit display.
-
-```html
-<!-- Basic table -->
-<div class="table">
-  <div class="table__header">
-    <div class="table__row">
-      <div class="table__cell table__cell--header">Name</div>
-      <div class="table__cell table__cell--header">Value</div>
-      <div class="table__cell table__cell--header">Status</div>
-    </div>
-  </div>
-  <div class="table__body">
-    <div class="table__row">
-      <div class="table__cell">Item 1</div>
-      <div class="table__cell">42</div>
-      <div class="table__cell">Active</div>
-    </div>
-    <div class="table__row">
-      <div class="table__cell">Item 2</div>
-      <div class="table__cell">18</div>
-      <div class="table__cell">Inactive</div>
-    </div>
-  </div>
-</div>
-
-<!-- Table with cell alignment -->
-<div class="table">
-  <div class="table__header">
-    <div class="table__row">
-      <div class="table__cell table__cell--header">Name</div>
-      <div class="table__cell table__cell--header text--right">Value</div>
-    </div>
-  </div>
-  <div class="table__body">
-    <div class="table__row">
-      <div class="table__cell">Item 1</div>
-      <div class="table__cell text--right">42</div>
-    </div>
-  </div>
-</div>
-
-<!-- Compact table -->
-<div class="table table--compact">
-  <!-- Table content -->
-</div>
-
-<!-- Table with striped rows -->
-<div class="table table--striped">
-  <!-- Table content -->
-</div>
-```
-
-#### Chart
-
-Visualize data optimized for 1-bit rendering.
-
-```html
-<!-- Basic chart using Highcharts -->
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<div id="chart-container" class="chart"></div>
-<script>
-Highcharts.chart('chart-container', {
-  chart: {
-    type: 'line',
-    backgroundColor: 'transparent',
-    style: {
-      fontFamily: 'Inter, sans-serif'
-    }
-  },
-  title: {
-    text: 'Monthly Data',
-    style: {
-      fontWeight: '600',
-      fontSize: '16px',
-      color: '#000'
-    }
-  },
-  xAxis: {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-    lineColor: '#000',
-    tickColor: '#000',
-    labels: {
-      style: {
-        color: '#000'
-      }
-    }
-  },
-  yAxis: {
-    title: {
-      text: null
-    },
-    gridLineColor: '#ccc',
-    lineColor: '#000',
-    tickColor: '#000',
-    labels: {
-      style: {
-        color: '#000'
-      }
-    }
-  },
-  legend: {
-    enabled: false
-  },
-  plotOptions: {
-    line: {
-      color: '#000',
-      lineWidth: 2,
-      marker: {
-        fillColor: '#fff',
-        lineWidth: 2,
-        lineColor: '#000'
-      }
-    }
-  },
-  series: [{
-    name: 'Value',
-    data: [29, 42, 35, 48, 51]
-  }]
-});
-</script>
-
-<!-- Bar chart -->
-<script>
-Highcharts.chart('bar-chart-container', {
-  chart: {
-    type: 'bar',
-    backgroundColor: 'transparent'
-  },
-  // Additional configuration...
-  series: [{
-    name: 'Value',
-    data: [10, 20, 30, 40, 50]
-  }]
-});
-</script>
-```
-
-### 5. Modulations
-
-Components for special content handling:
-
-#### Overflow
-
-Handle content overflow in fixed-size containers.
-
-```html
-<!-- Basic overflow with scrolling -->
-<div class="overflow">
-  <div class="content">
-    <!-- Long content that will overflow -->
-  </div>
-</div>
-
-<!-- Overflow with fade effect -->
-<div class="overflow overflow--fade">
-  <div class="content">
-    <!-- Long content with fading edges -->
-  </div>
-</div>
-
-<!-- Horizontal overflow -->
-<div class="overflow overflow--horizontal">
-  <div class="content">
-    <!-- Horizontally scrollable content -->
-  </div>
-</div>
-
-<!-- Fixed height overflow -->
-<div class="overflow height--200">
-  <div class="content">
-    <!-- Content in a 200px tall container -->
-  </div>
-</div>
-```
-
-#### Format Value
-
-Format numbers and values with consistent styling.
-
-```html
-<!-- Basic formatted value -->
-<span class="format-value">1234</span> <!-- displays as: 1,234 -->
-
-<!-- Currency formatting -->
-<span class="format-value format-value--currency">1234</span> <!-- displays as: $1,234.00 -->
-
-<!-- Percentage formatting -->
-<span class="format-value format-value--percent">0.75</span> <!-- displays as: 75% -->
-
-<!-- Decimal precision -->
-<span class="format-value format-value--decimal-2">123.456</span> <!-- displays as: 123.46 -->
-
-<!-- Compact notation -->
-<span class="format-value format-value--compact">1234567</span> <!-- displays as: 1.2M -->
-```
-
-#### Fit Value
-
-Automatically resize numbers and values to fit within their containers.
-
-```html
-<!-- Basic fit value -->
-<div class="fit-value">
-  <span>1234567890</span>
-</div>
-
-<!-- Fit value with min/max size -->
-<div class="fit-value" data-min-size="16" data-max-size="64">
-  <span>1234</span>
-</div>
-
-<!-- Fit value with units -->
-<div class="fit-value">
-  <span>42</span>
-  <span class="fit-value__unit">km/h</span>
-</div>
-
-<!-- Fit value in a fixed width container -->
-<div class="fit-value width--100">
-  <span>9876</span>
-</div>
-```
-
-## View Layouts
-
-TRMNL templates support multiple view layouts:
-
-1. **Full view** (`view--full`): Uses the entire display
-2. **Half vertical** (`view--half-vertical`): Half-height view
-3. **Half horizontal** (`view--half-horizontal`): Half-width view
-4. **Quadrant** (`view--quadrant`): Quarter-sized view
-
-Example of a half-vertical view:
-
-```html
-<div class="view view--half-vertical">
-  <!-- Content for half-vertical view -->
-</div>
-```
-
-## Templating with Liquid
-
-TRMNL uses the [Liquid templating language](https://shopify.github.io/liquid/) (by Shopify) to make templates dynamic. Liquid is similar to other templating languages like Twig, and uses specific syntax for different operations.
-
-### Liquid Basics
-
-Liquid has three main components:
-
-1. **Objects**: Display content using double curly braces `{{ variable }}`
-2. **Tags**: Create logic and control flow using curly brace percentage delimiters `{% tag %}`
-3. **Filters**: Transform output using a pipe character `| filter`
-
-### Object Output
-
-Use double curly braces to output variable content:
-
-```liquid
-{{ page.title }}
-{{ user.name }}
-{{ trmnl.plugin_settings.instance_name }}
-```
-
-### Object Variables Available in TRMNL
-
-TRMNL provides several built-in variables:
-
-```liquid
-{{ trmnl.user.utc_offset }}  <!-- User's timezone offset in seconds -->
-{{ trmnl.plugin_settings.instance_name }}  <!-- The name of the plugin instance -->
-```
-
-### Control Flow
-
-Use tags for conditional logic and loops:
-
-```liquid
-{% if events.size > 0 %}
-  {% for event in events %}
-    <div class="item">
-      <div class="content">
-        <span class="title title--small">{{ event.title }}</span>
-        <span class="description">{{ event.description }}</span>
-        <span class="label">{{ event.start_time }}</span>
-      </div>
-    </div>
-  {% endfor %}
-{% else %}
-  <span class="title title--small">No events scheduled.</span>
-{% endif %}
-```
-
-### Liquid Filters
-
-Filters can transform content by modifying data output:
-
-```liquid
-{{ "hello world" | capitalize }}  <!-- Output: Hello world -->
-{{ 10 | plus: 5 }}  <!-- Output: 15 -->
-{{ "/my/page" | append: ".html" }}  <!-- Output: /my/page.html -->
-```
-
-### Advanced Liquid Techniques
-
-#### Assigning Variables
-
-```liquid
-{% assign username = "John Doe" %}
-{% assign user_count = users.size %}
-```
-
-#### Working with Arrays (Lists)
-
-```liquid
-{% assign event_count = events.size %}
-{% assign first_event = events.first %}
-{% assign last_event = events.last %}
-
-<!-- Split an array in half for multi-column layouts -->
-{% assign events_half = events.size | times: 0.5 | ceil %}
-
-<!-- First column -->
-{% for event in events limit:events_half %}
-  <!-- Event content for first column -->
-{% endfor %}
-
-<!-- Second column -->
-{% for event in events offset:events_half %}
-  <!-- Event content for second column -->
-{% endfor %}
-```
-
-#### Date Handling 
-
-```liquid
-<!-- Format a date -->
-{{ event.date | date: "%B %d, %Y" }}
-
-<!-- Show current date/time -->
-{{ "now" | date: "%H:%M" }}
-
-<!-- Convert to user's timezone -->
-{{ "2025-02-28T13:35:00Z" | date: "%s" | plus: trmnl.user.utc_offset | date: "%H:%M" }}
-```
-
-#### Type Conversion and Formatting
-
-```liquid
-<!-- Format a number -->
-{{ 1.5 | replace: ".", "," }}  <!-- Output: 1,5 -->
-
-<!-- Division with decimal results -->
-{{ 1.0 | divided_by: 2 }}  <!-- Output: 0.5 instead of 0 -->
-
-<!-- Left-pad with zeros -->
-{% assign minutes = 3 %}
-{{ minutes | prepend: "00" | slice: -2, 2 }}  <!-- Output: 03 -->
-```
-
-#### Mixing Liquid and JavaScript
-
-You can use Liquid variables directly in JavaScript code:
-
-```html
-<script>
-  // Using Liquid strings in JavaScript
-  const jsString = "{{ liquid_string }}";
-  
-  // Using Liquid numbers/booleans in JavaScript
-  const jsNumber = {{ liquid_number }};
-  const jsBoolean = {{ liquid_boolean }};
-  
-  // Pushing Liquid array items to JavaScript array
-  const jsArray = [];
-  {% for item in liquid_list %}
-  jsArray.push({{ item }});
-  {% endfor %}
-  
-  // Using Liquid objects in JavaScript via custom json filter
-  const jsObject = {{ liquid_object | json }};
-  console.log(jsObject.property);
-</script>
-```
-
-### TRMNL Custom Liquid Filters
-
-TRMNL provides custom Liquid filters that extend the standard functionality:
-
-```liquid
-<!-- Convert an object to JSON string -->
-{{ my_object | json }}
-```
-
-## Data Sources for Templates
-
-### API Endpoints
-
-TRMNL templates can fetch data from external APIs. When creating a plugin, you can configure:
-
-1. The API URL to fetch data from
-2. Optional headers for authentication
-3. The fetch interval (how often to refresh data)
-
-Within your template, you'll have access to this data through Liquid variables.
-
-### Example: Working with API Data
-
-```html
-<div class="layout">
-  <div class="columns">
-    <div class="column">
-      {% if weather %}
-        <div class="item">
-          <div class="content">
-            <span class="title title--large">{{ weather.temperature }}°</span>
-            <span class="description">{{ weather.condition }}</span>
-            <span class="label">{{ weather.location }}</span>
-          </div>
-        </div>
-      {% else %}
-        <div class="item">
-          <div class="content">
-            <span class="title">Weather data unavailable</span>
-          </div>
-        </div>
-      {% endif %}
-    </div>
-  </div>
-</div>
-```
-
-### Using JSON Data
-
-If you're creating a JSON API to provide data to your TRMNL plugin, ensure your JSON is properly formatted and consider using authentication headers to secure your endpoint.
-
-## Data Visualization
-
-### Charts and Graphs
-
-For data visualization, TRMNL supports third-party libraries like Highcharts, styled to work well with the e-ink display:
-
-```html
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<div class="layout">
-  <div id="container"></div>
-</div>
-<script>
-Highcharts.chart("container", {
-  // Chart configuration
-  title: {
-    text: "Chart demo"
-  },
-  // More configuration...
-});
-</script>
-```
-
-For detailed chart styling optimized for the e-ink display, refer to: [/framework/chart](https://usetrmnl.com/framework/chart)
-
-## E-Ink Display Considerations
-
-When designing for the TRMNL e-ink display, keep in mind:
-
-1. **Black and white only**: No color, just 1-bit grayscale
-2. **Dithering for images**: Use the Image component to properly dither images
-3. **Text readability**: Ensure sufficient contrast and appropriate font sizes
-4. **Refresh rate limitations**: E-ink has slower refresh rates than traditional displays
-5. **Battery optimization**: Minimize unnecessary refreshes to extend battery life
-
-## Common UI Patterns
-
-### List Items
-
-```html
-<div class="item">
-  <div class="content">
-    <span class="title title--small">Item Title</span>
-    <span class="description">Item description text here</span>
-    <span class="label">Additional information</span>
-  </div>
-</div>
-```
-
-### Data Tables
-
-```html
-<div class="table">
-  <div class="table__header">
-    <div class="table__row">
-      <div class="table__cell table__cell--header">Header 1</div>
-      <div class="table__cell table__cell--header">Header 2</div>
-    </div>
-  </div>
-  <div class="table__body">
-    <div class="table__row">
-      <div class="table__cell">Cell 1</div>
-      <div class="table__cell">Cell 2</div>
-    </div>
-    <!-- Additional rows -->
-  </div>
-</div>
-```
-
-### Markdown Content
-
-```html
-<div class="markdown">
-  <span class="title">Section Title</span>
-  <div class="content content--center">Centered content here</div>
-  <span class="label label--underline">Footer text</span>
-</div>
-```
-
-## Best Practices
-
-1. **Minimalism**: Focus on essential information to avoid cluttering the display
-2. **Consistent spacing**: Use the spacing and gap components for uniform layout
-3. **Text hierarchy**: Employ proper typography components to establish clear hierarchy
-4. **Optimized images**: Always use the image component to properly render images
-5. **Responsive layouts**: Test on the actual display dimensions (800x480px)
-6. **Content overflow**: Use clamp and overflow components to handle content gracefully
-7. **User timezone**: Use the `trmnl.user.utc_offset` variable to display times correctly
-8. **Handle empty states**: Always provide fallback content when data might be missing
-
-## Development Workflow
-
-### Creating a New Plugin
-
-1. **Design** - Sketch your layout and decide what data you need
-2. **Static HTML** - Build a basic template with static content using TRMNL components
-3. **Add Liquid** - Replace static content with Liquid variables and logic
-4. **Test** - Use the live previewer to test your template with real data
-5. **Refine** - Adjust the design for different view sizes and edge cases
-
-### Testing Multi-View Layouts
-
-TRMNL plugins should be designed to work in different view layouts. In the plugin editor, you can create separate templates for different view sizes:
-
-1. **Full view** - The entire screen
-2. **Half view (vertical)** - Top or bottom half of the screen
-3. **Half view (horizontal)** - Left or right half of the screen
-4. **Quadrant view** - One quarter of the screen
-
-Optimize your content for each view size by adjusting the layout and information density.
-
-## Advanced Features
-
-### Plugin Development API
-
-For more advanced template functionality, TRMNL provides a Developer Edition that unlocks the full API capabilities:
-
-- Use custom HTML markup for complex interfaces
-- Implement WebHook or polling mechanisms for dynamic data retrieval
-- Create custom screens in under 5 minutes
-
-### Self-Hosting Options
-
-TRMNL supports a "Bring Your Own Server" (BYOS) approach, with multiple reference implementations:
-
-- Terminus (Ruby, Official)
-- Laravel (PHP, Community)
-- Next.js (JavaScript, Community)
-- Phoenix (Elixir, Official)
-- Django (Python, Community)
-
-## Testing Your Templates
-
-Before deploying, test your template in the following ways:
-
-1. Use the live previewer in the TRMNL account interface
-2. Test responsiveness at the exact 800x480px dimensions
-3. Check text readability at different distances
-4. Verify proper image dithering and contrast
-5. Test dynamic content with various data conditions
-6. Test with empty or missing data to ensure fallbacks work
-
-## Complete Example Template
-
-Here's a complete example of a weather dashboard template:
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="https://usetrmnl.com/css/latest/plugins.css">
-    <script src="https://usetrmnl.com/js/latest/plugins.js"></script>
-  </head>
-  <body class="environment trmnl">
-    <div class="screen">
-      <div class="view view--full">
-        <div class="layout">
-          <div class="columns">
-            <div class="column">
-              <div class="markdown">
-                <span class="title">Weather Dashboard</span>
-                
-                <div class="item">
-                  <div class="content">
-                    <span class="title title--large">{{ current_temp }}°</span>
-                    <span class="description">{{ weather_condition }}</span>
-                    <span class="label">{{ location }}</span>
-                  </div>
-                </div>
-                
-                <div class="table">
-                  <div class="table__header">
-                    <div class="table__row">
-                      <div class="table__cell table__cell--header">Day</div>
-                      <div class="table__cell table__cell--header">High</div>
-                      <div class="table__cell table__cell--header">Low</div>
-                      <div class="table__cell table__cell--header">Condition</div>
-                    </div>
-                  </div>
-                  <div class="table__body">
-                    {% for day in forecast %}
-                    <div class="table__row">
-                      <div class="table__cell">{{ day.name }}</div>
-                      <div class="table__cell">{{ day.high }}°</div>
-                      <div class="table__cell">{{ day.low }}°</div>
-                      <div class="table__cell">{{ day.condition }}</div>
-                    </div>
-                    {% endfor %}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="title_bar">
-          <img class="image" src="https://usetrmnl.com/images/plugins/weather-icon.svg" />
-          <span class="title">Weather Dashboard</span>
-          <span class="instance">{{ location }}</span>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
-```
-
-## Example: Prayer Times Template
-
-Here's an example template specifically for displaying prayer times, which could be adapted for the Salah Times plugin:
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="https://usetrmnl.com/css/latest/plugins.css">
-    <script src="https://usetrmnl.com/js/latest/plugins.js"></script>
-  </head>
-  <body class="environment trmnl">
-    <div class="screen">
-      <div class="view view--full">
-        <div class="layout">
-          <div class="markdown">
-            <span class="title text--center">SALAH TIMES</span>
-          </div>
-          
-          {% assign next_prayer = "" %}
-          {% assign next_prayer_time = "" %}
-          {% assign time_remaining = "" %}
-          
-          <div class="table">
-            <div class="table__body">
-              {% for prayer in prayers %}
-                {% if prayer.is_next %}
-                  {% assign next_prayer = prayer.name %}
-                  {% assign next_prayer_time = prayer.time %}
-                  {% assign time_remaining = prayer.remaining %}
-                  <div class="table__row background--light">
-                {% else %}
-                  <div class="table__row">
-                {% endif %}
-                    <div class="table__cell">
-                      <span class="title title--small">{{ prayer.name }}</span>
-                    </div>
-                    <div class="table__cell text--right">
-                      <span class="value">{{ prayer.time }}</span>
-                    </div>
-                  </div>
-              {% endfor %}
-            </div>
-          </div>
-          
-          <div class="margin-top">
-            <div class="item">
-              <div class="content content--center">
-                <span class="description">Next prayer: {{ next_prayer }} in {{ time_remaining }}</span>
-                <span class="label label--underline">{{ hijri_date }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="title_bar">
-          <span class="image">🕌</span>
-          <span class="title">Salah Times</span>
-          <span class="instance">{{ location }}</span>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
-```
-
-## Conclusion
-
-The TRMNL design system provides a comprehensive framework for creating visually consistent and functional templates for e-ink displays. By following the guidelines and utilizing the provided components, AI agents can efficiently build templates that deliver an optimal user experience while respecting the unique characteristics of e-ink technology.
-
-For more detailed information on specific components or advanced features, refer to the official documentation at [https://usetrmnl.com/framework](https://usetrmnl.com/framework) and [https://docs.usetrmnl.com](https://docs.usetrmnl.com).
+# TRMNL Design System Documentation
+
+## Overview
+
+TRMNL is a design system optimized for 1-bit rendering (black and white only displays). It creates the illusion of grayscale through carefully designed dither patterns and provides a comprehensive set of components and utilities for building consistent interfaces.
+
+The system is designed with a minimalist aesthetic that embraces the constraints of 1-bit displays rather than fighting against them. This approach results in clean, highly legible interfaces that maintain visual hierarchy and user experience despite the limited color palette. The system's name "TRMNL" evokes terminal interfaces and vintage computing, while its implementation leverages modern web technologies.
+
+The design system is structured to promote:
+- **Consistency** across interfaces through standardized components
+- **Accessibility** with high contrast and clear visual hierarchy
+- **Performance** by embracing technical constraints as design features
+- **Scalability** through modular components that can be combined in various ways
+- **Developer experience** with intuitive class naming and documentation
+
+## 1. Utilities
+
+The utilities section provides the fundamental building blocks of the design system. These low-level tools handle visual treatments, spacing, and sizing that serve as the foundation for more complex components.
+
+### Background
+- Creates the illusion of grayscale using dither patterns
+- Uses `bg-{color}` utility classes
+- Available values: black, gray-1 through gray-7, and white
+- **Additional info**: The dither patterns are carefully calibrated to create perceptual grayscale when viewed from a distance, similar to how newspaper images work. Each pattern is optimized for legibility and consistent visual weight.
+- **Best practice**: Use lighter gray values (gray-5 through gray-7) for larger areas to reduce visual density and reserve darker grays for emphasis and focus areas.
+
+### Border
+- Creates grayscale borders using dither patterns
+- Horizontal borders: `border--h-{n}` (n from 1-7)
+- Vertical borders: `border--v-{n}` (n from 1-7)
+- **Additional info**: Unlike traditional borders that use solid colors, TRMNL's borders use alternating patterns of black and white pixels to create the illusion of varying intensities.
+- **Best practice**: Use lighter borders (1-3) for subtle separation and darker borders (5-7) for primary content divisions. Combine horizontal and vertical borders to create grid-like structures.
+
+### Spacing
+- Controls margins and padding with fixed sizes
+- Margin utilities: `m--{size}`, `mt--{size}`, `mr--{size}`, `mb--{size}`, `ml--{size}`, `mx--{size}`, `my--{size}`
+- Padding utilities: `p--{size}`, `pt--{size}`, `pr--{size}`, `pb--{size}`, `pl--{size}`, `px--{size}`, `py--{size}`
+- **Additional info**: The spacing system uses a consistent scale that maintains proper visual rhythm across interfaces. The naming convention follows the familiar pattern of direction-size.
+- **Best practice**: Use consistent spacing values throughout your interface to maintain rhythm. Prefer the pre-defined spacing values over custom ones to ensure consistency across components.
+
+### Gap
+- Provides consistent spacing between elements using CSS gap property
+- Standard gaps: `gap--xsmall`, `gap`, `gap--medium`, `gap--large`, `gap--xlarge`, `gap--xxlarge`
+- Distribution modifiers: `gap--space-between`
+- Custom values: `gap--[Npx]`
+- **Additional info**: The gap system is particularly useful for grid and flex layouts, providing a modern alternative to margins for spacing between elements.
+- **Best practice**: Use `gap--space-between` when you need elements to span the full width of a container with equal spacing. For most other cases, use the standard gap values to maintain design consistency.
+
+### Size
+- Controls width and height dimensions
+- Fixed sizes: `w/h--{size}` with values from 0 to 96
+- Responsive sizes: `w/h--full`, `w/h--auto`
+- **Additional info**: The size system provides both precise pixel values and fluid responsive options. The numeric values correspond to a specific pixel dimension, creating a consistent sizing scale.
+- **Best practice**: Use fixed sizes for elements that should maintain consistent dimensions across different contexts. Use responsive sizes for elements that should adapt to their container or content.
+
+### Image
+- Applies dithering techniques for 1-bit rendering
+- Usage: `image-dither` class
+- **Additional info**: The image dithering process converts standard grayscale or color images into optimized black and white patterns that preserve visual information while working within the constraints of 1-bit displays.
+- **Best practice**: Use high contrast images with clear subjects for best results. Avoid images with fine details that might be lost in the dithering process. Test images at different sizes as dithering effectiveness can vary based on image dimensions.
+
+## 2. Base
+
+The Base section provides structural components that form the foundation of layouts and interface organization. These components define the macro-level structure of your application, controlling how content is arranged and presented.
+
+### View
+- Provides container structure for displaying content
+- Use `view view--full` for full-width view
+- Also available: `view--half_horizontal`, `view--half_vertical`, `view--quadrant`
+- Optional title bar for context
+- Screen container modifier: `screen--no-bleed`
+- **Additional info**: The View component acts as the primary container for your content, creating a consistent framing system. The different size variants allow for flexible layout compositions, especially when combined with Mashup layouts.
+- **Best practice**: Start your interface design by deciding on the appropriate View size, then build your content structure within it. Always consider how your View might be composed with others in a Mashup layout.
+
+### Layout
+- Flexible containers for organizing content horizontally or vertically
+- Base structure:
+    - Row layout: `layout layout--row`
+    - Column layout: `layout layout--col`
+- Alignment modifiers: `layout--left`, `layout--center-x`, `layout--right`, `layout--top`, `layout--center-y`, `layout--bottom`, `layout--center`
+- Stretch modifiers: `layout--stretch`, `layout--stretch-x`, `layout--stretch-y`
+- Child element stretch: `stretch`, `stretch-x`, `stretch-y`
+- **Additional info**: The Layout system uses Flexbox principles but with a simplified API that focuses on the most common layout needs. This system is ideal for one-dimensional layouts (either row or column).
+- **Best practice**: Choose the appropriate base direction first (row or column), then apply alignment modifiers. Use stretch modifiers when you want children to fill available space. For more complex two-dimensional layouts, consider using Grid or Columns instead.
+
+### Title Bar
+- Consistent header for terminal-like interfaces
+- Contains icon, title, and optional instance label
+- Basic usage: `title_bar` class with `image`, `title`, and optional `instance` elements
+- **Additional info**: The Title Bar component provides users with context about the current view and maintains a consistent navigation pattern. The instance label is particularly useful for differentiating between multiple instances of the same plugin or view.
+- **Best practice**: Keep titles concise and descriptive. Use the instance label to provide additional context about the environment or configuration of the current view (e.g., "Production", "Testing", "User Dashboard").
+
+### Columns
+- Simple way to create balanced column layouts
+- Basic structure: `columns` container with `column` children
+- **Additional info**: The Columns system provides a simpler alternative to the Grid system when you need basic column layouts with equal widths. It automatically handles spacing and responsive behavior.
+- **Best practice**: Use Columns when you need a straightforward multi-column layout with equal widths. For more complex layouts with varying column widths or specific positioning, use the Grid system instead.
+
+### Mashup
+- Grid-based containers for assembling multiple plugin views
+- Layout options:
+    - `mashup--1Lx1R`: 1 left, 1 right
+    - `mashup--1Tx1B`: 1 top, 1 bottom
+    - `mashup--1Lx2R`: 1 left, 2 right
+    - `mashup--2Lx1R`: 2 left, 1 right
+    - `mashup--2Tx1B`: 2 top, 1 bottom
+    - `mashup--1Tx2B`: 1 top, 2 bottom
+    - `mashup--2x2`: 2 x 2 grid
+- **Additional info**: The Mashup system is designed for composing multiple plugin views into a unified interface. Each layout option provides a different arrangement of views, allowing for flexible composition of content.
+- **Best practice**: Choose your Mashup layout based on the relationship between the views. Use left-right layouts (`1Lx1R`) for complementary content, top-bottom layouts (`1Tx1B`) for sequential information, and grid layouts (`2x2`) for dashboard-like presentations of related data.
+
+### Grid
+- Flexible system for column-based and row-based layouts
+- Define grid:
+    - Column count: `grid--cols-{number}`
+    - Column spans: `col--span-{number}`
+- Column layouts: `col` with positioning (`col--start`, `col--center`, `col--end`)
+- Row layouts: `row` with positioning (`row--start`, `row--center`, `row--end`)
+- **Additional info**: The Grid system implements a modern CSS Grid layout with a simplified API. It supports both explicit column definitions and flexible column spans, allowing for complex layout arrangements.
+- **Best practice**: Start by defining your grid structure with `grid--cols-{number}`, then use column spans to control how elements flow within the grid. For responsive designs, consider how your grid will adapt to different container sizes and adjust column counts accordingly.
+
+### Flex
+- Utility classes for creating flexible layouts using Flexbox
+- Base structure:
+    - Row direction: `flex flex--row`
+    - Column direction: `flex flex--col`
+- Alignment modifiers:
+    - Row: `flex--left`, `flex--center-x`, `flex--right`, `flex--top`, `flex--center-y`, `flex--bottom`
+    - Column: Same as row with appropriate directional effects
+- Stretch modifiers: `flex--stretch`, `flex--stretch-x`, `flex--stretch-y`
+- Individual item control: `stretch`, `stretch-x`, `stretch-y`, `no-shrink`
+- **Additional info**: The Flex system provides direct access to Flexbox capabilities with a consistent naming convention. It's particularly useful for aligning items, distributing space, and creating adaptive layouts.
+- **Best practice**: Use Flex for one-dimensional layouts where you need precise control over alignment and space distribution. The `no-shrink` utility is particularly valuable for preventing important elements from being compressed when space is limited.
+
+## 3. Typography
+
+The Typography section provides components for controlling text presentation, from basic alignment to specialized text handling. These components are designed to create clear visual hierarchy and ensure readability on 1-bit displays.
+
+### Text
+- Controls text alignment and grayscale shading
+- Text shading: `text--black`, `text--gray-1` through `text--gray-7`, `text--white`
+- Text alignment: `text--left`, `text--center`, `text--right`, `text--justify`
+- **Additional info**: The Text system uses the same dithering techniques as backgrounds to create the illusion of grayscale text. This allows for subtle emphasis and de-emphasis of text content without relying on color.
+- **Best practice**: Use darker shades for primary content and lighter shades for secondary information. Avoid using justified text (`text--justify`) for narrow columns as it can create uneven spacing between words.
+
+### Title
+- Consistent text headings with different size variants
+- Default title: `title` class
+- Small title: `title title--small`
+- **Additional info**: Titles are designed to stand out from regular text with greater visual weight. They maintain legibility even at smaller sizes thanks to optimized letter spacing and font weight.
+- **Best practice**: Use titles sparingly to mark major sections of your interface. For subsections, consider using the small title variant to maintain hierarchy while conserving vertical space.
+
+### Value
+- Displays numerical and textual values with consistent formatting
+- Size variants:
+    - `value--xxsmall`
+    - `value--xsmall`
+    - `value--small`
+    - `value` (default)
+    - `value--large`
+    - `value--xlarge`
+    - `value--xxlarge`
+    - `value--xxxlarge`
+- Numerical display: `value--tnums` for tabular numbers
+- **Additional info**: The Value component is specifically optimized for displaying data, especially numerical information. The tabular numbers feature (`value--tnums`) ensures that numbers align properly when stacked vertically, as all digits have the same width.
+- **Best practice**: Use larger size variants for KPIs and important metrics, and smaller sizes for supporting data. Always use tabular numbers (`value--tnums`) when displaying financial data or when numbers need to align vertically.
+
+### Label
+- Displays text labels with different visual treatments
+- Default labels: `label`
+- Variants: `label--outline`, `label--underline`, `label--gray-out`, `label--inverted`
+- Size modifier: `label--small`
+- **Additional info**: Labels provide contextual information and categorization. The different visual treatments allow for varying levels of emphasis while maintaining the 1-bit aesthetic.
+- **Best practice**: Use the default label style for primary categories, outline for secondary information, underline for interactive elements, gray-out for disabled states, and inverted for high-contrast needs. The small modifier works well in space-constrained areas.
+
+### Description
+- Standardized way to display descriptive text
+- Basic usage: `description` class
+- **Additional info**: The Description component is optimized for body text and longer explanations. It uses a balanced font size and line height to maximize readability for extended content.
+- **Best practice**: Use description text for explanatory content that supports the main interface elements. Keep descriptions concise and consider using the Clamp component when space is limited.
+
+### Clamp
+- Truncates text content with ellipsis after specified lines
+- Single line: `clamp--1`
+- Multi-line: `clamp--{n}` (n from 1 to 35)
+- **Additional info**: The Clamp system uses CSS line-clamp properties to control text overflow, ensuring consistent truncation across browsers. This is particularly useful for handling variable-length content in fixed-height containers.
+- **Best practice**: Use single-line clamping for headings, titles, and labels. Use multi-line clamping for descriptions and body text. When choosing the number of lines, consider the context and available space in your layout.
+
+## 4. Components
+
+The Components section provides higher-level UI elements that combine multiple base elements and utilities to create complex, reusable interface patterns. These components are designed to handle common UI patterns while maintaining the 1-bit aesthetic.
+
+### Item
+- Flexible container for displaying content with optional metadata
+- Variants:
+    - With meta and index: `item` with `meta` containing `index` and `content`
+    - With meta only: `item` with `meta` and `content`
+    - Simple: `item` with `content` only
+- **Additional info**: The Item component is a versatile building block for creating lists, feeds, and content collections. Its flexible structure accommodates various content types while maintaining consistent spacing and alignment.
+- **Best practice**: Use the indexed variant for ordered lists where sequence matters. Use the meta-only variant when you need to attach metadata or icons to content without numbering. The simple variant works well for basic content that doesn't require additional context.
+
+### Table
+- Structured data presentation with consistent styling
+- Default table: `table` class
+- Size variant: `table--condensed`
+- **Additional info**: The Table component is designed specifically for displaying structured data in rows and columns. Its styling ensures proper alignment of data within cells while maintaining the 1-bit aesthetic.
+- **Best practice**: Use tables only for truly tabular data where relationships between rows and columns are important. For simpler lists, consider using the Item component instead. The condensed variant is particularly useful when displaying large datasets with limited vertical space.
+
+### Chart
+- Displays data visualizations optimized for 1-bit rendering
+- Supports various chart types (line, gauge, etc.)
+- Uses JavaScript libraries like Highcharts and Chartkick
+- Requires disabling animation effects for proper rendering
+- **Additional info**: The Chart system adapts standard visualization techniques to work within the constraints of 1-bit rendering. It uses patterns, line weights, and spacing to create clear distinctions between data series without relying on color.
+- **Best practice**: Choose chart types that work well with limited visual differentiation—line charts, bar charts, and gauges are particularly effective. Avoid pie charts and complex visualizations that traditionally rely heavily on color for data separation. Always disable animation effects to ensure proper rendering in the 1-bit environment.
+
+## 5. Modulations
+
+The Modulations section provides advanced behavioral controls that dynamically adjust content presentation based on context. These features enhance the user experience by automatically handling common display challenges like overflow, formatting, and sizing.
+
+### Overflow
+- Handles layouts exceeding a height limit
+- Basic usage: `data-list-limit="true"` attribute
+- Configuration options:
+    - `data-list-max-height`: Sets custom max height (in pixels)
+    - `data-list-hidden-count="true"`: Displays count of hidden items
+    - `data-list-max-columns`: Specifies maximum number of columns
+- **Additional info**: The Overflow system automatically manages content that exceeds the available vertical space, providing a clean solution for variable-length content. Instead of traditional scrolling, which can be challenging in 1-bit interfaces, it intelligently truncates content with an indicator of hidden items.
+- **Best practice**: Set an appropriate maximum height based on your layout context. Enable the hidden count feature when users need to know how much content is not visible. Use the multi-column feature for dense lists where horizontal space is available.
+
+### Format Value
+- Formats numeric values to fit containers while maintaining readability
+- Basic usage: `data-value-format="true"` attribute
+- Supports currency symbols, abbreviations, and regional formats
+- Regional formats: `data-value-locale` attribute (e.g., "en-US", "de-DE", "fr-FR")
+- **Additional info**: The Format Value system automatically applies appropriate formatting to numbers based on their magnitude and available space. It maintains prefix symbols (like currency) while intelligently handling the numeric portion.
+- **Best practice**: Always use this system when displaying financial data or large numbers. Set the appropriate locale attribute when targeting users from specific regions to ensure numbers are formatted according to their expectations. Combine with the Fit Value system for even better control over number display.
+
+### Fit Value
+- Adjusts font size, weight, and line height to fit containers
+- Basic usage: `data-value-fit="true"` attribute
+- For text content, specify `data-value-fit-max-height` (in pixels)
+- **Additional info**: The Fit Value system dynamically adjusts text properties to ensure content fits within its container while remaining legible. This is particularly useful for displaying variable-length content in fixed-size containers or for creating responsive typographic treatments.
+- **Best practice**: Use this system for hero elements like KPIs or important metrics where the value may vary widely but should always be prominently displayed. For text content, always specify a maximum height to prevent excessive shrinking that could impact readability.
+
+## Key Design Principles
+
+1. **Optimized for 1-bit rendering**: Uses dither patterns to create the illusion of grayscale on black and white displays. This approach embraces constraints as a design feature rather than a limitation, resulting in a distinctive aesthetic that balances minimalism with visual depth.
+
+2. **Consistent spacing and typography**: Provides standardized components for maintaining visual hierarchy. The system uses careful spacing scales and typographic choices to create clear distinction between different content types while maintaining an overall harmonious appearance.
+
+3. **Flexible layouts**: Multiple layout systems (Grid, Flex, Layout) for different needs. Each system is designed for specific layout challenges, from simple one-dimensional arrangements to complex responsive grids, giving developers the right tool for each situation.
+
+4. **Responsive behaviors**: Automatic text fitting and overflow management. These intelligent adaptations ensure content remains legible and accessible across different viewport sizes and content lengths, maintaining design integrity without developer intervention.
+
+5. **Modular composition**: Components can be combined and nested for complex interfaces. The system is built on a foundation of composable parts that work together seamlessly, allowing for complexity to emerge from simple building blocks.
+
+6. **Performance-focused**: The 1-bit rendering approach inherently reduces rendering complexity and bandwidth requirements. This results in interfaces that load quickly and render efficiently, even on less powerful devices.
+
+7. **Accessibility-driven**: High contrast and clear visual hierarchy make interfaces more accessible to users with visual impairments. The system's design choices naturally promote good accessibility practices by emphasizing clarity and distinction.
+
+## Usage Notes & Best Practices
+
+- **Start with structure**: Begin by deciding on the appropriate View and Layout components before adding content. This top-down approach ensures consistent organization across interfaces.
+
+- **Embrace the aesthetic**: The 1-bit design is most effective when you work with its constraints rather than against them. Avoid trying to simulate complex color effects—instead, use patterns, spacing, and typography to create visual interest.
+
+- **Test on target devices**: Always test your interfaces on actual 1-bit displays or accurate simulations to ensure dithering patterns create the intended visual effect.
+
+- **Performance considerations**: When creating charts, ensure animations are disabled for proper rendering. Animation effects can cause incomplete captures when using TRMNL's screenshot rendering service.
+
+- **Numerical data display**: For numeric displays, always use tabular numbers (`value--tnums`) when vertical alignment matters, particularly in financial data or statistics.
+
+- **Content management**: Utilize overflow management and text fitting for variable-content areas. These features ensure your layouts remain stable regardless of content length.
+
+- **Consistent spacing**: Maintain rhythm throughout your interfaces by using the standard spacing and gap utilities rather than custom values whenever possible.
+
+- **Component composition**: Combine simpler components to build complex interfaces rather than creating custom one-off solutions. This promotes consistency and makes maintenance easier.
+
+- **Typography hierarchy**: Establish a clear typographic hierarchy using the various text components. Generally, limit your interface to 3-4 levels of hierarchy to maintain clarity.
+
+- **Progressive enhancement**: Consider how your interface degrades gracefully if certain JavaScript features aren't available. The core layout and typography components should function without JS dependencies.
