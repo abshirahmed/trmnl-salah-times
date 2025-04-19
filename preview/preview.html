@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TRMNL Template Preview</title>
+  <link rel="stylesheet" href="https://usetrmnl.com/css/latest/plugins.css">
+  <script src="https://usetrmnl.com/js/latest/plugins.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/liquidjs/dist/liquid.browser.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f5f5f5;
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 2rem;
+    }
+
+    .header {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    /* Tab Navigation */
+    .tab-nav {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+      padding: 0 1rem;
+    }
+
+    .tab-button {
+      padding: 0.75rem 1.5rem;
+      background: white;
+      border: none;
+      border-radius: 6px;
+      color: #666;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .tab-button:hover {
+      background: #f8f8f8;
+      color: #333;
+    }
+
+    .tab-button.active {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .preview-grid {
+      display: none;
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .preview-grid.active {
+      display: flex;
+    }
+
+    .preview-grid.all-views {
+      display: none;
+      grid-template-columns: repeat(auto-fit, 800px);
+      gap: 2rem;
+      justify-content: center;
+      max-width: 1640px;
+      margin: 0 auto;
+    }
+
+    .preview-grid.all-views.active {
+      display: grid;
+    }
+
+    .preview-card {
+      width: 800px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .card-dimensions {
+      font-size: 0.875rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    /* TRMNL display simulation */
+    .display {
+      width: 800px;
+      height: 480px;
+      background: #1a1a1a;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Template containers */
+    .template {
+      position: absolute;
+      background: white;
+      transition: background-color 0.2s;
+    }
+
+    /* Template dimensions */
+    .template-full {
+      width: 800px;
+      height: 480px;
+      top: 0;
+      left: 0;
+    }
+
+    .template-half-h {
+      width: 400px;
+      height: 480px;
+      top: 0;
+      left: 0;
+      border-right: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .template-half-v {
+      width: 800px;
+      height: 240px;
+      top: 0;
+      left: 0;
+      border-bottom: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .template-quadrant {
+      width: 400px;
+      height: 240px;
+      top: 0;
+      left: 0;
+      border-right: 1px dashed rgba(255,255,255,0.1);
+      border-bottom: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    /* Template dimension indicators */
+    .dimension-indicator {
+      position: absolute;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.75rem;
+      pointer-events: none;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .width-indicator {
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .height-indicator {
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%) rotate(-90deg);
+    }
+
+    .error {
+      color: #dc2626;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .loading {
+      color: #666;
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>TRMNL Template Preview</h1>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-button active" data-view="full">Full View</button>
+    <button class="tab-button" data-view="half-h">Half Horizontal</button>
+    <button class="tab-button" data-view="half-v">Half Vertical</button>
+    <button class="tab-button" data-view="quadrant">Quadrant</button>
+    <button class="tab-button" data-view="all">All Views</button>
+  </div>
+
+  <!-- Individual Views -->
+  <div class="preview-grid active" id="view-full">
+    <div class="preview-card">
+      <div class="card-header">
+        <div class="card-title">Full View</div>
+        <div class="card-dimensions">Template size: 800x480 pixels (Full Display)</div>
+      </div>
+      <div class="display">
+        <div class="template template-full" id="template-full">
+          <div class="loading">Loading...</div>
+        </div>
+        <div class="dimension-indicator width-indicator">800px</div>
+        <div class="dimension-indicator height-indicator">480px</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-grid" id="view-half-h">
+    <div class="preview-card">
+      <div class="card-header">
+        <div class="card-title">Half Horizontal View</div>
+        <div class="card-dimensions">Template size: 400x480 pixels (Left Half)</div>
+      </div>
+      <div class="display">
+        <div class="template template-half-h" id="template-half-h">
+          <div class="loading">Loading...</div>
+        </div>
+        <div class="dimension-indicator width-indicator">400px</div>
+        <div class="dimension-indicator height-indicator">480px</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-grid" id="view-half-v">
+    <div class="preview-card">
+      <div class="card-header">
+        <div class="card-title">Half Vertical View</div>
+        <div class="card-dimensions">Template size: 800x240 pixels (Top Half)</div>
+      </div>
+      <div class="display">
+        <div class="template template-half-v" id="template-half-v">
+          <div class="loading">Loading...</div>
+        </div>
+        <div class="dimension-indicator width-indicator">800px</div>
+        <div class="dimension-indicator height-indicator">240px</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-grid" id="view-quadrant">
+    <div class="preview-card">
+      <div class="card-header">
+        <div class="card-title">Quadrant View</div>
+        <div class="card-dimensions">Template size: 400x240 pixels (Top-Left Quarter)</div>
+      </div>
+      <div class="display">
+        <div class="template template-quadrant" id="template-quadrant">
+          <div class="loading">Loading...</div>
+        </div>
+        <div class="dimension-indicator width-indicator">400px</div>
+        <div class="dimension-indicator height-indicator">240px</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Views Grid -->
+  <div class="preview-grid all-views" id="view-all">
+    <div class="preview-card">
+      <div class="card-header">
+        <div class="card-title">Full View</div>
+        <div class="card-dimensions">Template size: 800x480 pixels (Full Display)</div>
+      </div>
+      <div class="display">
+        <div class="template template-full" id="all-template-full">
+          <div class="loading">Loading...</div>
+        </div>
+        <div class="dimension-indicator width-indicator">800px</div>
+        <div class="dimension-indicator height-indicator">480px</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="card-header">
+        <div class="card-title">Half Horizontal View</div>
+        <div class="card-dimensions">Template size: 400x480 pixels (Left Half)</div>
+      </div>
+      <div class="display">
+        <div class="template template-half-h" id="all-template-half-h">
+          <div class="loading">Loading...</div>
+        </div>
+        <div class="dimension-indicator width-indicator">400px</div>
+        <div class="dimension-indicator height-indicator">480px</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="card-header">
+        <div class="card-title">Half Vertical View</div>
+        <div class="card-dimensions">Template size: 800x240 pixels (Top Half)</div>
+      </div>
+      <div class="display">
+        <div class="template template-half-v" id="all-template-half-v">
+          <div class="loading">Loading...</div>
+        </div>
+        <div class="dimension-indicator width-indicator">800px</div>
+        <div class="dimension-indicator height-indicator">240px</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="card-header">
+        <div class="card-title">Quadrant View</div>
+        <div class="card-dimensions">Template size: 400x240 pixels (Top-Left Quarter)</div>
+      </div>
+      <div class="display">
+        <div class="template template-quadrant" id="all-template-quadrant">
+          <div class="loading">Loading...</div>
+        </div>
+        <div class="dimension-indicator width-indicator">400px</div>
+        <div class="dimension-indicator height-indicator">240px</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Template placeholders - these will be replaced by inject-templates.mjs
+    const fullTemplate = `{{ fullTemplate }}`;
+    const halfHorizontalTemplate = `{{ halfHorizontalTemplate }}`;
+    const halfVerticalTemplate = `{{ halfVerticalTemplate }}`;
+    const quadrantTemplate = `{{ quadrantTemplate }}`;
+
+    // Initialize Liquid engine
+    const engine = new liquidjs.Liquid({
+      strictFilters: true,
+      strictVariables: false,
+      trimTagRight: false,
+      trimTagLeft: false,
+      trimOutputRight: false,
+      trimOutputLeft: false,
+    });
+
+    // Register slice filter
+    engine.registerFilter('slice', (v, start, end) => v?.slice(start, end) || '');
+
+    // Mock prayer times data
+    const MOCK_DATA = {
+      prayerTimes: {
+        Fajr: '04:30',
+        Sunrise: '05:45',
+        Dhuhr: '13:00',
+        Asr: '16:30',
+        Maghrib: '20:15',
+        Isha: '21:45'
+      },
+      rawData: {
+        meta: {
+          timezone: 'Europe/London',
+          method: {
+            name: 'Muslim World League',
+            params: {
+              Fajr: 18,
+              Isha: 17
+            }
+          }
+        },
+        date: {
+          hijri: {
+            weekday: { en: 'Al Ahad' },
+            day: '15',
+            month: { en: 'Ramadan' },
+            year: '1445',
+            designation: { abbreviated: 'AH' },
+            holidays: ['Ramadan']
+          }
+        }
+      }
+    };
+
+    // Get current time in London
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/London',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+    
+    const currentTime = formatter.format(now);
+
+    // Mock template data
+    const templateData = {
+      data: {
+        ...MOCK_DATA.rawData,
+        timings: MOCK_DATA.prayerTimes
+      },
+      enhancedData: {
+        nextPrayer: 'Asr',
+        nextPrayerTime: '16:30',
+        timeUntilNextPrayer: {
+          hours: 2,
+          minutes: 15,
+          total_minutes: 135
+        },
+        currentTime: currentTime,
+        gregorianDate: new Date().toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: 'Europe/London'
+        }),
+        lastSyncTime: currentTime,
+        currentPrayer: 'Dhuhr'
+      }
+    };
+
+    async function processTemplate(template, data) {
+      try {
+        const context = {
+          IDX_0: {
+            data: {
+              ...data.data,
+              timings: MOCK_DATA.prayerTimes,
+              meta: {
+                ...data.data.meta,
+                timezone: MOCK_DATA.rawData.meta.timezone,
+              },
+            },
+            enhancedData: data.enhancedData,
+          },
+        };
+
+        return await engine.parseAndRender(template, context);
+      } catch (error) {
+        console.error('Error processing template:', error);
+        return `<div class="error">Error processing template: ${error.message}</div>`;
+      }
+    }
+
+    async function loadTemplates() {
+      try {
+        // Process templates with mock data
+        const processedTemplates = {
+          markup: await processTemplate(fullTemplate, templateData),
+          markup_half_horizontal: await processTemplate(halfHorizontalTemplate, templateData),
+          markup_half_vertical: await processTemplate(halfVerticalTemplate, templateData),
+          markup_quadrant: await processTemplate(quadrantTemplate, templateData)
+        };
+        
+        // Load templates for individual views
+        document.getElementById('template-full').innerHTML = processedTemplates.markup;
+        document.getElementById('template-half-h').innerHTML = processedTemplates.markup_half_horizontal;
+        document.getElementById('template-half-v').innerHTML = processedTemplates.markup_half_vertical;
+        document.getElementById('template-quadrant').innerHTML = processedTemplates.markup_quadrant;
+
+        // Load templates for all views grid
+        document.getElementById('all-template-full').innerHTML = processedTemplates.markup;
+        document.getElementById('all-template-half-h').innerHTML = processedTemplates.markup_half_horizontal;
+        document.getElementById('all-template-half-v').innerHTML = processedTemplates.markup_half_vertical;
+        document.getElementById('all-template-quadrant').innerHTML = processedTemplates.markup_quadrant;
+
+        // Initialize TRMNL plugin
+        setTimeout(terminalize, 100);
+      } catch (error) {
+        console.error('Error loading templates:', error);
+        const errorMessage = `<div class="error">Error: ${error.message}</div>`;
+        
+        // Update error message for all template containers
+        ['full', 'half-h', 'half-v', 'quadrant'].forEach(view => {
+          document.getElementById(`template-${view}`).innerHTML = errorMessage;
+          document.getElementById(`all-template-${view}`).innerHTML = errorMessage;
+        });
+      }
+    }
+
+    // Tab navigation
+    function switchView(viewId) {
+      document.querySelectorAll('.preview-grid').forEach(grid => {
+        grid.classList.remove('active');
+      });
+      
+      document.getElementById(`view-${viewId}`).classList.add('active');
+      
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.toggle('active', button.dataset.view === viewId);
+      });
+    }
+
+    // Add click handlers to tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', () => switchView(button.dataset.view));
+    });
+
+    // Load templates when page loads
+    loadTemplates();
+  </script>
+</body>
+</html>

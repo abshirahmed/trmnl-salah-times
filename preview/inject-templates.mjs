@@ -30,19 +30,18 @@ const extractTemplate = (content) => {
 };
 
 // Read the preview HTML
-let previewHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+let previewHtml = fs.readFileSync(path.join(__dirname, 'preview.html'), 'utf8');
 
-// Replace template placeholders
+// Replace template placeholders with actual templates
 const replacements = [
-  ['{{ fullTemplate }}', fullTemplate],
-  ['{{ halfHorizontalTemplate }}', halfHorizontalTemplate],
-  ['{{ halfVerticalTemplate }}', halfVerticalTemplate],
-  ['{{ quadrantTemplate }}', quadrantTemplate],
+  ['{{ fullTemplate }}', extractTemplate(fullTemplate)],
+  ['{{ halfHorizontalTemplate }}', extractTemplate(halfHorizontalTemplate)],
+  ['{{ halfVerticalTemplate }}', extractTemplate(halfVerticalTemplate)],
+  ['{{ quadrantTemplate }}', extractTemplate(quadrantTemplate)],
 ];
 
 previewHtml = replacements.reduce(
-  (html, [placeholder, template]) =>
-    html.replace(placeholder, extractTemplate(template)),
+  (html, [placeholder, template]) => html.replace(placeholder, template),
   previewHtml,
 );
 
