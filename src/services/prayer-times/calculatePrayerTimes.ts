@@ -1,12 +1,10 @@
 import { getPrayerTimesByCity } from '@/services/prayer-times';
-import {
-  calculateNextPrayer,
-  formatHijriDate,
-  formatTime24h,
-  parsePrayerTimes,
-} from '@/utils/dateUtils';
 import { handleError } from '@/utils/errorHandler';
+import { formatHijriDate } from '@/utils/hijriDate';
 import { logger } from '@/utils/logger';
+import { calculateNextPrayer } from '@/utils/prayerCalculator';
+import { parsePrayerTimes } from '@/utils/prayerTimeParser';
+import { formatTime24h } from '@/utils/timeFormatting';
 
 /**
  * Interface for prayer times calculation parameters
@@ -59,7 +57,7 @@ export const calculatePrayerTimes = async (
     // Calculate next prayer and time until
     const { nextPrayer, nextPrayerTime, timeUntilNextPrayer, isTomorrow } =
       calculateNextPrayer({
-        currentDate: now,
+        date: now,
         prayerTimes: prayerTimesObjects,
         timezone,
       });

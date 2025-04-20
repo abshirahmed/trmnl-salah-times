@@ -1,5 +1,5 @@
-import { formatTime12h } from '@/utils/dateUtils';
 import { logger } from '@/utils/logger';
+import { formatTime12h } from '@/utils/timeFormatting';
 
 interface PrayerTimesResult {
   nextPrayer: string;

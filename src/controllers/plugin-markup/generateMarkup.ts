@@ -11,8 +11,8 @@ import { fullTemplate } from '@/templates/full';
 import { halfHorizontalTemplate } from '@/templates/half-horizontal';
 import { halfVerticalTemplate } from '@/templates/half-vertical';
 import { quadrantTemplate } from '@/templates/quadrant';
-import { calculateCurrentPrayer } from '@/utils/dateUtils';
 import { logger } from '@/utils/logger';
+import { calculateCurrentPrayer } from '@/utils/prayerCalculator';
 import { formatNextPrayerTime } from '@/utils/prayerTimeUtils';
 import { formatInTimeZone } from 'date-fns-tz';
 

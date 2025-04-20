@@ -1,8 +1,8 @@
-import { formatTime12h } from '@/utils/dateUtils';
 import { logger } from '@/utils/logger';
 import { formatNextPrayerTime } from '@/utils/prayerTimeUtils';
+import { formatTime12h } from '@/utils/timeFormatting';
 
-jest.mock('@/utils/dateUtils');
+jest.mock('@/utils/timeFormatting');
 
 const mockedFormatTime12h = jest.mocked(formatTime12h);
 

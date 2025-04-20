@@ -1,10 +1,12 @@
+import { formatHijriDate } from '@/utils/hijriDate';
 import {
-  parseTimeString,
-  formatTime12h,
-  formatTime24h,
+  calculateCurrentPrayer,
   calculateNextPrayer,
-  formatHijriDate,
-} from '@/utils/dateUtils';
+} from '@/utils/prayerCalculator';
+import { parsePrayerTimes } from '@/utils/prayerTimeParser';
+import { PrayerTimes } from '@/utils/prayerTypes';
+import { formatTime12h, formatTime24h } from '@/utils/timeFormatting';
+import { parseTimeString } from '@/utils/timeParser';
 import { addHours } from 'date-fns';
 
 describe('Date Utilities', () => {
@@ -12,11 +14,11 @@ describe('Date Utilities', () => {
 
   describe('parseTimeString', () => {
     it('should parse a morning time string correctly', () => {
-      const referenceDate = new Date('2023-05-15T00:00:00Z');
+      const date = new Date('2023-05-15T00:00:00Z');
       const result = parseTimeString({
         timeString: '05:30 AM',
         timezone: testTimezone,
-        referenceDate,
+        date,
       });
 
       expect(result).toBeInstanceOf(Date);
@@ -26,11 +28,11 @@ describe('Date Utilities', () => {
     });
 
     it('should parse an afternoon time string correctly', () => {
-      const referenceDate = new Date('2023-05-15T00:00:00Z');
+      const date = new Date('2023-05-15T00:00:00Z');
       const result = parseTimeString({
         timeString: '05:30 PM',
         timezone: testTimezone,
-        referenceDate,
+        date,
       });
 
       expect(result).toBeInstanceOf(Date);
@@ -85,7 +87,7 @@ describe('Date Utilities', () => {
 
   describe('calculateNextPrayer', () => {
     it('should identify the next prayer correctly', () => {
-      const now = new Date('2023-05-15T10:00:00Z'); // 10 AM
+      const date = new Date('2023-05-15T10:00:00Z'); // 10 AM
       const prayerTimes = {
         Fajr: new Date('2023-05-15T05:00:00Z'), // 5 AM
         Sunrise: new Date('2023-05-15T06:30:00Z'), // 6:30 AM
@@ -96,7 +98,7 @@ describe('Date Utilities', () => {
       };
 
       const result = calculateNextPrayer({
-        currentDate: now,
+        date,
         prayerTimes,
         timezone: testTimezone,
       });
@@ -104,14 +106,12 @@ describe('Date Utilities', () => {
       expect(result.nextPrayer).toBe('Dhuhr');
       expect(result.nextPrayerTime).toEqual(prayerTimes['Dhuhr']);
       expect(result.isTomorrow).toBeFalse();
-      // The actual hours might vary based on timezone handling
-      expect(result.timeUntilNextPrayer.hours).toBeGreaterThanOrEqual(2);
-      expect(result.timeUntilNextPrayer.hours).toBeLessThanOrEqual(3);
+      expect(result.timeUntilNextPrayer.hours).toBe(2);
       expect(result.timeUntilNextPrayer.minutes).toBe(30);
     });
 
     it('should handle when all prayers for today have passed', () => {
-      const now = new Date('2023-05-15T22:00:00Z'); // 10 PM
+      const date = new Date('2023-05-15T22:00:00Z'); // 10 PM
       const prayerTimes = {
         Fajr: new Date('2023-05-15T05:00:00Z'), // 5 AM
         Sunrise: new Date('2023-05-15T06:30:00Z'), // 6:30 AM
@@ -122,16 +122,68 @@ describe('Date Utilities', () => {
       };
 
       const result = calculateNextPrayer({
-        currentDate: now,
+        date,
         prayerTimes,
         timezone: testTimezone,
       });
 
       expect(result.nextPrayer).toBe('Fajr (Tomorrow)');
-      // Should be tomorrow's Fajr
       const tomorrowFajr = addHours(prayerTimes['Fajr'], 24);
       expect(result.nextPrayerTime).toEqual(tomorrowFajr);
       expect(result.isTomorrow).toBeTrue();
+    });
+
+    it('calculateNextPrayer returns correct time until next prayer', () => {
+      const currentDate = new Date('2023-05-15T09:00:00Z'); // 9 AM UTC
+      const prayerTimes = {
+        Fajr: new Date('2023-05-15T05:00:00Z'),
+        Dhuhr: new Date('2023-05-15T13:00:00Z'),
+        Asr: new Date('2023-05-15T16:30:00Z'),
+        Maghrib: new Date('2023-05-15T20:00:00Z'),
+        Isha: new Date('2023-05-15T21:30:00Z'),
+      };
+
+      const result = calculateNextPrayer({
+        date: currentDate,
+        prayerTimes,
+        timezone: testTimezone,
+      });
+      expect(result.nextPrayer).toBe('Dhuhr');
+      expect(result.timeUntilNextPrayer.hours).toBe(4); // Adjusted to 4 hours since we're comparing UTC times
+      expect(result.timeUntilNextPrayer.minutes).toBe(0);
+    });
+
+    it('should calculate time until next prayer correctly', () => {
+      const currentDate = new Date('2024-03-19T03:00:00.000Z');
+      const prayerTimes = parsePrayerTimes({
+        prayerTimesResponse: {
+          data: {
+            timings: {
+              Fajr: '04:30',
+              Sunrise: '06:00',
+              Dhuhr: '12:30',
+              Asr: '15:45',
+              Maghrib: '18:30',
+              Isha: '20:00',
+            },
+            meta: { timezone: 'UTC' },
+          },
+        },
+        timezone: 'UTC',
+        date: currentDate,
+      });
+
+      const result = calculateNextPrayer({
+        date: currentDate,
+        prayerTimes,
+        timezone: 'UTC',
+      });
+
+      expect(result.nextPrayer).toBe('Fajr');
+      expect(result.timeUntilNextPrayer.hours).toBe(1);
+      expect(result.timeUntilNextPrayer.minutes).toBe(30);
+      expect(result.timeUntilNextPrayer.total_minutes).toBe(90);
+      expect(result.isTomorrow).toBeFalse();
     });
   });
 
@@ -156,6 +208,220 @@ describe('Date Utilities', () => {
 
       const result = formatHijriDate(hijriDate);
       expect(result).toBe('15 Ramadan 1444 AH');
+    });
+  });
+
+  describe('calculateCurrentPrayer', () => {
+    const validPrayerTimes: PrayerTimes = {
+      Fajr: new Date('2023-05-15T05:00:00Z'),
+      Sunrise: new Date('2023-05-15T06:30:00Z'),
+      Dhuhr: new Date('2023-05-15T12:30:00Z'),
+      Asr: new Date('2023-05-15T16:00:00Z'),
+      Maghrib: new Date('2023-05-15T19:30:00Z'),
+      Isha: new Date('2023-05-15T21:00:00Z'),
+    };
+
+    it('should return the current prayer correctly', () => {
+      jest.useFakeTimers();
+      const currentTime = new Date('2023-05-15T13:00:00Z'); // 13:00 UTC
+      jest.setSystemTime(currentTime);
+
+      const prayerTimes = parsePrayerTimes({
+        prayerTimesResponse: {
+          data: {
+            timings: {
+              Fajr: '04:30',
+              Sunrise: '06:00',
+              Dhuhr: '12:15',
+              Asr: '15:45',
+              Maghrib: '19:30',
+              Isha: '21:00',
+            },
+            meta: { timezone: 'UTC' },
+          },
+        },
+        timezone: testTimezone,
+        date: new Date('2023-05-15T00:00:00Z'),
+      });
+
+      const result = calculateCurrentPrayer(
+        prayerTimes,
+        testTimezone,
+        currentTime,
+      );
+      expect(result).toBe('Dhuhr');
+
+      jest.useRealTimers();
+    });
+
+    it('should throw error when Fajr time is missing', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { Fajr, ...invalidPrayerTimes } = validPrayerTimes;
+
+      expect(() =>
+        calculateCurrentPrayer(invalidPrayerTimes as PrayerTimes, testTimezone),
+      ).toThrow('Fajr prayer time is required');
+    });
+
+    it('should throw error when current time is before Fajr', () => {
+      jest.useFakeTimers();
+      const currentTime = new Date('2023-05-15T04:00:00Z'); // Before Fajr
+      jest.setSystemTime(currentTime);
+
+      expect(() =>
+        calculateCurrentPrayer(validPrayerTimes, testTimezone, currentTime),
+      ).toThrow('Current time is before Fajr');
+
+      jest.useRealTimers();
+    });
+
+    it('should throw error when a required prayer time is missing', () => {
+      jest.useFakeTimers();
+      const currentTime = new Date('2023-05-15T13:00:00Z');
+      jest.setSystemTime(currentTime);
+
+      const prayerTimes = {
+        Fajr: new Date('2023-05-15T04:30:00Z'),
+        Sunrise: new Date('2023-05-15T06:00:00Z'),
+        Dhuhr: new Date('2023-05-15T12:15:00Z'),
+        Maghrib: new Date('2023-05-15T19:30:00Z'),
+        Isha: new Date('2023-05-15T21:00:00Z'),
+      };
+
+      expect(() =>
+        calculateCurrentPrayer(prayerTimes, testTimezone, currentTime),
+      ).toThrow('Missing prayer time for Asr');
+
+      jest.useRealTimers();
+    });
+  });
+
+  describe('parsePrayerTimes', () => {
+    const testTimezone = 'UTC';
+    const validDate = new Date('2023-05-15T00:00:00Z');
+    const validPrayerTimesResponse = {
+      data: {
+        timings: {
+          Fajr: '04:30',
+          Sunrise: '06:00',
+          Dhuhr: '12:15',
+          Asr: '15:45',
+          Maghrib: '19:30',
+          Isha: '21:00',
+        },
+        meta: { timezone: 'UTC' },
+      },
+    };
+
+    it('should parse prayer times correctly from API response', () => {
+      const result = parsePrayerTimes({
+        prayerTimesResponse: validPrayerTimesResponse,
+        timezone: testTimezone,
+        date: validDate,
+      });
+
+      expect(result.Fajr.getUTCHours()).toBe(4);
+      expect(result.Fajr.getUTCMinutes()).toBe(30);
+      expect(result.Dhuhr.getUTCHours()).toBe(12);
+      expect(result.Dhuhr.getUTCMinutes()).toBe(15);
+      expect(result.Isha.getUTCHours()).toBe(21);
+      expect(result.Isha.getUTCMinutes()).toBe(0);
+    });
+
+    it('should throw error when prayer time is missing', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { Fajr, ...remainingTimings } =
+        validPrayerTimesResponse.data.timings;
+      const invalidResponse = {
+        data: {
+          timings: remainingTimings,
+          meta: { timezone: 'UTC' },
+        },
+      };
+
+      expect(() =>
+        parsePrayerTimes({
+          prayerTimesResponse: invalidResponse,
+          timezone: testTimezone,
+          date: validDate,
+        }),
+      ).toThrow('Missing time string for prayer: Fajr');
+    });
+
+    it('should throw error when prayer time format is invalid', () => {
+      const invalidResponse = {
+        data: {
+          timings: {
+            ...validPrayerTimesResponse.data.timings,
+            Fajr: '25:70', // Invalid hours and minutes
+          },
+          meta: { timezone: 'UTC' },
+        },
+      };
+
+      expect(() =>
+        parsePrayerTimes({
+          prayerTimesResponse: invalidResponse,
+          timezone: testTimezone,
+          date: validDate,
+        }),
+      ).toThrow('Invalid time format for Fajr: 25:70');
+    });
+
+    it('should parse prayer times correctly for GMT+5 timezone', () => {
+      const result = parsePrayerTimes({
+        prayerTimesResponse: {
+          data: {
+            timings: {
+              Fajr: '04:30',
+              Sunrise: '06:00',
+              Dhuhr: '12:15',
+              Asr: '15:45',
+              Maghrib: '19:30',
+              Isha: '21:00',
+            },
+            meta: { timezone: 'Asia/Karachi' },
+          },
+        },
+        timezone: 'Asia/Karachi',
+        date: validDate,
+      });
+
+      // For GMT+5, times should be 5 hours behind the local time
+      expect(result.Fajr.getUTCHours()).toBe(23); // Previous day
+      expect(result.Fajr.getUTCMinutes()).toBe(30);
+      expect(result.Dhuhr.getUTCHours()).toBe(7);
+      expect(result.Dhuhr.getUTCMinutes()).toBe(15);
+      expect(result.Isha.getUTCHours()).toBe(16);
+      expect(result.Isha.getUTCMinutes()).toBe(0);
+    });
+
+    it('should parse prayer times correctly for GMT-8 timezone', () => {
+      const result = parsePrayerTimes({
+        prayerTimesResponse: {
+          data: {
+            timings: {
+              Fajr: '04:30',
+              Sunrise: '06:00',
+              Dhuhr: '12:15',
+              Asr: '15:45',
+              Maghrib: '19:30',
+              Isha: '21:00',
+            },
+            meta: { timezone: 'America/Los_Angeles' },
+          },
+        },
+        timezone: 'America/Los_Angeles',
+        date: validDate,
+      });
+
+      // For GMT-8, when it's 4:30 AM in LA, it's 11:30 UTC
+      expect(result.Fajr.getUTCHours()).toBe(11);
+      expect(result.Fajr.getUTCMinutes()).toBe(30);
+      expect(result.Dhuhr.getUTCHours()).toBe(19);
+      expect(result.Dhuhr.getUTCMinutes()).toBe(15);
+      expect(result.Isha.getUTCHours()).toBe(4); // Next day
+      expect(result.Isha.getUTCMinutes()).toBe(0);
     });
   });
 });
