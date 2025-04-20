@@ -15,7 +15,7 @@
     "lint": "yarn check-types && eslint .",
     "lint:fix": "eslint . --fix",
     "preview:build": "node preview/inject-templates.mjs",
-    "preview:serve": "serve preview",
+    "preview:serve": "serve preview -p 3001 ",
     "preview": "yarn preview:build && yarn preview:serve"
   },
   "dependencies": {
