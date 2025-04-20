@@ -151,9 +151,19 @@ This structure provides several benefits:
 
 1. Node.js 20.x or later
 2. Serverless Framework CLI
-3. AWS Account
-4. Supabase Account
+3. AWS Account with appropriate IAM permissions
+4. Supabase Account (using client v2.49.4)
 5. TRMNL Device with Developer Edition add-on
+6. Yarn package manager (recommended)
+
+### Key Dependencies
+
+- TypeScript 5.8.3
+- AWS Lambda Powertools 2.18.0
+- date-fns 4.1.0
+- Supabase JS Client 2.49.4
+- Zod 3.24.2 for runtime validation
+- Jest 29.7.0 for testing
 
 ### TRMNL Plugin Setup
 

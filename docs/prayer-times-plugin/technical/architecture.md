@@ -37,12 +37,44 @@ The Lambda function is the core of the backend, responsible for:
 2. Fetching prayer times from the Aladhan API
 3. Processing the data to calculate next prayer times
 4. Formatting the response for the TRMNL device
+5. Managing user settings and preferences
+6. Generating responsive UI templates
 
 **Technical Specifications:**
 - Runtime: Node.js 20.x
 - Memory: 512MB
 - Timeout: 30 seconds
+- Region: eu-west-2
 - Handler Path: `src/handlers/prayer-times-handler/index.handler`
+- Build Tool: esbuild with TypeScript
+- Testing: Jest with SWC
+
+### Development Tools
+
+The project includes several development tools:
+
+1. **Preview Server**:
+   - Local development server at `http://localhost:3001`
+   - Live template preview with hot reload
+   - Support for all view sizes (full, half, quadrant)
+
+2. **Code Quality**:
+   - ESLint v9 with flat config
+   - Prettier for code formatting
+   - Husky v9 for Git hooks
+   - TypeScript in strict mode
+
+3. **Testing**:
+   - Jest with SWC for fast execution
+   - jest-extended for enhanced assertions
+   - jest-mock-extended for mocking
+   - Supertest for API testing
+
+4. **Local Development**:
+   - Serverless Offline for local testing
+   - Supabase local development
+   - Environment variable management
+   - Hot reload support
 
 ### API Gateway
 
@@ -140,64 +172,54 @@ The backend integrates with the Aladhan Prayer Times API to fetch accurate praye
 
 ## Code Structure
 
-The codebase follows a modular structure:
+The codebase follows a modular structure with clear separation of concerns:
 
 ```
 src/
-├── clients/
-│   ├── prayer-times/              # Prayer times API client
-│   │   └── client.ts              # HTTP client for Aladhan API
-│   ├── supabase/                  # Supabase client
-│   │   ├── client.ts              # Supabase service implementation
-│   │   ├── factory.ts             # Factory function for creating client
-│   │   └── types.ts               # Type definitions
-│   └── trmnl/                     # TRMNL API client
-│       ├── client.ts              # TRMNL client implementation
-│       ├── factory.ts             # Factory function for creating client
-│       └── types.ts               # Type definitions
-├── handlers/
-│   ├── prayer-times-handler/      # Prayer times handler module
-│   │   ├── index.ts               # Handler implementation
-│   │   ├── schema.ts              # Validation schema
-│   │   └── README.md              # Handler documentation
-│   ├── installation-handler/      # Installation handler module
-│   │   ├── index.ts               # Handler implementation
-│   │   └── README.md              # Handler documentation
-│   ├── installation-success-handler/ # Installation success handler module
-│   │   ├── index.ts               # Handler implementation
-│   │   └── README.md              # Handler documentation
-│   ├── plugin-markup-handler/     # Plugin markup handler module
-│   │   ├── index.ts               # Handler implementation
-│   │   └── README.md              # Handler documentation
-│   ├── plugin-management-handler/ # Plugin management handler module
-│   │   ├── index.ts               # Handler implementation
-│   │   └── README.md              # Handler documentation
-│   ├── save-settings-handler/     # Save settings handler module
-│   │   ├── index.ts               # Handler implementation
-│   │   └── README.md              # Handler documentation
-│   ├── uninstallation-handler/    # Uninstallation handler module
-│   │   ├── index.ts               # Handler implementation
-│   │   ├── schema.ts              # Validation schema
-│   │   └── README.md              # Handler documentation
-│   └── index.ts                   # Re-export for backward compatibility
-├── controllers/                   # Business logic controllers
-│   ├── prayer-times-controller.ts # Prayer times controller
-│   ├── plugin-markup-controller.ts # Plugin markup controller
-│   └── user-settings-controller.ts # User settings controller
-├── services/
-│   └── prayer-times/              # Prayer times service
-│       └── getPrayerTimesByCity.ts # Service implementation
-├── templates/                     # Template files
-│   └── trmnl-plugin/              # TRMNL plugin templates
-│       ├── markup.html            # Full-screen plugin template
-│       ├── half-view-markup.html  # Half-screen plugin template
-│       └── quadrant-view-markup.html # Quadrant plugin template
-└── utils/
-    ├── auth.ts                    # Authentication utilities
-    ├── dateUtils.ts               # Date and time utilities using date-fns
-    ├── errors.ts                  # Custom error classes
-    ├── logger.ts                  # Logging utility
-    └── middify.ts                 # Lambda middleware utility
+├── clients/                      # API clients
+│   ├── prayer-times/            # Prayer times API client
+│   │   ├── client.ts            # HTTP client for Aladhan API
+│   │   ├── types.ts             # Type definitions
+│   │   └── validation.ts        # Response validation
+│   ├── supabase/               # Supabase client
+│   │   ├── client.ts           # Supabase service implementation
+│   │   ├── factory.ts          # Factory function for creating client
+│   │   └── types.ts            # Type definitions
+│   └── trmnl/                  # TRMNL API client
+│       ├── client.ts           # TRMNL client implementation
+│       ├── factory.ts          # Factory function for creating client
+│       └── types.ts            # Type definitions
+├── handlers/                    # Lambda function handlers
+│   ├── prayer-times-handler/   # Prayer times handler module
+│   │   ├── index.ts            # Handler implementation
+│   │   ├── schema.ts           # Zod validation schema
+│   │   └── README.md           # Handler documentation
+│   ├── installation-handler/   # Installation handler module
+│   │   ├── index.ts            # Handler implementation
+│   │   ├── schema.ts           # Validation schema
+│   │   └── README.md           # Handler documentation
+│   └── ... other handlers
+├── controllers/                # Business logic controllers
+│   ├── prayer-times/          # Prayer times controller
+│   │   ├── index.ts           # Controller implementation
+│   │   └── types.ts           # Type definitions
+│   └── ... other controllers
+├── services/                   # Business logic services
+│   ├── prayer-times/          # Prayer times service
+│   │   ├── index.ts           # Service implementation
+│   │   └── types.ts           # Type definitions
+│   └── ... other services
+├── templates/                  # Template files
+│   └── trmnl-plugin/          # TRMNL plugin templates
+│       ├── markup.html        # Full-screen plugin template
+│       ├── half-view.html     # Half-screen plugin template
+│       └── quadrant-view.html # Quadrant plugin template
+└── utils/                     # Utility functions
+    ├── auth.ts                # Authentication utilities
+    ├── date.ts                # Date utilities (date-fns)
+    ├── errors.ts              # Custom error classes
+    ├── logger.ts              # Logging (AWS Lambda Powertools)
+    └── middleware.ts          # Lambda middleware (Middy)
 ```
 
 ## Error Handling

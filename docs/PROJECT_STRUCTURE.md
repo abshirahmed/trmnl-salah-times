@@ -12,10 +12,14 @@ TRMNL Salah Times is a serverless application built with TypeScript that provide
 trmnl-salah-times/
 ├── .github/                     # GitHub configuration
 │   └── workflows/               # GitHub Actions workflows
+├── .husky/                      # Git hooks configuration
 ├── docs/                        # Documentation
 │   ├── prayer-times-plugin/     # Feature-specific documentation
 │   ├── wiki/                    # User documentation
 │   └── images/                  # Documentation images
+├── preview/                     # Preview UI for development
+│   ├── templates/               # Template previews
+│   └── inject-templates.mjs     # Template injection script
 ├── src/                         # Source code
 │   ├── clients/                 # API clients
 │   ├── controllers/             # Application logic controllers
@@ -26,11 +30,28 @@ trmnl-salah-times/
 ├── tests/                       # Test files
 │   ├── e2e/                     # End-to-end tests
 │   └── unit/                    # Unit tests
-├── serverless.yml               # Serverless Framework configuration
+├── supabase/                    # Supabase configuration and migrations
+├── serverless.yml               # Main Serverless Framework configuration
+├── serverless.offline.yml       # Local development configuration
+├── jest.config.ts               # Jest test configuration
+├── jest.setup.ts               # Jest setup file
+├── tsconfig.json               # TypeScript configuration
+├── eslint.config.mjs           # ESLint configuration (flat config)
+├── .prettierrc                 # Prettier configuration
 └── package.json                 # Dependencies and scripts
 ```
 
 ## Key Directories and Their Purposes
+
+### Development Tools
+
+#### Preview (`preview/`)
+
+Development tools for previewing UI templates:
+
+- `templates/` - Template preview files
+- `inject-templates.mjs` - Script to inject templates into preview UI
+- Preview server accessible at `http://localhost:3001`
 
 ### Source Code (`src/`)
 
@@ -109,6 +130,25 @@ Project documentation organized by feature:
 - `wiki/` - User documentation
 - `images/` - Documentation images
 - `engineering-principles.md` - Engineering principles and best practices
+
+### Configuration Files
+
+- `serverless.yml` - Main Serverless Framework configuration
+- `serverless.offline.yml` - Local development configuration
+- `jest.config.ts` - Jest test configuration with SWC
+- `jest.setup.ts` - Jest setup and global configuration
+- `tsconfig.json` - TypeScript configuration with strict mode
+- `eslint.config.mjs` - ESLint flat configuration
+- `.prettierrc` - Prettier formatting configuration
+
+### Database (`supabase/`)
+
+Supabase configuration and database management:
+
+- `migrations/` - Database migrations
+- `seed/` - Seed data
+- `types/` - Generated TypeScript types
+- `config.toml` - Supabase configuration
 
 ## Where to Find Important Resources
 

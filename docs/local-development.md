@@ -5,9 +5,10 @@ This guide explains how to run the TRMNL Salah Times application locally for dev
 ## Prerequisites
 
 Before you start, make sure you have the following installed:
-- Node.js (v20 or later)
-- Yarn package manager
+- Node.js (v20.x or later)
+- Yarn package manager (latest version)
 - AWS CLI (configured with appropriate credentials)
+- Docker (for running Supabase locally - optional)
 
 ## Environment Setup
 
@@ -22,21 +23,30 @@ SUPABASE_SERVICE_KEY=your_supabase_service_key
 TRMNL_CLIENT_ID=your_trmnl_client_id
 TRMNL_CLIENT_SECRET=your_trmnl_client_secret
 
-# AWS Configuration
+# AWS Configuration (optional for local development)
 AWS_PROFILE=your_aws_profile
+AWS_REGION=eu-west-2
 ```
 
 ## Running the Application Locally
 
-The project is configured to use `serverless-offline` for local development. This allows you to run the application on your local machine and test the API endpoints and UI templates.
-
-To start the local development server:
+The project provides several npm scripts for local development:
 
 ```bash
+# Start the serverless offline server
 yarn serverless:offline
+
+# Build and serve the preview UI
+yarn preview
+
+# Build preview UI only
+yarn preview:build
+
+# Serve preview UI only (after building)
+yarn preview:serve
 ```
 
-This command will start the serverless offline server using the configuration in `serverless.offline.yml`. The server will be available at `http://localhost:3000`.
+The serverless offline server will be available at `http://localhost:3000` and the preview UI at `http://localhost:3001`.
 
 ### Authentication in Local Development
 

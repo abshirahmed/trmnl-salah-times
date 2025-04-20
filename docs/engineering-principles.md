@@ -49,12 +49,30 @@ This structure provides several benefits:
    - Type definitions for external API responses
    - Enums for fixed sets of values
    - Generics for reusable components
+   - Strict mode enabled in tsconfig.json
 2. **Zod Schema Validation**: Use Zod for runtime validation of:
    - API request parameters
    - Configuration objects
    - External API responses
-3. **Avoid `any` Type**: Use specific types or generics instead of `any`
+   - Environment variables
+3. **Avoid `any` Type**: Use specific types, unknown, or generics instead of `any`
 4. **Readonly Properties**: Use readonly for immutable data
+5. **Type Inference**: Leverage TypeScript's type inference capabilities
+
+### Code Style and Linting
+
+1. **ESLint Configuration**:
+   - Using latest ESLint v9 with TypeScript support
+   - Strict rules for imports and unused variables
+   - Integration with Prettier for consistent formatting
+2. **Prettier Configuration**:
+   - Consistent code formatting across the project
+   - Integrated with Git hooks via husky
+   - Automatic formatting on save (VS Code)
+3. **Git Hooks**:
+   - Pre-commit hooks for linting and formatting
+   - Pre-push hooks for type checking and tests
+   - Using husky v9 for Git hooks management
 
 ### Clean Code Principles
 
@@ -64,6 +82,23 @@ This structure provides several benefits:
 4. **DRY (Don't Repeat Yourself)**: Abstract common functionality
 5. **KISS (Keep It Simple, Stupid)**: Prefer simple solutions
 6. **Comments**: Document complex logic and business rules
+7. **Functional Programming**: Prefer immutable data and pure functions
+
+### Testing Best Practices
+
+1. **Jest Configuration**:
+   - Using Jest v29 with TypeScript support
+   - SWC for faster test execution
+   - Coverage reporting enabled
+2. **Test Organization**:
+   - Tests mirror source code structure
+   - Shared test utilities and fixtures
+   - Clear test descriptions using jest-extended
+3. **Test Types**:
+   - Unit tests with jest-mock-extended
+   - Integration tests with supertest
+   - Schema validation tests
+   - Time handling tests across timezones
 
 ## Error Handling
 
