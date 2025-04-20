@@ -2,61 +2,38 @@
 
 TRMNL Salah Times comes with a variety of features designed to help you keep track of prayer times efficiently. This page details all the features available in the plugin.
 
-## Core Features
+## Prayer Time Features
 
-### Prayer Times Display
+### Daily Prayer Times
+- **Fajr** (Dawn prayer)
+- **Dhuhr** (Noon prayer)
+- **Asr** (Afternoon prayer)
+- **Maghrib** (Sunset prayer)
+- **Isha** (Night prayer)
+- **Sunrise** time (for reference)
 
-The main feature of TRMNL Salah Times is the display of the five daily prayers:
+### Islamic Calendar
+- Current Hijri date display
+- Month name in English
+- Automatic date calculations
 
-- **Fajr**: Dawn prayer
-- **Dhuhr**: Noon prayer
-- **Asr**: Afternoon prayer
-- **Maghrib**: Sunset prayer
-- **Isha**: Night prayer
+## Customization & Settings
 
-Each prayer time is clearly displayed with the name of the prayer and the exact time according to your chosen time format.
+### Location Settings
+- City and country-based calculations
+- Automatic timezone detection
+- Daylight saving time support
+- Multiple calculation methods support
 
-### Next Prayer Indicator
-
-The plugin highlights which prayer is coming up next, making it easy to see at a glance when you should prepare for prayer. This includes:
-
-- The name of the next prayer
-- The time of the next prayer
-- A countdown showing how much time remains until the next prayer
-
-### Hijri Date
-
-The current Islamic (Hijri) date is displayed, including:
-
-- The day of the month
-- The month name
-- The Hijri year
-
-This helps you keep track of important Islamic dates and holidays.
-
-## Display Options
-
-### Time Format
-
-You can choose between:
-
-- **12-hour format** (e.g., 5:30 PM)
-- **24-hour format** (e.g., 17:30)
-
-### View Sizes
-
-TRMNL Salah Times adapts to different view sizes in the TRMNL platform:
-
-- **Small**: Shows only the next prayer with countdown
-- **Medium**: Displays all prayer times in a compact format
-- **Large**: Shows all prayer times with additional information
-
-## Customization Options
+### Display Options
+- 12-hour or 24-hour time format
+- Three view sizes:
+  - Small (next prayer only)
+  - Medium (compact view)
+  - Large (detailed view)
 
 ### Calculation Methods
-
-Choose from multiple calculation methods to match your preferred school of thought or local convention:
-
+Choose from trusted calculation methods:
 - Muslim World League
 - Islamic Society of North America (ISNA)
 - Egyptian General Authority of Survey
@@ -65,27 +42,17 @@ Choose from multiple calculation methods to match your preferred school of thoug
 - Institute of Geophysics, University of Tehran
 - Shia Ithna-Ashari, Leva Research Institute, Qum
 
-See [Calculation Methods](settings.md#calculation-methods) for more details on each method.
+## Technical Features
 
-### Location Settings
 
-Customize the plugin for your specific location:
+### Integration
+- Seamless TRMNL platform integration
+- Automatic updates through TRMNL
+- Settings backup and restore
+- Easy installation and setup
 
-- Set your city and country
-- Prayer times are automatically adjusted based on your location
+## Additional Resources
 
-## Accessibility Features
-
-- Clear, high-contrast text for readability
-- Simple, intuitive interface
-- Compatible with screen readers
-
-## Offline Support
-
-- Once loaded, the current day's prayer times remain available even if your internet connection drops
-- The plugin will automatically refresh times when the connection is restored
-
-## Automatic Updates
-
-- Prayer times are automatically updated each day
-- The next prayer indicator updates in real-time as the day progresses
+- See [Settings](settings.md) for detailed configuration options
+- Check [Troubleshooting](troubleshooting.md) for common issues
+- Visit [FAQ](faq.md) for frequently asked questions

@@ -47,12 +47,25 @@ To verify that TRMNL Salah Times is working correctly:
 
 ## Troubleshooting Installation
 
-If you encounter any issues during installation:
+If you encounter any issues during installation or setup, here are some common solutions:
 
-- Make sure you have the latest version of TRMNL installed
+### Plugin Not Appearing
+- Ensure TRMNL is updated to the latest version
+- Try refreshing the TRMNL application
+- Check if the plugin is enabled in TRMNL settings
+- Reinstall the plugin if necessary
+
+### Location Issues
+- Make sure you've entered the city name correctly
+- Try using a larger nearby city if your town isn't recognized
+- Check your internet connection (required for location services)
+- Verify your system's timezone settings are correct
+
+### Prayer Times Not Updating
 - Check your internet connection
-- Verify that you've entered a valid city and country
-- See the [Troubleshooting](troubleshooting.md) section for more help
+- Try manually refreshing the plugin
+
+For more detailed troubleshooting steps, please visit our [Troubleshooting Guide](troubleshooting.md).
 
 ## Next Steps
 

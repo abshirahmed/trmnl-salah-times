@@ -4,7 +4,7 @@ This page contains the release history of TRMNL Salah Times, with details about 
 
 ## Version 1.1.0 (Current)
 
-**Release Date:** April 2025
+**Release Date:** March 2024
 
 ### Features
 
@@ -22,12 +22,12 @@ This page contains the release history of TRMNL Salah Times, with details about 
 
 ### Technical Improvements
 
-- Upgraded to Node.js 20.x (tested with 22.x)
-- Latest TypeScript 5.8.3 with strict mode
+- Upgraded to Node.js 20.x
+- Latest TypeScript 5.3
 - Enhanced build system with esbuild
 - Improved testing with Jest and SWC
-- ESLint v9 with flat config
-- Husky v9 for Git hooks
+- ESLint v8 with flat config
+- Husky v8 for Git hooks
 - AWS Lambda Powertools for logging
 - Comprehensive error handling and validation
 - Enhanced development tools and preview server
