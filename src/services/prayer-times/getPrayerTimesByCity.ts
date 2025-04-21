@@ -1,7 +1,7 @@
 import { prayerTimesClient } from '@/clients/prayer-times';
 import {
   GetPrayerTimesByCityRequest,
-  GetPrayerTimesByCityResponse,
+  PrayerTimesByCityResponse,
 } from '@/services/prayer-times';
 import { logger } from '@/utils/logger';
 
@@ -16,7 +16,7 @@ export const getPrayerTimesByCity = async ({
     method,
   });
 
-  const { data } = await prayerTimesClient.get<GetPrayerTimesByCityResponse>(
+  const { data } = await prayerTimesClient.get<PrayerTimesByCityResponse>(
     '/timingsByCity',
     {
       params: {

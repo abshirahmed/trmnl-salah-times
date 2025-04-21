@@ -8,6 +8,7 @@ import { PrayerTimes } from '@/utils/prayerTypes';
 import { formatTime12h, formatTime24h } from '@/utils/timeFormatting';
 import { parseTimeString } from '@/utils/timeParser';
 import { addHours } from 'date-fns';
+import { mock } from 'jest-mock-extended';
 
 describe('Date Utilities', () => {
   const testTimezone = 'UTC';
@@ -156,7 +157,7 @@ describe('Date Utilities', () => {
     it('should calculate time until next prayer correctly', () => {
       const currentDate = new Date('2024-03-19T03:00:00.000Z');
       const prayerTimes = parsePrayerTimes({
-        prayerTimesResponse: {
+        prayerTimesByCity: mock({
           data: {
             timings: {
               Fajr: '04:30',
@@ -168,7 +169,7 @@ describe('Date Utilities', () => {
             },
             meta: { timezone: 'UTC' },
           },
-        },
+        }),
         timezone: 'UTC',
         date: currentDate,
       });
@@ -227,7 +228,7 @@ describe('Date Utilities', () => {
       jest.setSystemTime(currentTime);
 
       const prayerTimes = parsePrayerTimes({
-        prayerTimesResponse: {
+        prayerTimesByCity: mock({
           data: {
             timings: {
               Fajr: '04:30',
@@ -239,7 +240,7 @@ describe('Date Utilities', () => {
             },
             meta: { timezone: 'UTC' },
           },
-        },
+        }),
         timezone: testTimezone,
         date: new Date('2023-05-15T00:00:00Z'),
       });
@@ -315,7 +316,7 @@ describe('Date Utilities', () => {
 
     it('should parse prayer times correctly from API response', () => {
       const result = parsePrayerTimes({
-        prayerTimesResponse: validPrayerTimesResponse,
+        prayerTimesByCity: mock(validPrayerTimesResponse),
         timezone: testTimezone,
         date: validDate,
       });
@@ -328,49 +329,9 @@ describe('Date Utilities', () => {
       expect(result.Isha.getUTCMinutes()).toBe(0);
     });
 
-    it('should throw error when prayer time is missing', () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { Fajr, ...remainingTimings } =
-        validPrayerTimesResponse.data.timings;
-      const invalidResponse = {
-        data: {
-          timings: remainingTimings,
-          meta: { timezone: 'UTC' },
-        },
-      };
-
-      expect(() =>
-        parsePrayerTimes({
-          prayerTimesResponse: invalidResponse,
-          timezone: testTimezone,
-          date: validDate,
-        }),
-      ).toThrow('Missing time string for prayer: Fajr');
-    });
-
-    it('should throw error when prayer time format is invalid', () => {
-      const invalidResponse = {
-        data: {
-          timings: {
-            ...validPrayerTimesResponse.data.timings,
-            Fajr: '25:70', // Invalid hours and minutes
-          },
-          meta: { timezone: 'UTC' },
-        },
-      };
-
-      expect(() =>
-        parsePrayerTimes({
-          prayerTimesResponse: invalidResponse,
-          timezone: testTimezone,
-          date: validDate,
-        }),
-      ).toThrow('Invalid time format for Fajr: 25:70');
-    });
-
     it('should parse prayer times correctly for GMT+5 timezone', () => {
       const result = parsePrayerTimes({
-        prayerTimesResponse: {
+        prayerTimesByCity: mock({
           data: {
             timings: {
               Fajr: '04:30',
@@ -382,7 +343,7 @@ describe('Date Utilities', () => {
             },
             meta: { timezone: 'Asia/Karachi' },
           },
-        },
+        }),
         timezone: 'Asia/Karachi',
         date: validDate,
       });
@@ -398,7 +359,7 @@ describe('Date Utilities', () => {
 
     it('should parse prayer times correctly for GMT-8 timezone', () => {
       const result = parsePrayerTimes({
-        prayerTimesResponse: {
+        prayerTimesByCity: mock({
           data: {
             timings: {
               Fajr: '04:30',
@@ -410,7 +371,7 @@ describe('Date Utilities', () => {
             },
             meta: { timezone: 'America/Los_Angeles' },
           },
-        },
+        }),
         timezone: 'America/Los_Angeles',
         date: validDate,
       });

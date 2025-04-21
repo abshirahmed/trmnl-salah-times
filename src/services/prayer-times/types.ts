@@ -4,7 +4,7 @@ export interface GetPrayerTimesByCityRequest {
   method?: number;
 }
 
-export interface GetPrayerTimesByCityResponse {
+export interface PrayerTimesByCityResponse {
   code: number;
   status: string;
   data: {

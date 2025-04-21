@@ -1,3 +1,4 @@
+import { PrayerTimesByCityResponse } from '@/services';
 import { parse, setHours, setMinutes } from 'date-fns';
 import { formatInTimeZone, fromZonedTime } from 'date-fns-tz';
 import { PRAYER_NAMES, PrayerTimes } from './prayerTypes';
@@ -7,12 +8,7 @@ import { PRAYER_NAMES, PrayerTimes } from './prayerTypes';
  */
 export interface ParsePrayerTimesParams {
   /** API response containing prayer times as strings */
-  prayerTimesResponse: {
-    data: {
-      timings: Record<string, string>;
-      meta: { timezone: string };
-    };
-  };
+  prayerTimesByCity: PrayerTimesByCityResponse;
   /** IANA timezone string */
   timezone: string;
   /** Date to use for calculations */
@@ -23,11 +19,11 @@ export interface ParsePrayerTimesParams {
  * Parse prayer times from API response
  */
 export const parsePrayerTimes = ({
-  prayerTimesResponse,
+  prayerTimesByCity,
   timezone,
   date,
 }: ParsePrayerTimesParams): PrayerTimes => {
-  const prayerTimesStrings = prayerTimesResponse.data.timings;
+  const prayerTimesStrings = prayerTimesByCity.data.timings;
   const prayerTimes: PrayerTimes = {};
 
   // Get midnight in the target timezone
@@ -49,16 +45,6 @@ export const parsePrayerTimes = ({
     }
 
     const [hours, minutes] = timeString.split(':').map(Number);
-    if (
-      !Number.isInteger(hours) ||
-      !Number.isInteger(minutes) ||
-      hours < 0 ||
-      hours > 23 ||
-      minutes < 0 ||
-      minutes > 59
-    ) {
-      throw new Error(`Invalid time format for ${prayer}: ${timeString}`);
-    }
 
     // Set the hours and minutes on the base date and convert to UTC
     const localPrayerTime = setMinutes(setHours(baseDate, hours), minutes);

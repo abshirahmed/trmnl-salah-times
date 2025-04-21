@@ -9,7 +9,7 @@ export const fullTemplate = `
       <!-- Main Layout -->
       <div class="layout layout--col">
         <!-- Gregorian and Hijri Dates -->
-        <div class="stretch-x grid grid-col-2 border--h-3">
+        <div class="stretch-x grid grid-col-2">
           <div class="row row--start">
             <div>
               <span class="title">Gregorian Date</span>
@@ -41,71 +41,23 @@ export const fullTemplate = `
         </div>
         <!-- Prayer Times -->
         <div class="stretch-x stretch-y">
-        <div class="flex flex--col gap--space-between h-full">
-        <!-- Header -->
-          <div class="grid grid-col-2 border--h-1">
-            <div class="row row--start">
-              <span class="label">Prayer</span>
-            </div>
-            <div class="row row--end">
-              <span class="label">Time</span>
-            </div>
-          </div>
-          <!-- Fajr -->
-          <div class="grid grid-col-2 border--h-3">
-            <div class="row row--start">
-              <span class="title">Fajr</span>
-            </div>
-            <div class="row row--end">
-              <span class="title">{{ IDX_0.data.timings.Fajr | slice: 0, 5 }}</span>
-            </div>
-          </div>
-          <!-- Sunrise -->
-          <div class="grid grid-col-2 border--h-3">
-            <div class="row row--start">
-              <span class="title">Sunrise</span>
-            </div>
-            <div class="row row--end">
-              <span class="title">{{ IDX_0.data.timings.Sunrise | slice: 0, 5 }}</span>
-            </div>
-        </div>
-          <!-- Dhuhr -->
-          <div class="grid grid-col-2 border--h-3">
-            <div class="row row--start">
-              <span class="title">Dhuhr</span>
-            </div>
-            <div class="row row--end">
-              <span class="title">{{ IDX_0.data.timings.Dhuhr | slice: 0, 5 }}</span>
-            </div>
-          </div>
-          <!-- Asr -->
-          <div class="grid grid-col-2 border--h-3">
-            <div class="row row--start">
-              <span class="title">Asr</span>
-            </div>
-            <div class="row row--end">
-              <span class="title">{{ IDX_0.data.timings.Asr | slice: 0, 5 }}</span>
-            </div>
-          </div>
-          <!-- Maghrib -->
-          <div class="grid grid-col-2 border--h-3">
-            <div class="row row--start">
-              <span class="title">Maghrib</span>
-            </div>
-            <div class="row row--end">
-              <span class="title">{{ IDX_0.data.timings.Maghrib | slice: 0, 5 }}</span>
-            </div>
-          </div>
-          <!-- Isha -->
-          <div class="grid grid-col-2 border--h-3">
-            <div class="row row--start">
-              <span class="title">Isha</span>
-            </div>
-            <div class="row row--end">
-              <span class="title">{{ IDX_0.data.timings.Isha | slice: 0, 5 }}</span>
-            </div>
-          </div>
-        </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="text--left"><span class="label">Prayer</span></th>
+                <th class="text--right"><span class="label">Time</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% assign prayers = "Fajr,Sunrise,Dhuhr,Asr,Maghrib,Isha" | split: "," %}
+              {% for prayer in prayers %}
+              <tr>
+                <td><span class="title">{{ prayer }}</span></td>
+                <td class="text--right"><span class="title">{{ IDX_0.data.timings[prayer] | slice: 0, 5 }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
         <!-- Metadata in 1 row -->
         <div class="stretch-x">

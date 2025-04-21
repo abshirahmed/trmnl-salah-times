@@ -27,7 +27,7 @@ export const calculatePrayerTimes = async (
     const { city, country, method } = params;
 
     // Get prayer times from service
-    const prayerTimesResponse = await getPrayerTimesByCity({
+    const prayerTimesByCityResponse = await getPrayerTimesByCity({
       city,
       country,
       method,
@@ -40,16 +40,16 @@ export const calculatePrayerTimes = async (
     });
 
     // Extract relevant data
-    const prayerTimes = prayerTimesResponse.data.timings;
-    const hijriDate = prayerTimesResponse.data.date.hijri;
-    const timezone = prayerTimesResponse.data.meta.timezone;
+    const prayerTimes = prayerTimesByCityResponse.data.timings;
+    const hijriDate = prayerTimesByCityResponse.data.date.hijri;
+    const timezone = prayerTimesByCityResponse.data.meta.timezone;
 
     // Get current time
     const now = new Date();
 
     // Parse prayer times into Date objects
     const prayerTimesObjects = parsePrayerTimes({
-      prayerTimesResponse,
+      prayerTimesByCity: prayerTimesByCityResponse,
       timezone,
       date: now,
     });
@@ -72,7 +72,7 @@ export const calculatePrayerTimes = async (
     const hijriDateFormatted = formatHijriDate(hijriDate);
 
     return {
-      rawData: prayerTimesResponse.data,
+      rawData: prayerTimesByCityResponse.data,
       prayerTimes,
       prayerTimesObjects,
       nextPrayer,
