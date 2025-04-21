@@ -63,7 +63,7 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
     const lastSyncTime = formatInTimeZone(
       now,
       prayerTimesResult.rawData.meta.timezone || 'UTC',
-      'HH:mm',
+      'hh:mma',
     );
 
     // Prepare data for template rendering
