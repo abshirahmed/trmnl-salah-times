@@ -18,8 +18,9 @@
       }
 
       .header {
-          max-width: 800px;
+          max-width: 1640px;
           margin: 0 auto 2rem;
+          text-align: center;
       }
 
       .header h1 {
@@ -28,60 +29,13 @@
           color: #333;
       }
 
-      /* Tab Navigation */
-      .tab-nav {
-          display: flex;
-          gap: 0.5rem;
-          margin-bottom: 2rem;
-          justify-content: center;
-          padding: 0 1rem;
-      }
-
-      .tab-button {
-          padding: 0.75rem 1.5rem;
-          background: white;
-          border: none;
-          border-radius: 6px;
-          color: #666;
-          font-size: 0.875rem;
-          cursor: pointer;
-          transition: all 0.2s;
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-      }
-
-      .tab-button:hover {
-          background: #f8f8f8;
-          color: #333;
-      }
-
-      .tab-button.active {
-          background: #4CAF50;
-          color: white;
-      }
-
       .preview-grid {
-          display: none;
-          flex-direction: column;
-          gap: 2rem;
-          align-items: center;
-          margin: 0 auto;
-      }
-
-      .preview-grid.active {
-          display: flex;
-      }
-
-      .preview-grid.all-views {
-          display: none;
-          grid-template-columns: repeat(auto-fit, 800px);
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(800px, 1fr));
           gap: 2rem;
           justify-content: center;
           max-width: 1640px;
           margin: 0 auto;
-      }
-
-      .preview-grid.all-views.active {
-          display: grid;
       }
 
       .preview-card {
@@ -89,6 +43,7 @@
           background: white;
           border-radius: 8px;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          margin: 0 auto;
       }
 
       .card-header {
@@ -196,81 +151,8 @@
   <h1>TRMNL Template Preview</h1>
 </div>
 
-<div class="tab-nav">
-  <button class="tab-button active" data-view="full">Full View</button>
-  <button class="tab-button" data-view="half-h">Half Horizontal</button>
-  <button class="tab-button" data-view="half-v">Half Vertical</button>
-  <button class="tab-button" data-view="quadrant">Quadrant</button>
-  <button class="tab-button" data-view="all">All Views</button>
-</div>
-
-<!-- Individual Views -->
-<div class="preview-grid active" id="view-full">
-  <div class="preview-card">
-    <div class="card-header">
-      <div class="card-title">Full View</div>
-      <div class="card-dimensions">Template size: 800x480 pixels (Full Display)</div>
-    </div>
-    <div class="display">
-      <div class="template template-full" id="template-full">
-        <div class="loading">Loading...</div>
-      </div>
-      <div class="dimension-indicator width-indicator">800px</div>
-      <div class="dimension-indicator height-indicator">480px</div>
-    </div>
-  </div>
-</div>
-
-<div class="preview-grid" id="view-half-h">
-  <div class="preview-card">
-    <div class="card-header">
-      <div class="card-title">Half Horizontal View</div>
-      <div class="card-dimensions">Template size: 400x480 pixels (Left Half)</div>
-    </div>
-    <div class="display">
-      <div class="template template-half-h" id="template-half-h">
-        <div class="loading">Loading...</div>
-      </div>
-      <div class="dimension-indicator width-indicator">400px</div>
-      <div class="dimension-indicator height-indicator">480px</div>
-    </div>
-  </div>
-</div>
-
-<div class="preview-grid" id="view-half-v">
-  <div class="preview-card">
-    <div class="card-header">
-      <div class="card-title">Half Vertical View</div>
-      <div class="card-dimensions">Template size: 800x240 pixels (Top Half)</div>
-    </div>
-    <div class="display">
-      <div class="template template-half-v" id="template-half-v">
-        <div class="loading">Loading...</div>
-      </div>
-      <div class="dimension-indicator width-indicator">800px</div>
-      <div class="dimension-indicator height-indicator">240px</div>
-    </div>
-  </div>
-</div>
-
-<div class="preview-grid" id="view-quadrant">
-  <div class="preview-card">
-    <div class="card-header">
-      <div class="card-title">Quadrant View</div>
-      <div class="card-dimensions">Template size: 400x240 pixels (Top-Left Quarter)</div>
-    </div>
-    <div class="display">
-      <div class="template template-quadrant" id="template-quadrant">
-        <div class="loading">Loading...</div>
-      </div>
-      <div class="dimension-indicator width-indicator">400px</div>
-      <div class="dimension-indicator height-indicator">240px</div>
-    </div>
-  </div>
-</div>
-
 <!-- All Views Grid -->
-<div class="preview-grid all-views" id="view-all">
+<div class="preview-grid">
   <div class="preview-card">
     <div class="card-header">
       <div class="card-title">Full View</div>
@@ -332,26 +214,7 @@
   const API_ENDPOINT = 'http://localhost:3000/plugin-markup';
   const USER_UUID = 'c06523b0-cedc-4ffe-952e-0b66900a7a9b';
 
-  // Tab navigation
-  function switchView(viewId) {
-    // Hide all views
-    document.querySelectorAll('.preview-grid').forEach(grid => {
-      grid.classList.remove('active');
-    });
 
-    // Show selected view
-    document.getElementById(`view-${viewId}`).classList.add('active');
-
-    // Update tab buttons
-    document.querySelectorAll('.tab-button').forEach(button => {
-      button.classList.toggle('active', button.dataset.view === viewId);
-    });
-  }
-
-  // Add click handlers to tab buttons
-  document.querySelectorAll('.tab-button').forEach(button => {
-    button.addEventListener('click', () => switchView(button.dataset.view));
-  });
 
   async function loadTemplates() {
     try {
@@ -372,13 +235,7 @@
         markup_quadrant
       } = await response.json();
 
-      // Load templates for individual views
-      document.getElementById('template-full').innerHTML = markup;
-      document.getElementById('template-half-h').innerHTML = markup_half_horizontal;
-      document.getElementById('template-half-v').innerHTML = markup_half_vertical;
-      document.getElementById('template-quadrant').innerHTML = markup_quadrant;
-
-      // Load templates for all views grid
+      // Load templates for all views
       document.getElementById('all-template-full').innerHTML = markup;
       document.getElementById('all-template-half-h').innerHTML = markup_half_horizontal;
       document.getElementById('all-template-half-v').innerHTML = markup_half_vertical;
@@ -391,9 +248,8 @@
       const errorMessage = `<div class="error">Error: ${error.message}</div>`;
 
       // Update error message for all template containers
-      ['full', 'half-h', 'half-v', 'quadrant'].forEach(view => {
-        document.getElementById(`template-${view}`).innerHTML = errorMessage;
-        document.getElementById(`all-template-${view}`).innerHTML = errorMessage;
+      document.querySelectorAll('.template').forEach(template => {
+        template.innerHTML = errorMessage;
       });
     }
   }

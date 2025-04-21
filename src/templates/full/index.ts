@@ -9,61 +9,41 @@ export const fullTemplate = `
       <!-- Main Layout -->
       <div class="layout layout--col">
         <!-- Gregorian and Hijri Dates -->
-        <div class="stretch-x grid grid-col-2">
-          <div class="row row--start">
-            <div>
-              <span class="title">Gregorian Date</span>
-              <span class="value value--xxsmall">{{ IDX_0.enhancedData.gregorianDate }}</span>
-           </div>
-          </div>
-          <div class="row row--end">
-            <div>
-              <span class="title">Hijri Date</span>
-              <span class="value value--xxsmall">{{ IDX_0.enhancedData.hijriDateFormatted }}</span>
-            </div>
-          </div>
+        <div class="stretch-x flex gap--space-between">
+          <p class="title title--small">{{ IDX_0.enhancedData.gregorianDate }}</p>
+          <p class="title title--small">{{ IDX_0.enhancedData.hijriDateFormatted }}</p>
         </div>
         <!-- Next Prayer Info -->
-        <div class="stretch-x grid  bg--gray-6">
-          <div class="col pt--2 pl--1">
-            <div>
-              <span class="title title--small">Next</span>
-            </div>
-            <div class="grid grid-col-2">
-              <div class="row start">
-                <span class="value">{{ IDX_0.enhancedData.nextPrayer | upcase }}</span>
-              </div>
-            <div class="row row--end">
-                <span class="value">{{ IDX_0.enhancedData.nextPrayerTime }}</span>
-              </div>
-            </div>
+        <div class="stretch-x bg--gray-6 p--1">
+          <p class="title title--small">Next</p>
+          <div class="flex gap--space-between w-full">
+            <p class="value">{{ IDX_0.enhancedData.nextPrayer | upcase }}</p>
+            <p class="value">{{ IDX_0.enhancedData.nextPrayerTime }}</p>
           </div>
         </div>
         <!-- Prayer Times -->
-        <div class="stretch-x stretch-y">
-          <table class="table">
-            <thead>
-              <tr>
-                <th class="text--left"><span class="label">Prayer</span></th>
-                <th class="text--right"><span class="label">Time</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {% assign prayers = "Fajr,Sunrise,Dhuhr,Asr,Maghrib,Isha" | split: "," %}
-              {% for prayer in prayers %}
-              <tr>
-                <td><span class="title">{{ prayer }}</span></td>
-                <td class="text--right"><span class="title">{{ IDX_0.data.timings[prayer] | slice: 0, 5 }}</span></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+        <table class="table table--condensed stretch">
+          <thead>
+            <tr>
+              <th><span class="title title--small">Prayer</span></th>
+              <th><span class="title title--small text--right">Time</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% assign prayers = "Fajr,Sunrise,Dhuhr,Asr,Maghrib,Isha" | split: "," %}
+            {% for prayer in prayers %}
+            <tr>
+              <td><span class="label label--large">{{ prayer }}</span></td>
+              <td><span class="label label--large text--right">{{ IDX_0.data.timings[prayer] | slice: 0, 5 }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
         <!-- Metadata in 1 row -->
         <div class="stretch-x">
-        <div class="flex gap--space-between w-full">
+        <div class="flex gap--space-between">
             <!-- Calculation Method -->
-              <span class="description">Calculation Method: {{ IDX_0.data.meta.method.name }}</span>
+            <span class="description">Calculation Method: {{ IDX_0.data.meta.method.name }}</span>
             <!-- Last Sync -->
             <span class="description">Last Sync: {{ IDX_0.enhancedData.lastSyncTime }}</span>
         </div>
