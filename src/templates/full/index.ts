@@ -4,7 +4,7 @@
 export const fullTemplate = `
 <!-- TRMNL Salah Prayer Times Plugin Markup - Optimized for TRMNL framework -->
 <div class="environment trmnl">
-  <div class="screen screen--no-bleed">
+  <div class="screen">
     <div class="view view--full">
       <!-- Main Layout -->
       <div class="layout layout--col">
