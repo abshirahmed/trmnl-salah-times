@@ -6,14 +6,14 @@ export const halfVerticalTemplate = `
 <div class="environment trmnl">
   <div class="screen screen--no-bleed">
     <div class="view view--half_vertical">
-    <div class="layout layout--col">
+    <div class="layout layout--col layout--stretch-x">
         <!-- Gregorian and Hijri Dates -->
-        <div class="stretch-x flex gap--space-between">
+        <div class="flex gap--space-between">
           <p class="text">{{ IDX_0.enhancedData.gregorianDate }}</p>
           <p class="text">{{ IDX_0.enhancedData.hijriDateFormatted }}</p>
         </div>
         <!-- Next Prayer Info -->
-        <div class="stretch-x bg--gray-6 p--1">
+        <div class="bg--gray-6 p--1">
           <p class="title title--small">Next</p>
           <div class="flex gap--space-between w-full">
             <p class="value value--small">{{ IDX_0.enhancedData.nextPrayer | upcase }}</p>
@@ -39,7 +39,7 @@ export const halfVerticalTemplate = `
           </tbody>
         </table>
         <!-- Metadata in 1 row -->
-        <div class="flex flex--col flex--left stretch-x">
+        <div class="flex flex--col flex--left">
             <!-- Calculation Method -->
             <p class="description">Method: {{ IDX_0.data.meta.method.name }}</p>
             <!-- Last Sync -->

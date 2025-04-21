@@ -7,14 +7,14 @@ export const fullTemplate = `
   <div class="screen">
     <div class="view view--full">
       <!-- Main Layout -->
-      <div class="layout layout--col">
+      <div class="layout layout--col layout--stretch-x">
         <!-- Gregorian and Hijri Dates -->
-        <div class="stretch-x flex gap--space-between">
+        <div class="flex gap--space-between">
           <p class="title title--small">{{ IDX_0.enhancedData.gregorianDate }}</p>
           <p class="title title--small">{{ IDX_0.enhancedData.hijriDateFormatted }}</p>
         </div>
         <!-- Next Prayer Info -->
-        <div class="stretch-x bg--gray-6 p--1">
+        <div class="bg--gray-6 p--1">
           <p class="title title--small">Next</p>
           <div class="flex gap--space-between w-full">
             <p class="value">{{ IDX_0.enhancedData.nextPrayer | upcase }}</p>
@@ -40,13 +40,11 @@ export const fullTemplate = `
           </tbody>
         </table>
         <!-- Metadata in 1 row -->
-        <div class="stretch-x">
         <div class="flex gap--space-between">
             <!-- Calculation Method -->
             <span class="description">Method: {{ IDX_0.data.meta.method.name }}</span>
             <!-- Last Sync -->
             <span class="description">Updated: {{ IDX_0.enhancedData.lastSyncTime }}</span>
-        </div>
         </div>
       </div>
       <!-- Title Bar -->

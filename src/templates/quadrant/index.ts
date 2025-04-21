@@ -6,14 +6,14 @@ export const quadrantTemplate = `
 <div class="environment trmnl">
   <div class="screen screen--no-bleed">
     <div class="view view--quadrant">
-      <div class="layout layout--col">
+      <div class="layout layout--col layout--stretch-x">
         <!-- Gregorian and Hijri Dates -->
-        <div class="stretch-x flex gap--space-between">
+        <div class="flex gap--space-between">
           <p class="text">{{ IDX_0.enhancedData.gregorianDate }}</p>
           <p class="text">{{ IDX_0.enhancedData.hijriDateFormatted }}</p>
         </div>
         <!-- Next Prayer Info -->
-        <div class="stretch-x bg--gray-6 p--1">
+        <div class=" bg--gray-6 p--1">
           <p class="title title--small">Next</p>
           <div class="flex gap--space-between w-full">
             <p class="value value--xsmall">{{ IDX_0.enhancedData.nextPrayer | upcase }}</p>
@@ -21,21 +21,21 @@ export const quadrantTemplate = `
           </div>
         </div>
         <!-- Prayer Times -->
-          <div class="grid grid--cols-2 gap--medium stretch-x">
+          <div class="grid grid--cols-2 gap--medium ">
           {% assign prayers = "Fajr,Sunrise,Dhuhr,Asr,Maghrib,Isha" | split: "," %}
           <!-- Left Column -->
-          <div class="flex flex--col gap--medium stretch-x">
+          <div class="flex flex--col gap--medium">
             {% for prayer in prayers limit: 3 %}
-              <div class="flex gap--space-between border--h-4 stretch-x {% if prayer == IDX_0.enhancedData.currentPrayer %}bg--gray-7{% endif %}">
+              <div class="flex gap--space-between border--h-4 w--full {% if prayer == IDX_0.enhancedData.currentPrayer %}bg--gray-7{% endif %}">
                 <p class="label">{{ prayer }}</p>
                 <p class="label text--right">{{ IDX_0.data.timings[prayer] | slice: 0, 5 }}</p>
               </div>
             {% endfor %}
           </div>
           <!-- Right Column -->
-          <div class="flex flex--col gap--medium stretch-x">
+          <div class="flex flex--col gap--medium ">
             {% for prayer in prayers offset: 3 limit: 3 %}
-              <div class="flex gap--space-between border--h-4 stretch-x {% if prayer == IDX_0.enhancedData.currentPrayer %}bg--gray-7{% endif %}">
+              <div class="flex gap--space-between border--h-4 w--full {% if prayer == IDX_0.enhancedData.currentPrayer %}bg--gray-7{% endif %}">
                 <p class="label">{{ prayer }}</p>
                 <p class="label text--right">{{ IDX_0.data.timings[prayer] | slice: 0, 5 }}</p>
               </div>
@@ -43,7 +43,7 @@ export const quadrantTemplate = `
           </div>
           </div>
           <!-- Metadata in 1 row -->
-        <div class="stretch-x flex gap--space-between">
+        <div class="flex gap--space-between">
             <!-- Calculation Method -->
             <p class="description">{{ IDX_0.data.meta.method.name }}</p>
             <!-- Last Sync -->
