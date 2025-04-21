@@ -17,7 +17,7 @@ export const halfHorizontalTemplate = `
           <p class="title title--small">Next</p>
           <div class="flex gap--space-between w-full">
             <p class="value value--small">{{ IDX_0.enhancedData.nextPrayer | upcase }}</p>
-            <p class="value value--small">{{ IDX_0.enhancedData.nextPrayerTime }}</p>
+            <p class="value value--small text--right">{{ IDX_0.enhancedData.nextPrayerTime }}</p>
           </div>
         </div>
         <!-- Prayer Times -->
