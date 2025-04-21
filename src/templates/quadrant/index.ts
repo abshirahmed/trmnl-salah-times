@@ -4,7 +4,7 @@
 export const quadrantTemplate = `
 <!-- TRMNL Salah Prayer Times Plugin - Quadrant View Markup -->
 <div class="environment trmnl">
-  <div class="screen">
+  <div class="screen screen--no-bleed">
     <div class="view view--quadrant">
       <div class="layout layout--col">
         <!-- Gregorian and Hijri Dates -->

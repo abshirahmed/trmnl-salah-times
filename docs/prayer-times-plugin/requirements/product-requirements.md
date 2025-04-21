@@ -355,7 +355,7 @@ https://api.aladhan.com/v1/timingsByCity?city={city}&country={country}&method={m
 
 ```html
 <!-- Basic structure of the TRMNL plugin -->
-<div class="screen">
+<div class="screen screen--no-bleed">
   <div class="view view--full">
     <div class="layout">
       <!-- Content here -->

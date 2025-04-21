@@ -4,7 +4,7 @@
 export const halfHorizontalTemplate = `
 <!-- TRMNL Salah Prayer Times Plugin - Half Horizontal View Markup -->
 <div class="environment trmnl">
-  <div class="screen">
+  <div class="screen screen--no-bleed">
     <div class="view view--half_horizontal">
       <div class="layout layout--col">
         <!-- Gregorian and Hijri Dates -->
