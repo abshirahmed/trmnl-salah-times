@@ -46,10 +46,27 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
     );
 
     // Calculate current prayer
-    const currentPrayer = calculateCurrentPrayer(
-      prayerTimesResult.prayerTimesObjects,
-      prayerTimesResult.rawData.meta.timezone,
-    );
+    let currentPrayer;
+    try {
+      currentPrayer = calculateCurrentPrayer(
+        prayerTimesResult.prayerTimesObjects,
+        prayerTimesResult.rawData.meta.timezone,
+      );
+    } catch (error) {
+      // Handle the case when current time is before Fajr
+      if (
+        error instanceof Error &&
+        error.message.includes('Current time is before Fajr')
+      ) {
+        logger.info(
+          'Current time is before Fajr, setting currentPrayer to "Isha"',
+        );
+        currentPrayer = 'Isha';
+      } else {
+        // Re-throw any other errors
+        throw error;
+      }
+    }
 
     // Format gregorian date
     const now = new Date();
