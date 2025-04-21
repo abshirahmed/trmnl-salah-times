@@ -31,7 +31,7 @@ export const halfVerticalTemplate = `
           <tbody>
             {% assign prayers = "Fajr,Sunrise,Dhuhr,Asr,Maghrib,Isha" | split: "," %}
             {% for prayer in prayers %}
-            <tr>
+            <tr class="{% if prayer == IDX_0.enhancedData.currentPrayer %}bg--gray-7{% endif %}">
               <td><span class="label label--large">{{ prayer }}</span></td>
               <td><span class="label label--large text--right">{{ IDX_0.data.timings[prayer] | slice: 0, 5 }}</span></td>
             </tr>
