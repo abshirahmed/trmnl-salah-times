@@ -43,9 +43,9 @@ export const fullTemplate = `
         <div class="stretch-x">
         <div class="flex gap--space-between">
             <!-- Calculation Method -->
-            <span class="description">Calculation: {{ IDX_0.data.meta.method.name }}</span>
+            <span class="description">Method: {{ IDX_0.data.meta.method.name }}</span>
             <!-- Last Sync -->
-            <span class="description">Last Sync: {{ IDX_0.enhancedData.lastSyncTime }}</span>
+            <span class="description">Updated: {{ IDX_0.enhancedData.lastSyncTime }}</span>
         </div>
         </div>
       </div>

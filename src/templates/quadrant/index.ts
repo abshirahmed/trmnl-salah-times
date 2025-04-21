@@ -47,7 +47,7 @@ export const quadrantTemplate = `
             <!-- Calculation Method -->
             <p class="description">{{ IDX_0.data.meta.method.name }}</p>
             <!-- Last Sync -->
-            <p class="description">Last Sync: {{ IDX_0.enhancedData.lastSyncTime }}</p>
+            <p class="description">Updated: {{ IDX_0.enhancedData.lastSyncTime }}</p>
         </div>
       </div>
     </div>

@@ -41,9 +41,9 @@ export const halfVerticalTemplate = `
         <!-- Metadata in 1 row -->
         <div class="flex flex--col flex--left stretch-x">
             <!-- Calculation Method -->
-            <p class="description">Calculation: {{ IDX_0.data.meta.method.name }}</p>
+            <p class="description">Method: {{ IDX_0.data.meta.method.name }}</p>
             <!-- Last Sync -->
-            <p class="description">Last Sync: {{ IDX_0.enhancedData.lastSyncTime }}</p>
+            <p class="description">Updated: {{ IDX_0.enhancedData.lastSyncTime }}</p>
         </div>
       </div>
     </div>
