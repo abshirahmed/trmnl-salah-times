@@ -4,7 +4,7 @@
 export const fullTemplate = `
 <!-- TRMNL Salah Prayer Times Plugin Markup - Optimized for TRMNL framework -->
 <div class="environment trmnl">
-  <div class="screen">
+  <div class="screen screen--no-bleed">
     <div class="view view--full">
       <!-- Main Layout -->
       <div class="layout layout--col layout--stretch-x">
@@ -49,7 +49,6 @@ export const fullTemplate = `
       </div>
       <!-- Title Bar -->
       <div class="title_bar">
-        <img class="image" src="https://usetrmnl.com/images/plugins/private_plugin.svg" />
         <span class="title">Salah Times</span>
         <span class="instance">{{ IDX_0.data.meta.timezone }}</span>
       </div>
