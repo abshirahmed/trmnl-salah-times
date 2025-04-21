@@ -16,8 +16,8 @@ export const quadrantTemplate = `
         <div class="stretch-x bg--gray-6 p--1">
           <p class="title title--small">Next</p>
           <div class="flex gap--space-between w-full">
-            <p class="value value--small">{{ IDX_0.enhancedData.nextPrayer | upcase }}</p>
-            <p class="value value--small">{{ IDX_0.enhancedData.nextPrayerTime }}</p>
+            <p class="value value--xsmall">{{ IDX_0.enhancedData.nextPrayer | upcase }}</p>
+            <p class="value value--xsmall text--right">{{ IDX_0.enhancedData.nextPrayerTime }}</p>
           </div>
         </div>
         <!-- Prayer Times -->
