@@ -92,11 +92,23 @@ Available methods:
     - Global method based on moon sighting
     - Uses astronomical twilight if sun doesn't reach required angle
 
-## Time Format
+### Asr Method
+- **What it does**: Sets the juristic method for calculating Asr prayer time.
+- **Options**: "Standard" (Shafi'i, Maliki, Hanbali) or "Hanafi"
+- **Default**: Standard
+- **Tips**: Choose "Hanafi" if you follow the Hanafi school of thought.
+
+### Maghrib Offset
+- **What it does**: Adds or subtracts a manual minute adjustment to the Maghrib prayer time.
+- **How to set**: Enter a positive or negative integer (e.g., 3, -2)
+- **Default**: 0 (no adjustment)
+- **Tips**: Use this if your local mosque announces Maghrib a few minutes after sunset.
+
+### Time Format
 
 The plugin uses the following time formats:
 
-- Prayer times: 24-hour format (e.g., "15:30")
+- Prayer times: 24-hour format (e.g., "15:30") or 12-hour format (e.g., "3:30 PM")
 - Next prayer time: 12-hour format with AM/PM (e.g., "3:30 PM")
 - Time until next prayer: Hours and minutes (e.g., "2 hours 15 minutes")
 
@@ -120,7 +132,7 @@ If you want to reset all settings to their default values:
 
 1. Click the "Reset to Default" button in the settings panel
 2. Confirm that you want to reset all settings
-3. Your settings will be reset to the default values (Muslim World League calculation method, 12-hour time format)
+3. Your settings will be reset to the default values (ISNA calculation method, 24-hour time format, Standard Asr method, 0 Maghrib offset)
 
 ## Settings Synchronization
 

@@ -25,11 +25,13 @@ This handler is responsible for saving user settings for the TRMNL plugin.
 - `country` - User's country (required)
 - `method` - Prayer time calculation method (optional, defaults to 2)
 - `timeFormat` - Time format preference (optional, defaults to '24h')
+- `asrMethod` - Asr juristic method (optional, 'standard' or 'hanafi', defaults to 'standard')
+- `maghribOffset` - Manual minute adjustment for Maghrib (optional, integer, defaults to 0)
 
 ### Example
 
 ```
-/save-settings?uuid=674c9d99-cea1-4e52-9025-9efbe0e30901&city=London&country=UK&method=2&timeFormat=12h
+/save-settings?uuid=674c9d99-cea1-4e52-9025-9efbe0e30901&city=London&country=UK&method=2&timeFormat=12h&asrMethod=hanafi&maghribOffset=3
 ```
 
 ### Response
