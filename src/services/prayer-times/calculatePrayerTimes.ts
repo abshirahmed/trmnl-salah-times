@@ -26,13 +26,15 @@ export const calculatePrayerTimes = async (
   params: PrayerTimesCalculationParams,
 ) => {
   try {
-    const { city, country, method } = params;
+    const { city, country, method, asr_method, maghrib_offset } = params;
 
     // Get prayer times from service
     const prayerTimesByCityResponse = await getPrayerTimesByCity({
       city,
       country,
       method,
+      asr_method,
+      maghrib_offset,
     });
 
     logger.info('Prayer times fetched successfully', {
