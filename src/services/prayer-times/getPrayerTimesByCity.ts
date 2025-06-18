@@ -26,6 +26,14 @@ export const getPrayerTimesByCity = async ({
   // Only Maghrib offset, so: 0,0,0,0,<maghrib_offset>,0,0
   const tune = `0,0,0,0,${maghrib_offset},0,0`;
 
+  logger.info('Aladhan API request params', {
+    city,
+    country,
+    method,
+    school,
+    tune,
+  });
+
   const { data } = await prayerTimesClient.get<PrayerTimesByCityResponse>(
     '/timingsByCity',
     {

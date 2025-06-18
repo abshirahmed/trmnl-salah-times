@@ -56,12 +56,15 @@ export const getPrayerTimes = async (params: GetPrayerTimesParams) => {
       method,
       asr_method,
       maghrib_offset,
+      timings: prayerTimesResult.prayerTimes,
+      school: prayerTimesResult.rawData.meta.school,
       enhancedData: {
         nextPrayer: prayerTimesResult.nextPrayer,
         nextPrayerTime: formattedNextPrayerTime,
         timeUntilNextPrayer: prayerTimesResult.timeUntilNextPrayer,
         hijriDateFormatted: prayerTimesResult.hijriDateFormatted,
         currentTime: prayerTimesResult.currentTime,
+        rawData: prayerTimesResult.rawData,
       },
     };
   } catch (error) {
@@ -80,6 +83,8 @@ export const getPrayerTimes = async (params: GetPrayerTimesParams) => {
       method,
       asr_method,
       maghrib_offset,
+      timings: [],
+      school: 'Unknown',
       enhancedData: {
         nextPrayer: 'Unknown',
         nextPrayerTime: 'Unknown',
@@ -90,6 +95,7 @@ export const getPrayerTimes = async (params: GetPrayerTimesParams) => {
         },
         hijriDateFormatted: 'Unknown',
         currentTime: new Date().toISOString(),
+        rawData: {},
       },
     };
   }

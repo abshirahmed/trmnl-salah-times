@@ -46,7 +46,7 @@ describe('Prayer Times Handler', () => {
       ...mockAPIGatewayProxyEvent,
       queryStringParameters: {
         city: 'London',
-        country: 'UK',
+        country: 'GB',
       },
     };
 
@@ -94,5 +94,49 @@ describe('Prayer Times Handler', () => {
     expect(statusCode).toBe(200);
     expect(responseBody).toHaveProperty('enhancedData');
     expect(responseBody.enhancedData).toHaveProperty('nextPrayer');
+  });
+
+  it('should return different Asr times for standard vs hanafi asr_method', async () => {
+    const baseEvent = {
+      ...mockAPIGatewayProxyEvent,
+      queryStringParameters: {
+        city: 'London',
+        country: 'GB',
+        method: 2,
+      },
+    };
+
+    // Standard (Shafi)
+    const eventStandard = {
+      ...baseEvent,
+      queryStringParameters: {
+        ...baseEvent.queryStringParameters,
+        asr_method: 'standard',
+      },
+    };
+    const { body: bodyStandard } = await handler(
+      eventStandard,
+      mockLambdaContext,
+    );
+    const bodyStandardParsed = JSON.parse(bodyStandard);
+    const schoolStandard =
+      bodyStandardParsed.enhancedData?.rawData?.meta?.school;
+
+    // Hanafi
+    const eventHanafi = {
+      ...baseEvent,
+      queryStringParameters: {
+        ...baseEvent.queryStringParameters,
+        asr_method: 'hanafi',
+      },
+    };
+    const { body: bodyHanafi } = await handler(eventHanafi, mockLambdaContext);
+    const bodyHanafiParsed = JSON.parse(bodyHanafi);
+    const schoolHanafi = bodyHanafiParsed.enhancedData?.rawData?.meta?.school;
+
+    // Check that the school is different
+    expect(schoolStandard).toBeDefined();
+    expect(schoolHanafi).toBeDefined();
+    expect(schoolStandard).not.toBe(schoolHanafi);
   });
 });

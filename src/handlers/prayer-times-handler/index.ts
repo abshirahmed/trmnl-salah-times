@@ -29,18 +29,25 @@ const prayerTimesHandler = async (event: APIGatewayProxyEvent) => {
     }
 
     // Extract validated parameters
-    const { city, country, method, uuid } = data;
+    const {
+      city,
+      country,
+      method,
+      uuid,
+      asr_method: qs_asr_method,
+      maghrib_offset: qs_maghrib_offset,
+    } = data;
 
-    let asr_method = 'standard';
-    let maghrib_offset = 0;
+    let asr_method = qs_asr_method || 'standard';
+    let maghrib_offset = qs_maghrib_offset || 0;
 
     if (uuid) {
       // Load user settings if uuid is provided
       const { data: userSettings } = await getUserSettings(uuid);
       if (userSettings) {
         logger.info('Handler fetched user settings:', { userSettings });
-        asr_method = userSettings.asr_method || 'standard';
-        maghrib_offset = userSettings.maghrib_offset || 0;
+        asr_method = userSettings.asr_method || asr_method;
+        maghrib_offset = userSettings.maghrib_offset || maghrib_offset;
       } else {
         logger.warn('No user settings found for uuid:', { uuid });
       }

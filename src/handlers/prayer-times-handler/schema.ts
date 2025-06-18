@@ -53,4 +53,6 @@ export const prayerTimesQuerySchema = z.object({
     .default(2),
 
   uuid: z.string().uuid().optional(),
+  asr_method: z.enum(['standard', 'hanafi']).optional(),
+  maghrib_offset: z.coerce.number().optional(),
 });
