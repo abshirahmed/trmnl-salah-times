@@ -89,8 +89,22 @@ describe('Prayer Times Handler', () => {
       maghrib_offset: testMaghribOffset,
     });
 
+    // Direct select after insert
+    const supabase = createSupabaseClient();
+    const { data: directSelectData } = await supabase
+      .from('user_settings')
+      .select('*')
+      .eq('uuid', userUuid);
+    console.log('Direct select after insert:', directSelectData);
+
     // Wait for DB consistency (Supabase emulator can be slow in CI)
-    await waitForRowInSupabase('user_settings', { uuid: userUuid });
+    const userRow = await waitForRowInSupabase(
+      'user_settings',
+      { uuid: userUuid },
+      20,
+      500,
+    );
+    console.log('Inserted user settings:', userRow);
 
     const eventWithUserUuid = {
       ...mockAPIGatewayProxyEvent,
