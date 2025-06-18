@@ -23,4 +23,6 @@ export const saveSettingsQuerySchema = z.object({
     .optional()
     .default(2),
   timeFormat: z.enum(['12h', '24h']).optional().default('24h'),
+  asrMethod: z.enum(['standard', 'hanafi']).optional().default('standard'),
+  maghribOffset: z.coerce.number().int().optional().default(0),
 });

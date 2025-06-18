@@ -6,6 +6,8 @@ create table public.user_settings (
   country text not null,
   method integer not null default 2,
   timeformat text not null default '12h',
+  asr_method text not null default 'standard', -- 'standard' or 'hanafi'
+  maghrib_offset integer not null default 0, -- minute offset for Maghrib
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone default now()
 );

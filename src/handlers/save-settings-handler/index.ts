@@ -33,7 +33,15 @@ const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
 
     const { data } = parseResult;
 
-    const { uuid, city, country, method, timeFormat } = data;
+    const {
+      uuid,
+      city,
+      country,
+      method,
+      timeFormat,
+      asrMethod,
+      maghribOffset,
+    } = data;
 
     logger.info('Saving user settings', {
       uuid,
@@ -41,6 +49,8 @@ const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
       country,
       method,
       timeFormat,
+      asrMethod,
+      maghribOffset,
     });
 
     // Save settings using service
@@ -50,6 +60,8 @@ const saveSettingsHandler = async (event: APIGatewayProxyEvent) => {
       country,
       method,
       timeformat: timeFormat,
+      asr_method: asrMethod,
+      maghrib_offset: maghribOffset,
     });
 
     if (error) {

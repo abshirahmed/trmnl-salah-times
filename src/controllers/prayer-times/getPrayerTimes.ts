@@ -12,6 +12,10 @@ export interface GetPrayerTimesParams {
   country: string;
   /** Calculation method */
   method: number;
+  /** Asr method */
+  asr_method?: string;
+  /** Maghrib offset */
+  maghrib_offset?: number;
 }
 
 /**
@@ -20,15 +24,23 @@ export interface GetPrayerTimesParams {
  * @returns Enhanced prayer times data
  */
 export const getPrayerTimes = async (params: GetPrayerTimesParams) => {
-  const { city, country, method } = params;
+  const { city, country, method, asr_method, maghrib_offset } = params;
   try {
-    logger.info('Getting prayer times', { city, country, method });
+    logger.info('Getting prayer times', {
+      city,
+      country,
+      method,
+      asr_method,
+      maghrib_offset,
+    });
 
     // Calculate prayer times using the shared service
     const prayerTimesResult = await calculatePrayerTimes({
       city,
       country,
       method,
+      asr_method,
+      maghrib_offset,
     });
 
     // Format the next prayer time
@@ -42,6 +54,8 @@ export const getPrayerTimes = async (params: GetPrayerTimesParams) => {
       city,
       country,
       method,
+      asr_method,
+      maghrib_offset,
       enhancedData: {
         nextPrayer: prayerTimesResult.nextPrayer,
         nextPrayerTime: formattedNextPrayerTime,
@@ -56,12 +70,16 @@ export const getPrayerTimes = async (params: GetPrayerTimesParams) => {
       city,
       country,
       method,
+      asr_method,
+      maghrib_offset,
     });
     // Return a basic response with default values instead of throwing
     return {
       city,
       country,
       method,
+      asr_method,
+      maghrib_offset,
       enhancedData: {
         nextPrayer: 'Unknown',
         nextPrayerTime: 'Unknown',

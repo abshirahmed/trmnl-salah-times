@@ -129,4 +129,64 @@ describe('Save Settings Handler', () => {
     expect(parsedBody.message).toBe('Settings saved successfully');
     expect(parsedBody.success).toBeTrue();
   });
+
+  it('should save settings with asrMethod and maghribOffset', async () => {
+    const event = {
+      ...mockAPIGatewayProxyEvent,
+      queryStringParameters: {
+        uuid: validUuid,
+        city: 'London',
+        country: 'UK',
+        method: '2',
+        timeFormat: '12h',
+        asrMethod: 'hanafi',
+        maghribOffset: '3',
+      },
+    };
+
+    const { statusCode, body } = await handler(event, mockLambdaContext);
+    const parsedBody = JSON.parse(body);
+
+    expect(statusCode).toBe(200);
+    expect(parsedBody.message).toBe('Settings saved successfully');
+    expect(parsedBody.success).toBeTrue();
+  });
+
+  it('should return 400 if asrMethod is invalid', async () => {
+    const event = {
+      ...mockAPIGatewayProxyEvent,
+      queryStringParameters: {
+        uuid: validUuid,
+        city: 'London',
+        country: 'UK',
+        asrMethod: 'invalid',
+      },
+    };
+
+    const { statusCode, body } = await handler(event, mockLambdaContext);
+    const parsedBody = JSON.parse(body);
+
+    expect(statusCode).toBe(400);
+    expect(parsedBody.message).toBe('Invalid request parameters');
+    expect(parsedBody.errors.fieldErrors.asrMethod).toBeDefined();
+  });
+
+  it('should return 400 if maghribOffset is not an integer', async () => {
+    const event = {
+      ...mockAPIGatewayProxyEvent,
+      queryStringParameters: {
+        uuid: validUuid,
+        city: 'London',
+        country: 'UK',
+        maghribOffset: 'not-an-integer',
+      },
+    };
+
+    const { statusCode, body } = await handler(event, mockLambdaContext);
+    const parsedBody = JSON.parse(body);
+
+    expect(statusCode).toBe(400);
+    expect(parsedBody.message).toBe('Invalid request parameters');
+    expect(parsedBody.errors.fieldErrors.maghribOffset).toBeDefined();
+  });
 });

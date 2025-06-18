@@ -51,4 +51,6 @@ export const prayerTimesQuerySchema = z.object({
     })
     .optional()
     .default(2),
+
+  uuid: z.string().uuid().optional(),
 });

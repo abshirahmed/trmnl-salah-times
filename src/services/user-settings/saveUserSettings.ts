@@ -19,6 +19,8 @@ export const saveUserSettings = async (settings: UserSettingsInsert) => {
       country: settings.country,
       method: settings.method,
       timeformat: settings.timeformat,
+      asr_method: settings.asr_method,
+      maghrib_offset: settings.maghrib_offset,
       updated_at: new Date().toISOString(),
     },
     { onConflict: 'uuid' },

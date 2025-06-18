@@ -42,6 +42,8 @@ export type Database = {
           id: string | null;
           method: number;
           timeformat: string;
+          asr_method: string;
+          maghrib_offset: number;
           updated_at: string | null;
           uuid: string;
         };
@@ -52,6 +54,8 @@ export type Database = {
           id?: string | null;
           method?: number;
           timeformat?: string;
+          asr_method?: string;
+          maghrib_offset?: number;
           updated_at?: string | null;
           uuid: string;
         };
@@ -62,6 +66,8 @@ export type Database = {
           id?: string | null;
           method?: number;
           timeformat?: string;
+          asr_method?: string;
+          maghrib_offset?: number;
           updated_at?: string | null;
           uuid?: string;
         };

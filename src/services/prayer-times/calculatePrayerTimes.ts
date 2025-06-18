@@ -13,6 +13,8 @@ export interface PrayerTimesCalculationParams {
   city: string;
   country: string;
   method: number;
+  asr_method?: string; // 'standard' or 'hanafi'
+  maghrib_offset?: number;
 }
 
 /**

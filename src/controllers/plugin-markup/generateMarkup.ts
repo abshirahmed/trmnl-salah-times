@@ -31,12 +31,16 @@ export const generateMarkup = async (userSettings: UserSettings | null) => {
     const city = userSettings?.city || 'London';
     const country = userSettings?.country || 'UK';
     const method = userSettings?.method || 2;
+    const asr_method = userSettings?.asr_method || 'standard';
+    const maghrib_offset = userSettings?.maghrib_offset ?? 0;
 
     // Calculate prayer times using the shared service
     const prayerTimesResult = await calculatePrayerTimes({
       city,
       country,
       method,
+      asr_method,
+      maghrib_offset,
     });
 
     // Format the next prayer time

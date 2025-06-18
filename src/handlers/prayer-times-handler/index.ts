@@ -1,5 +1,6 @@
 import { getPrayerTimes } from '@/controllers/prayer-times';
 import { prayerTimesQuerySchema } from '@/handlers/prayer-times-handler/schema';
+import { getUserSettings } from '@/services/user-settings/getUserSettings';
 import { handleError } from '@/utils/errorHandler';
 import { logger } from '@/utils/logger';
 import { middify } from '@/utils/middify';
@@ -28,13 +29,27 @@ const prayerTimesHandler = async (event: APIGatewayProxyEvent) => {
     }
 
     // Extract validated parameters
-    const { city, country, method } = data;
+    const { city, country, method, uuid } = data;
+
+    let asr_method = 'standard';
+    let maghrib_offset = 0;
+
+    if (uuid) {
+      // Load user settings if uuid is provided
+      const { data: userSettings } = await getUserSettings(uuid);
+      if (userSettings) {
+        asr_method = userSettings.asr_method || 'standard';
+        maghrib_offset = userSettings.maghrib_offset || 0;
+      }
+    }
 
     // Get prayer times
     const enhancedResponse = await getPrayerTimes({
       city,
       country,
       method,
+      asr_method,
+      maghrib_offset,
     });
 
     return {

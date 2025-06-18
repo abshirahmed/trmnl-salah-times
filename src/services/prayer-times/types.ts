@@ -2,6 +2,8 @@ export interface GetPrayerTimesByCityRequest {
   city: string;
   country: string;
   method?: number;
+  asr_method?: string;
+  maghrib_offset?: number;
 }
 
 export interface PrayerTimesByCityResponse {
