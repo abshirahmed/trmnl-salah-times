@@ -38,8 +38,11 @@ const prayerTimesHandler = async (event: APIGatewayProxyEvent) => {
       // Load user settings if uuid is provided
       const { data: userSettings } = await getUserSettings(uuid);
       if (userSettings) {
+        logger.info('Handler fetched user settings:', { userSettings });
         asr_method = userSettings.asr_method || 'standard';
         maghrib_offset = userSettings.maghrib_offset || 0;
+      } else {
+        logger.warn('No user settings found for uuid:', { uuid });
       }
     }
 
