@@ -128,6 +128,19 @@ export const generateManagementInterface = (
           </select>
         </div>
 
+        <div class="form-group">
+          <label for="asr-method">Asr Method</label>
+          <select id="asr-method" name="asrMethod">
+            <option value="standard" ${(userSettings?.asr_method ?? 'standard') === 'standard' ? 'selected' : ''}>Standard (Shafi'i, Maliki, Hanbali)</option>
+            <option value="hanafi" {${userSettings?.asr_method} === 'hanafi' ? 'selected' : ''}>Hanafi</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="maghrib-offset">Maghrib Offset (minutes)</label>
+          <input type="number" id="maghrib-offset" name="maghribOffset" placeholder="e.g. 3 or -2" value="${typeof userSettings?.maghrib_offset === 'number' ? userSettings.maghrib_offset : 0}" required>
+        </div>
+
         <button type="submit">Save Settings</button>
       </form>
 
@@ -146,6 +159,8 @@ export const generateManagementInterface = (
           const country = document.getElementById('country').value;
           const method = document.getElementById('method').value;
           const timeFormat = document.getElementById('time-format').value;
+          const asrMethod = document.getElementById('asr-method').value;
+          const maghribOffset = document.getElementById('maghrib-offset').value;
 
           // Build query string for GET request
           const queryParams = new URLSearchParams({
@@ -154,6 +169,8 @@ export const generateManagementInterface = (
             country,
             method,
             timeFormat,
+            asrMethod,
+            maghribOffset,
           }).toString();
 
           // Send settings to the server using GET
