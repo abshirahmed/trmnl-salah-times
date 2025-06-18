@@ -45,6 +45,9 @@ jobs:
       - name: Start Supabase local development stack
         run: supabase db start
 
+      - name: Reset and seed Supabase database
+        run: supabase db reset --local
+
       - name: Check types
         run: yarn check-types
 

@@ -1,3 +1,4 @@
+import { supabaseClient } from '@/clients/supabase/singleton';
 import { handler } from '@/handlers/prayer-times-handler';
 import { createMockAPIGatewayProxyEvent } from '@tests/mocks/createMockAPIGatewayProxyEvent';
 import { createMockLambdaContext } from '@tests/mocks/createMockLambdaContext';
@@ -10,6 +11,19 @@ describe('Prayer Times Handler', () => {
     },
   });
   const mockLambdaContext = createMockLambdaContext();
+
+  beforeAll(async () => {
+    const { data } = await supabaseClient
+      .from('user_settings')
+      .select()
+      .eq('uuid', 'c1a1e2b0-1234-4a5b-8cde-222222222222')
+      .single();
+    if (!data) {
+      throw new Error(
+        'Seeded user not found! Check your seed.sql and CI setup.',
+      );
+    }
+  });
 
   it('should return 400 if city is missing', async () => {
     const event = {
