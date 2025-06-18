@@ -121,6 +121,7 @@ describe('Prayer Times Handler', () => {
     const bodyStandardParsed = JSON.parse(bodyStandard);
     const schoolStandard =
       bodyStandardParsed.enhancedData?.rawData?.meta?.school;
+    const asrTimeStandard = bodyStandardParsed.timings?.Asr;
 
     // Hanafi
     const eventHanafi = {
@@ -133,10 +134,64 @@ describe('Prayer Times Handler', () => {
     const { body: bodyHanafi } = await handler(eventHanafi, mockLambdaContext);
     const bodyHanafiParsed = JSON.parse(bodyHanafi);
     const schoolHanafi = bodyHanafiParsed.enhancedData?.rawData?.meta?.school;
+    const asrTimeHanafi = bodyHanafiParsed.timings?.Asr;
 
     // Check that the school is different
     expect(schoolStandard).toBeDefined();
     expect(schoolHanafi).toBeDefined();
     expect(schoolStandard).not.toBe(schoolHanafi);
+    // Check that the Asr times are different
+    expect(asrTimeStandard).toBeDefined();
+    expect(asrTimeHanafi).toBeDefined();
+    expect(asrTimeStandard).not.toBe(asrTimeHanafi);
+  });
+
+  it('should return different Maghrib times for different maghrib_offset values', async () => {
+    const baseEvent = {
+      ...mockAPIGatewayProxyEvent,
+      queryStringParameters: {
+        city: 'London',
+        country: 'GB',
+        method: 2,
+      },
+    };
+
+    // maghrib_offset = 0
+    const eventOffset0 = {
+      ...baseEvent,
+      queryStringParameters: {
+        ...baseEvent.queryStringParameters,
+        maghrib_offset: 0,
+      },
+    };
+    const { body: bodyOffset0 } = await handler(
+      eventOffset0,
+      mockLambdaContext,
+    );
+    const parsed0 = JSON.parse(bodyOffset0);
+    const maghribTime0 = parsed0.timings?.Maghrib;
+    const offset0 = parsed0.enhancedData?.rawData?.meta?.offset?.Maghrib;
+
+    // maghrib_offset = 5
+    const eventOffset5 = {
+      ...baseEvent,
+      queryStringParameters: {
+        ...baseEvent.queryStringParameters,
+        maghrib_offset: 5,
+      },
+    };
+    const { body: bodyOffset5 } = await handler(
+      eventOffset5,
+      mockLambdaContext,
+    );
+    const parsed5 = JSON.parse(bodyOffset5);
+    const maghribTime5 = parsed5.timings?.Maghrib;
+    const offset5 = parsed5.enhancedData?.rawData?.meta?.offset?.Maghrib;
+
+    expect(maghribTime0).toBeDefined();
+    expect(maghribTime5).toBeDefined();
+    expect(offset0).toBeDefined();
+    expect(offset5).toBeDefined();
+    expect(maghribTime0).not.toBe(maghribTime5);
   });
 });

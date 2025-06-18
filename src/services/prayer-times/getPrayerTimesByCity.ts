@@ -22,9 +22,9 @@ export const getPrayerTimesByCity = async ({
 
   // school: 0 = Shafi'i (standard), 1 = Hanafi
   const school = asr_method === 'hanafi' ? 1 : 0;
-  // tune: Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha, Imsak
-  // Only Maghrib offset, so: 0,0,0,0,<maghrib_offset>,0,0
-  const tune = `0,0,0,0,${maghrib_offset},0,0`;
+  // tune: Imsak, Fajr, Sunrise, Dhuhr, Asr, Maghrib, Sunset, Isha, Midnight
+  // Only Maghrib offset, so: 0,0,0,0,0,<maghrib_offset>,0,0,0
+  const tune = `0,0,0,0,0,${maghrib_offset},0,0,0`;
 
   logger.info('Aladhan API request params', {
     city,
