@@ -131,8 +131,8 @@ export const generateManagementInterface = (
         <div class="form-group">
           <label for="asr-method">Asr Method</label>
           <select id="asr-method" name="asrMethod">
-            <option value="standard" ${(userSettings?.asr_method ?? 'standard') === 'standard' ? 'selected' : ''}>Standard (Shafi'i, Maliki, Hanbali)</option>
-            <option value="hanafi" {${userSettings?.asr_method} === 'hanafi' ? 'selected' : ''}>Hanafi</option>
+            <option value="0" ${Number(userSettings?.asr_method) === 0 ? 'selected' : ''}>Standard (Shafi'i, Maliki, Hanbali)</option>
+            <option value="1" ${Number(userSettings?.asr_method) === 1 ? 'selected' : ''}>Hanafi</option>
           </select>
         </div>
 
@@ -159,7 +159,7 @@ export const generateManagementInterface = (
           const country = document.getElementById('country').value;
           const method = document.getElementById('method').value;
           const timeFormat = document.getElementById('time-format').value;
-          const asrMethod = document.getElementById('asr-method').value;
+          const asrMethod = Number(document.getElementById('asr-method').value);
           const maghribOffset = document.getElementById('maghrib-offset').value;
 
           // Build query string for GET request
@@ -169,7 +169,7 @@ export const generateManagementInterface = (
             country,
             method,
             timeFormat,
-            asrMethod,
+            asrMethod: asrMethod.toString(),
             maghribOffset,
           }).toString();
 
