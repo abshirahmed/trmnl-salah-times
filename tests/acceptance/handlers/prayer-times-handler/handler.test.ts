@@ -4,6 +4,7 @@ import { saveUserSettings } from '@/services/user-settings';
 import { v4 as uuidv4 } from 'uuid';
 import { createMockAPIGatewayProxyEvent } from '@tests/mocks/createMockAPIGatewayProxyEvent';
 import { createMockLambdaContext } from '@tests/mocks/createMockLambdaContext';
+import { waitForRowInSupabase } from '@tests/utils/waitForRowInSupabase';
 
 describe('Prayer Times Handler', () => {
   const testUuids: string[] = [];
@@ -85,6 +86,9 @@ describe('Prayer Times Handler', () => {
       asr_method: testAsrMethod,
       maghrib_offset: testMaghribOffset,
     });
+
+    // Wait for DB consistency (Supabase emulator can be slow in CI)
+    await waitForRowInSupabase('user_settings', { uuid: userUuid });
 
     const eventWithUserUuid = {
       ...mockAPIGatewayProxyEvent,
