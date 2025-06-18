@@ -1,4 +1,4 @@
-import { createSupabaseClient } from '@/clients/supabase';
+import { supabaseClient } from '@/clients/supabase/singleton';
 import { logger } from '@/utils/logger';
 
 /**
@@ -8,6 +8,9 @@ import { logger } from '@/utils/logger';
  */
 export const getUserSettings = async (uuid: string) => {
   logger.info('Getting user settings', { uuid });
-  const supabase = createSupabaseClient();
-  return supabase.from('user_settings').select().eq('uuid', uuid).single();
+  return supabaseClient
+    .from('user_settings')
+    .select()
+    .eq('uuid', uuid)
+    .single();
 };

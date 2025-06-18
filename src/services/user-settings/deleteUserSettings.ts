@@ -1,4 +1,4 @@
-import { createSupabaseClient } from '@/clients/supabase';
+import { supabaseClient } from '@/clients/supabase/singleton';
 import { logger } from '@/utils/logger';
 
 /**
@@ -8,7 +8,6 @@ import { logger } from '@/utils/logger';
  */
 export const deleteUserSettings = async (uuid: string) => {
   logger.info('Deleting user settings', { uuid });
-  const supabase = createSupabaseClient();
 
-  return supabase.from('user_settings').delete().eq('uuid', uuid);
+  return supabaseClient.from('user_settings').delete().eq('uuid', uuid);
 };

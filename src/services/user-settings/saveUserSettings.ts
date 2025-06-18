@@ -1,5 +1,5 @@
-import { createSupabaseClient } from '@/clients/supabase';
 import { TablesInsert } from '@/clients/supabase/database.types';
+import { supabaseClient } from '@/clients/supabase/singleton';
 import { logger } from '@/utils/logger';
 
 type UserSettingsInsert = TablesInsert<'user_settings'>;
@@ -11,8 +11,7 @@ type UserSettingsInsert = TablesInsert<'user_settings'>;
  */
 export const saveUserSettings = async (settings: UserSettingsInsert) => {
   logger.info('Saving user settings', { uuid: settings.uuid });
-  const supabase = createSupabaseClient();
-  return supabase.from('user_settings').upsert(
+  return supabaseClient.from('user_settings').upsert(
     {
       uuid: settings.uuid,
       city: settings.city,

@@ -1,4 +1,4 @@
-import { createSupabaseClient } from '@/clients/supabase';
+import { supabaseClient } from '@/clients/supabase/singleton';
 import { handler } from '@/handlers/prayer-times-handler';
 import { saveUserSettings } from '@/services/user-settings';
 import { v4 as uuidv4 } from 'uuid';
@@ -88,8 +88,7 @@ describe('Prayer Times Handler', () => {
     });
 
     // Direct select after insert
-    const supabase = createSupabaseClient();
-    const { data: directSelectData } = await supabase
+    const { data: directSelectData } = await supabaseClient
       .from('user_settings')
       .select('*')
       .eq('uuid', userUuid);
@@ -129,9 +128,8 @@ describe('Prayer Times Handler', () => {
   }, 10000);
 
   afterAll(async () => {
-    const supabase = createSupabaseClient();
     for (const uuid of testUuids) {
-      await supabase.from('user_settings').delete().eq('uuid', uuid);
+      await supabaseClient.from('user_settings').delete().eq('uuid', uuid);
     }
   });
 });
