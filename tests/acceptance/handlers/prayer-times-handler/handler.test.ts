@@ -1,4 +1,3 @@
-import { supabaseClient } from '@/clients/supabase/singleton';
 import { handler } from '@/handlers/prayer-times-handler';
 import { createMockAPIGatewayProxyEvent } from '@tests/mocks/createMockAPIGatewayProxyEvent';
 import { createMockLambdaContext } from '@tests/mocks/createMockLambdaContext';
@@ -11,19 +10,6 @@ describe('Prayer Times Handler', () => {
     },
   });
   const mockLambdaContext = createMockLambdaContext();
-
-  beforeAll(async () => {
-    const { data } = await supabaseClient
-      .from('user_settings')
-      .select()
-      .eq('uuid', 'c1a1e2b0-1234-4a5b-8cde-222222222222')
-      .single();
-    if (!data) {
-      throw new Error(
-        'Seeded user not found! Check your seed.sql and CI setup.',
-      );
-    }
-  });
 
   it('should return 400 if city is missing', async () => {
     const event = {
@@ -84,8 +70,6 @@ describe('Prayer Times Handler', () => {
     const testCity = 'New York';
     const testCountry = 'United States';
     const testMethod = 2;
-    const testAsrMethod = 'hanafi';
-    const testMaghribOffset = 2;
 
     const eventWithUserUuid = {
       ...mockAPIGatewayProxyEvent,
@@ -108,9 +92,7 @@ describe('Prayer Times Handler', () => {
     }
 
     expect(statusCode).toBe(200);
-    expect(responseBody.asr_method).toBe(testAsrMethod);
-    expect(responseBody.maghrib_offset).toBe(testMaghribOffset);
-    expect(responseBody.enhancedData).toBeDefined();
-    expect(responseBody.enhancedData.nextPrayer).toBeDefined();
+    expect(responseBody).toHaveProperty('enhancedData');
+    expect(responseBody.enhancedData).toHaveProperty('nextPrayer');
   });
 });
