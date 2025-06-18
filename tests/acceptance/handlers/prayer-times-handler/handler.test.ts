@@ -1,14 +1,8 @@
-import { supabaseClient } from '@/clients/supabase/singleton';
 import { handler } from '@/handlers/prayer-times-handler';
-import { saveUserSettings } from '@/services/user-settings';
-import { v4 as uuidv4 } from 'uuid';
 import { createMockAPIGatewayProxyEvent } from '@tests/mocks/createMockAPIGatewayProxyEvent';
 import { createMockLambdaContext } from '@tests/mocks/createMockLambdaContext';
-import { waitForRowInSupabase } from '@tests/utils/waitForRowInSupabase';
 
 describe('Prayer Times Handler', () => {
-  const testUuids: string[] = [];
-
   const mockAPIGatewayProxyEvent = createMockAPIGatewayProxyEvent({
     requestContext: {},
     headers: {
@@ -57,7 +51,10 @@ describe('Prayer Times Handler', () => {
     };
 
     const { statusCode, body } = await handler(event, mockLambdaContext);
-    const responseBody = JSON.parse(body);
+    let responseBody;
+    if (statusCode === 200 && body) {
+      responseBody = JSON.parse(body);
+    }
 
     expect(statusCode).toBe(200);
 
@@ -68,40 +65,13 @@ describe('Prayer Times Handler', () => {
   });
 
   it('should return prayer times using user settings for asr_method and maghrib_offset', async () => {
-    const userUuid = uuidv4();
-    testUuids.push(userUuid);
-    const testCity = 'London';
-    const testCountry = 'UK';
+    // Use seeded user from supabase/seed.sql
+    const userUuid = 'c1a1e2b0-1234-4a5b-8cde-222222222222';
+    const testCity = 'New York';
+    const testCountry = 'United States';
     const testMethod = 2;
     const testAsrMethod = 'hanafi';
-    const testMaghribOffset = 5;
-
-    // Save user settings
-    await saveUserSettings({
-      uuid: userUuid,
-      city: testCity,
-      country: testCountry,
-      method: testMethod,
-      timeformat: '12h',
-      asr_method: testAsrMethod,
-      maghrib_offset: testMaghribOffset,
-    });
-
-    // Direct select after insert
-    const { data: directSelectData } = await supabaseClient
-      .from('user_settings')
-      .select('*')
-      .eq('uuid', userUuid);
-    console.log('Direct select after insert:', directSelectData);
-
-    // Wait for DB consistency (Supabase emulator can be slow in CI)
-    const userRow = await waitForRowInSupabase(
-      'user_settings',
-      { uuid: userUuid },
-      20,
-      500,
-    );
-    console.log('Inserted user settings:', userRow);
+    const testMaghribOffset = 2;
 
     const eventWithUserUuid = {
       ...mockAPIGatewayProxyEvent,
@@ -118,18 +88,15 @@ describe('Prayer Times Handler', () => {
       mockLambdaContext,
     );
 
-    const responseBody = JSON.parse(body);
+    let responseBody;
+    if (statusCode === 200 && body) {
+      responseBody = JSON.parse(body);
+    }
 
     expect(statusCode).toBe(200);
     expect(responseBody.asr_method).toBe(testAsrMethod);
     expect(responseBody.maghrib_offset).toBe(testMaghribOffset);
     expect(responseBody.enhancedData).toBeDefined();
     expect(responseBody.enhancedData.nextPrayer).toBeDefined();
-  }, 10000);
-
-  afterAll(async () => {
-    for (const uuid of testUuids) {
-      await supabaseClient.from('user_settings').delete().eq('uuid', uuid);
-    }
   });
 });
