@@ -6,6 +6,8 @@ import { createMockAPIGatewayProxyEvent } from '@tests/mocks/createMockAPIGatewa
 import { createMockLambdaContext } from '@tests/mocks/createMockLambdaContext';
 import { waitForRowInSupabase } from '@tests/utils/waitForRowInSupabase';
 
+jest.unmock('@/utils/logger');
+
 describe('Prayer Times Handler', () => {
   const testUuids: string[] = [];
 
