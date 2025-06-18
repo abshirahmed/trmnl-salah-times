@@ -7,6 +7,8 @@ jest.mock('@/services/user-settings', () => ({
   saveUserSettings: jest.fn().mockResolvedValue({ error: null }),
 }));
 
+jest.unmock('@/utils/logger');
+
 describe('Save Settings Handler', () => {
   const mockAPIGatewayProxyEvent = createMockAPIGatewayProxyEvent({
     requestContext: {},
