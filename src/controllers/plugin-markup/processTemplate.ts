@@ -7,6 +7,7 @@ import { Liquid } from 'liquidjs';
 export interface TemplateData {
   data: {
     timings?: Record<string, string>;
+    formattedTimings?: Record<string, string>;
     date?: {
       hijri?: {
         weekday?: { en: string };

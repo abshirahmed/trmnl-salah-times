@@ -28,7 +28,7 @@ export const quadrantTemplate = `
             {% for prayer in prayers limit: 3 %}
               <div class="flex gap--space-between border--h-4 w--full {% if prayer == IDX_0.enhancedData.currentPrayer %}bg--gray-7{% endif %}">
                 <p class="label">{{ prayer }}</p>
-                <p class="label text--right">{{ IDX_0.data.timings[prayer] | slice: 0, 5 }}</p>
+                <p class="label text--right">{{ IDX_0.data.formattedTimings[prayer] }}</p>
               </div>
             {% endfor %}
           </div>
@@ -37,7 +37,7 @@ export const quadrantTemplate = `
             {% for prayer in prayers offset: 3 limit: 3 %}
               <div class="flex gap--space-between border--h-4 w--full {% if prayer == IDX_0.enhancedData.currentPrayer %}bg--gray-7{% endif %}">
                 <p class="label">{{ prayer }}</p>
-                <p class="label text--right">{{ IDX_0.data.timings[prayer] | slice: 0, 5 }}</p>
+                <p class="label text--right">{{ IDX_0.data.formattedTimings[prayer] }}</p>
               </div>
             {% endfor %}
           </div>

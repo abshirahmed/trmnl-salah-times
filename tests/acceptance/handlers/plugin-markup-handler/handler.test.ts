@@ -32,6 +32,8 @@ describe('Plugin Markup Handler', () => {
 
   const STANDARD_USER_UUID = 'c1a1e2b0-1234-4a5b-8cde-111111111111';
   const HANAFI_USER_UUID = 'c1a1e2b0-1234-4a5b-8cde-666666666666';
+  const TWELVE_HOUR_USER_UUID = 'c1a1e2b0-1234-4a5b-8cde-121212121212';
+  const TWENTY_FOUR_HOUR_USER_UUID = 'c1a1e2b0-1234-4a5b-8cde-242424242424';
   const baseResponse = {
     error: null,
     count: null,
@@ -62,6 +64,30 @@ describe('Plugin Markup Handler', () => {
       timeformat: '24h',
       updated_at: null,
       uuid: HANAFI_USER_UUID,
+    },
+    [TWELVE_HOUR_USER_UUID]: {
+      city: 'London',
+      country: 'UK',
+      method: 2,
+      asr_method: 'standard',
+      maghrib_offset: 0,
+      created_at: null,
+      id: null,
+      timeformat: '12h',
+      updated_at: null,
+      uuid: TWELVE_HOUR_USER_UUID,
+    },
+    [TWENTY_FOUR_HOUR_USER_UUID]: {
+      city: 'London',
+      country: 'UK',
+      method: 2,
+      asr_method: 'standard',
+      maghrib_offset: 0,
+      created_at: null,
+      id: null,
+      timeformat: '24h',
+      updated_at: null,
+      uuid: TWENTY_FOUR_HOUR_USER_UUID,
     },
   };
   const defaultSettings: Tables<'user_settings'> = {
@@ -172,5 +198,44 @@ describe('Plugin Markup Handler', () => {
     expect(maghribTimeUser2).toBeDefined();
     expect(asrTimeUser1).not.toBe(asrTimeUser2);
     expect(maghribTimeUser1).not.toBe(maghribTimeUser2);
+  });
+
+  it('should show different prayer time formats in the markup for users with 12h and 24h timeformat settings', async () => {
+    mockedGetUserSettings.mockImplementation((uuid: string) => {
+      return Promise.resolve({
+        data: userSettingsMap[uuid] || defaultSettings,
+        ...baseResponse,
+      });
+    });
+
+    const event12h = {
+      ...mockAPIGatewayProxyEvent,
+      body: {
+        user_uuid: TWELVE_HOUR_USER_UUID,
+      },
+    };
+    const event24h = {
+      ...mockAPIGatewayProxyEvent,
+      body: {
+        user_uuid: TWENTY_FOUR_HOUR_USER_UUID,
+      },
+    };
+
+    const { body: body12h } = await handler(event12h, mockLambdaContext);
+    const { body: body24h } = await handler(event24h, mockLambdaContext);
+
+    // Parse the response body as JSON and extract the 'markup' property
+    const markup12h = JSON.parse(body12h).markup;
+    const markup24h = JSON.parse(body24h).markup;
+
+    // Extract Dhuhr row from the markup for both users
+    const dhuhrRowRegex =
+      /<tr[^>]*>[^<]*<td[^>]*>\s*<span[^>]*>Dhuhr<\/span><\/td>\s*<td[^>]*>\s*<span[^>]*>([^<]*)<\/span><\/td>[^<]*<\/tr>/i;
+    const dhuhrTime12h = dhuhrRowRegex.exec(markup12h)?.[1];
+    const dhuhrTime24h = dhuhrRowRegex.exec(markup24h)?.[1];
+
+    expect(dhuhrTime12h).toBeDefined();
+    expect(dhuhrTime24h).toBeDefined();
+    expect(dhuhrTime12h).not.toBe(dhuhrTime24h); // 12h and 24h users should see different formats
   });
 });

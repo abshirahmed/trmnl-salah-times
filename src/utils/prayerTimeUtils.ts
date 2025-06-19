@@ -1,5 +1,5 @@
 import { logger } from '@/utils/logger';
-import { formatTime12h } from '@/utils/timeFormatting';
+import { formatTime12h, formatTime24h } from '@/utils/timeFormatting';
 
 interface PrayerTimesResult {
   nextPrayer: string;
@@ -11,14 +11,17 @@ interface PrayerTimesResult {
  * Format the next prayer time with fallback handling
  * @param prayerTimesResult Prayer times calculation result
  * @param timezone Timezone for formatting
+ * @param timeformat Time format ("12h" or "24h")
  * @returns Formatted next prayer time
  */
 export const formatNextPrayerTime = (
   prayerTimesResult: PrayerTimesResult,
   timezone: string,
+  timeformat: string = '12h',
 ): string => {
   try {
-    return formatTime12h({
+    const formatter = timeformat === '24h' ? formatTime24h : formatTime12h;
+    return formatter({
       date: prayerTimesResult.nextPrayerTime,
       timezone,
     });

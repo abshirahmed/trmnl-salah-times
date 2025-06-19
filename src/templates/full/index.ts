@@ -34,7 +34,7 @@ export const fullTemplate = `
             {% for prayer in prayers %}
             <tr class="{% if prayer == IDX_0.enhancedData.currentPrayer %}bg--gray-7{% endif %}">
               <td><span class="label label--large">{{ prayer }}</span></td>
-              <td><span class="label label--large text--right">{{ IDX_0.data.timings[prayer] | slice: 0, 5 }}</span></td>
+              <td><span class="label label--large text--right">{{ IDX_0.data.formattedTimings[prayer] }}</span></td>
             </tr>
             {% endfor %}
           </tbody>
