@@ -87,6 +87,9 @@ The API Gateway provides several HTTP endpoints for the TRMNL plugin lifecycle:
 - `city` (required): The city name
 - `country` (required): The country name
 - `method` (optional): The calculation method ID (1-15, default: 2)
+- `asr_method` (optional): Asr juristic method ('standard' or 'hanafi', default: 'standard')
+- `maghrib_offset` (optional): Manual minute adjustment for Maghrib (integer, default: 0)
+- `uuid` (optional): User UUID for loading saved settings
 
 #### Installation Endpoint
 **Endpoint:** `/install`
@@ -118,7 +121,7 @@ The API Gateway provides several HTTP endpoints for the TRMNL plugin lifecycle:
 #### Save Settings Endpoint
 **Endpoint:** `/save-settings`
 **Method:** POST
-**Body:** User settings in JSON format
+**Body:** User settings in JSON format (city, country, method, timeformat, asr_method, maghrib_offset, uuid)
 
 #### Uninstallation Webhook
 **Endpoint:** `/uninstall`
@@ -178,49 +181,18 @@ The codebase follows a modular structure with clear separation of concerns:
 src/
 ├── clients/                      # API clients
 │   ├── prayer-times/            # Prayer times API client
-│   │   ├── client.ts            # HTTP client for Aladhan API
-│   │   ├── types.ts             # Type definitions
-│   │   └── validation.ts        # Response validation
-│   ├── supabase/               # Supabase client
-│   │   ├── client.ts           # Supabase service implementation
-│   │   ├── factory.ts          # Factory function for creating client
-│   │   └── types.ts            # Type definitions
-│   └── trmnl/                  # TRMNL API client
-│       ├── client.ts           # TRMNL client implementation
-│       ├── factory.ts          # Factory function for creating client
-│       └── types.ts            # Type definitions
-├── handlers/                    # Lambda function handlers
-│   ├── prayer-times-handler/   # Prayer times handler module
-│   │   ├── index.ts            # Handler implementation
-│   │   ├── schema.ts           # Zod validation schema
-│   │   └── README.md           # Handler documentation
-│   ├── installation-handler/   # Installation handler module
-│   │   ├── index.ts            # Handler implementation
-│   │   ├── schema.ts           # Validation schema
-│   │   └── README.md           # Handler documentation
-│   └── ... other handlers
-├── controllers/                # Business logic controllers
-│   ├── prayer-times/          # Prayer times controller
-│   │   ├── index.ts           # Controller implementation
-│   │   └── types.ts           # Type definitions
-│   └── ... other controllers
-├── services/                   # Business logic services
-│   ├── prayer-times/          # Prayer times service
-│   │   ├── index.ts           # Service implementation
-│   │   └── types.ts           # Type definitions
-│   └── ... other services
-├── templates/                  # Template files
-│   └── trmnl-plugin/          # TRMNL plugin templates
-│       ├── markup.html        # Full-screen plugin template
-│       ├── half-view.html     # Half-screen plugin template
-│       └── quadrant-view.html # Quadrant plugin template
-└── utils/                     # Utility functions
-    ├── auth.ts                # Authentication utilities
-    ├── date.ts                # Date utilities (date-fns)
-    ├── errors.ts              # Custom error classes
-    ├── logger.ts              # Logging (AWS Lambda Powertools)
-    └── middleware.ts          # Lambda middleware (Middy)
+│   ├── supabase/                # Supabase client
+│   └── trmnl/                   # TRMNL API client
+├── handlers/                    # Lambda function handlers (each in its own directory)
+├── services/                    # Business logic (prayer-times, user-settings, trmnl)
+├── templates/                   # UI templates for TRMNL plugin
+├── utils/                       # Utility functions (auth, error handling, logging, etc.)
 ```
+
+- Each handler and service is self-contained, with its own implementation, schema, and documentation.
+- Zod is used for input validation in all handlers.
+- Supabase is used for storing user settings.
+- Error handling is consistent and uses contextual logging.
 
 ## Error Handling
 

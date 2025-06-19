@@ -164,6 +164,8 @@ This structure provides several benefits:
 - Supabase JS Client 2.49.4
 - Zod 3.24.2 for runtime validation
 - Jest 29.7.0 for testing
+- ESLint v9
+- Husky v9
 
 ### TRMNL Plugin Setup
 
@@ -181,9 +183,7 @@ This structure provides several benefits:
    - Create a new project in Supabase
    - Run the schema.sql file in the supabase directory to create the necessary tables and policies
    - The database includes the following tables:
-     - `user_settings`: Stores user preferences including city, country, calculation method, and time format
-     - `locations`: Stores user locations (prepared for future use)
-     - `prayer_times`: Caches prayer times for locations (prepared for future use)
+     - `user_settings`: Stores user preferences including city, country, calculation method, time format, asr method, and maghrib offset
    - Get your Supabase URL and service key from the project settings
 
 4. Set the environment variables for your TRMNL plugin and Supabase credentials:

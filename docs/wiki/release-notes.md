@@ -23,14 +23,17 @@ This page contains the release history of TRMNL Salah Times, with details about 
 ### Technical Improvements
 
 - Upgraded to Node.js 20.x
-- Latest TypeScript 5.3
+- Latest TypeScript 5.8.3
+- ESLint v9 with flat config
+- Husky v9 for Git hooks
+- Modular handler/service structure
+- Zod for runtime validation
 - Enhanced build system with esbuild
 - Improved testing with Jest and SWC
-- ESLint v8 with flat config
-- Husky v8 for Git hooks
 - AWS Lambda Powertools for logging
 - Comprehensive error handling and validation
 - Enhanced development tools and preview server
+- Supabase integration for user settings
 
 ### Bug Fixes
 
@@ -39,6 +42,7 @@ This page contains the release history of TRMNL Salah Times, with details about 
 - Enhanced error messages for better troubleshooting
 - Fixed layout issues in different view sizes
 - Improved performance and reduced API calls
+- Improved error handling and validation
 
 ### Known Issues
 
