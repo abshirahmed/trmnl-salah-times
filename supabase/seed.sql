@@ -5,7 +5,8 @@ VALUES
   ('c1a1e2b0-1234-4a5b-8cde-222222222222', 'New York', 'United States', 2, '12h', 'hanafi', 2, NOW(), NOW()),  -- ISNA (common in North America)
   ('c1a1e2b0-1234-4a5b-8cde-333333333333', 'Dubai', 'United Arab Emirates', 4, '12h', 'standard', 0, NOW(), NOW()),  -- Umm Al-Qura (common in Middle East)
   ('c1a1e2b0-1234-4a5b-8cde-444444444444', 'Kuala Lumpur', 'Malaysia', 3, '24h', 'standard', 0, NOW(), NOW()),  -- Muslim World League
-  ('c1a1e2b0-1234-4a5b-8cde-555555555555', 'Istanbul', 'Turkey', 13, '24h', 'hanafi', 0, NOW(), NOW());  -- Diyanet İşleri Başkanlığı (Turkey)
+  ('c1a1e2b0-1234-4a5b-8cde-555555555555', 'Istanbul', 'Turkey', 13, '24h', 'hanafi', 0, NOW(), NOW()),  -- Diyanet İşleri Başkanlığı (Turkey)
+  ('c1a1e2b0-1234-4a5b-8cde-666666666666', 'London', 'United Kingdom', 3, '12h', 'hanafi', 5, NOW(), NOW());  -- London, hanafi, 5 offset
 
 -- Note: In a real application, you would replace the example UUIDs with actual user IDs
 -- The method values correspond to different prayer time calculation methods:

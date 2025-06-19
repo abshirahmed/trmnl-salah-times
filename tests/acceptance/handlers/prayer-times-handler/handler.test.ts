@@ -194,4 +194,52 @@ describe('Prayer Times Handler', () => {
     expect(offset5).toBeDefined();
     expect(maghribTime0).not.toBe(maghribTime5);
   });
+
+  it('should return different Asr and Maghrib times for two users in London with different asr_method and maghrib_offset settings', async () => {
+    // User 1: standard asr_method, maghrib_offset 0
+    const user1Uuid = 'c1a1e2b0-1234-4a5b-8cde-111111111111'; // This should match a seeded user with these settings
+    // User 2: hanafi asr_method, maghrib_offset 5
+    const user2Uuid = 'c1a1e2b0-1234-4a5b-8cde-666666666666'; // This should match a seeded user with these settings
+
+    const baseQuery = {
+      city: 'London',
+      country: 'GB',
+      method: 2,
+    };
+
+    // User 1 event
+    const eventUser1 = {
+      ...mockAPIGatewayProxyEvent,
+      queryStringParameters: {
+        ...baseQuery,
+        uuid: user1Uuid,
+      },
+    };
+    // User 2 event
+    const eventUser2 = {
+      ...mockAPIGatewayProxyEvent,
+      queryStringParameters: {
+        ...baseQuery,
+        uuid: user2Uuid,
+      },
+    };
+
+    const { body: bodyUser1 } = await handler(eventUser1, mockLambdaContext);
+    const { body: bodyUser2 } = await handler(eventUser2, mockLambdaContext);
+
+    const parsedUser1 = JSON.parse(bodyUser1);
+    const parsedUser2 = JSON.parse(bodyUser2);
+
+    const asrTimeUser1 = parsedUser1.timings?.Asr;
+    const asrTimeUser2 = parsedUser2.timings?.Asr;
+    const maghribTimeUser1 = parsedUser1.timings?.Maghrib;
+    const maghribTimeUser2 = parsedUser2.timings?.Maghrib;
+
+    expect(asrTimeUser1).toBeDefined();
+    expect(asrTimeUser2).toBeDefined();
+    expect(maghribTimeUser1).toBeDefined();
+    expect(maghribTimeUser2).toBeDefined();
+    expect(asrTimeUser1).not.toBe(asrTimeUser2);
+    expect(maghribTimeUser1).not.toBe(maghribTimeUser2);
+  });
 });
